@@ -1,3 +1,5 @@
+**/build/
+
 HELP.md
 .gradle
 build/
