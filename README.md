@@ -1,6 +1,7 @@
 # Commit Message Convention
 ## 커밋 메세지 구조
-> Type/Body/Footer ex) Feat: Add member api
+`Type / Body / Footer `
+> Feat: Add member api
 ### 예시
 ```html
 Feat: "Add login API"        // 타입: 제목
@@ -27,7 +28,7 @@ Related to: #48, #45         현재 커밋에서 아직 이슈 48 과 45 가 해
 - Add : 코드나 테스트, 예제, 문서등의 추가 생성이 있는경우- Improve : 향상이 있는 경우. 호환성, 검증 기능, 접근성 등이 될수 있습니다.
 - Implement : 코드가 추가된 정도보다 더 주목할만한 구현체를 완성시켰을 때
 - Move : 코드의 이동이 있는경우
-- Updated : 계정이나 버전 업데이트가 있을 때 사용. 주로 코드보다는 문서나, 리소스, 라이브러리등에 사용합니다.
+- Update : 계정이나 버전 업데이트가 있을 때 사용. 주로 코드보다는 문서나, 리소스, 라이브러리등에 사용합니다.
 - Comment : 필요한 주석 추가 및 변경
 
 ### 제목
