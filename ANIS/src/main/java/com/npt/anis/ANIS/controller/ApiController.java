@@ -1,7 +1,7 @@
 package com.npt.anis.ANIS.controller;
 
-import com.npt.anis.ANIS.entity.TestMongo;
-import com.npt.anis.ANIS.entity.TestUser;
+import com.npt.anis.ANIS.domain.TestMongo;
+import com.npt.anis.ANIS.domain.TestUser;
 import com.npt.anis.ANIS.service.TestMongoService;
 import com.npt.anis.ANIS.service.TestUserService;
 import org.springframework.beans.factory.annotation.Autowired;
