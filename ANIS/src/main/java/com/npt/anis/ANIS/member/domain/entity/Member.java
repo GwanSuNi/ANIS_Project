@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Blob;
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -14,5 +17,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Member {
     @Id
-    private Long id;
+    private Long memberID;
+    // private Long departmentID;
+    private String studentName;
+    private int birth;
+    // BLOB
+    // role SET
+    private LocalDateTime lastLogin;
 }
