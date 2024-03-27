@@ -1,9 +1,9 @@
-package com.npt.anis.ANIS.controller;
+package com.npt.anis.ANIS.member.controller;
 
-import com.npt.anis.ANIS.entity.TestMongo;
-import com.npt.anis.ANIS.entity.TestUser;
-import com.npt.anis.ANIS.service.TestMongoService;
-import com.npt.anis.ANIS.service.TestUserService;
+import com.npt.anis.ANIS.member.domain.entity.TestMongo;
+import com.npt.anis.ANIS.member.domain.entity.TestUser;
+import com.npt.anis.ANIS.member.service.TestMongoService;
+import com.npt.anis.ANIS.member.service.TestUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

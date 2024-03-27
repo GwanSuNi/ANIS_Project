@@ -1,7 +1,7 @@
-package com.npt.anis.ANIS.service;
+package com.npt.anis.ANIS.member.service;
 
-import com.npt.anis.ANIS.entity.TestMongo;
-import com.npt.anis.ANIS.repository.TestMongoRepository;
+import com.npt.anis.ANIS.member.domain.entity.TestMongo;
+import com.npt.anis.ANIS.member.repository.TestMongoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

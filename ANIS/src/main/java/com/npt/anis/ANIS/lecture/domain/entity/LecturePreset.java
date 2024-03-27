@@ -1,8 +1,6 @@
-package com.npt.anis.ANIS.entity;
+package com.npt.anis.ANIS.lecture.domain.entity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,11 +12,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TestUser {
+public class LecturePreset {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    private String name;
-
+    private Long lpIndex;
+    // private Long lecID;
+    // erd에 대한 얘기가 끝나지 않아서 비워둠
+    private String lpName;
 }

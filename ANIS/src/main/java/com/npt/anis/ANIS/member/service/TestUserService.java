@@ -1,7 +1,7 @@
-package com.npt.anis.ANIS.service;
+package com.npt.anis.ANIS.member.service;
 
-import com.npt.anis.ANIS.entity.TestUser;
-import com.npt.anis.ANIS.repository.TestUserRepository;
+import com.npt.anis.ANIS.member.domain.entity.TestUser;
+import com.npt.anis.ANIS.member.repository.TestUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.npt.anis.ANIS.entity;
+package com.npt.anis.ANIS.member.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

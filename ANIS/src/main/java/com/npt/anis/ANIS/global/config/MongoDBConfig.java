@@ -1,4 +1,4 @@
-package com.npt.anis.ANIS.config;
+package com.npt.anis.ANIS.global.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
