@@ -1,9 +1,10 @@
 spring:
   datasource:
-    url:  jdbc:h2:tcp://localhost/~/db/H2/anisdb/data;
-    username: sa
-    passward:
-    driver-class-name: org.h2.Driver
+    hikari:
+      jdbc-url: jdbc:h2:tcp://localhost/~/db/H2/anisdb/data;
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
   h2:
     console:
       enabled: true
