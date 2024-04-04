@@ -15,11 +15,9 @@ import lombok.Setter;
 public class RegisteredLecture {
     @Id
     private Long rlIndex;
-
-    // private Long lecId;
-    // erd에 대한 얘기가 끝나지 않아서 비워둠
-
-    // private Long lecID;
-    // private Long studentID;
+    // Lecture FK
+    private Long lecID;
+    // Member FK
+    private Long memberID;
 
 }

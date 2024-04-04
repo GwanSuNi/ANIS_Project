@@ -15,9 +15,10 @@ import lombok.Setter;
 public class AssessmentResult {
     @Id
     private Long arIndex;
-    // private Long asIndex; assessment 외래키
-    // private Long studentId; student 외래키
-    // erd에 대한 얘기가 끝나지 않아서 비워둠
+    // assessment 외래키
+    private Long asIndex;
+     // student 외래키
+    private String studentId;
     private int arScore;
 }
 

@@ -13,7 +13,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,8 +20,7 @@ import java.util.List;
 @Document( collection = "student" )
 public class Student {
     @Id
-    private String id;
-    private int studentId;
+    private int studentID;
     @ElementCollection
     private List<String> doneSurveys;
     @ElementCollection

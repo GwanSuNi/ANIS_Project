@@ -17,11 +17,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Member {
     @Id
-    private Long memberID;
-    // private Long departmentID;
+    private Long studentID;
+    // Department FK
+    private Long departmentID;
     private String studentName;
     private int birth;
     // BLOB
     // role SET
     private LocalDateTime lastLogin;
+    private boolean isQuit;
 }
