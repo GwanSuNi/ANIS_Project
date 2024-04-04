@@ -15,7 +15,7 @@ import lombok.Setter;
 public class LecturePreset {
     @Id
     private Long lpIndex;
-    // private Long lecID;
-    // erd에 대한 얘기가 끝나지 않아서 비워둠
+    // Lecture FK
+    private Long lecID;
     private String lpName;
 }

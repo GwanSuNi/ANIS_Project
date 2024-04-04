@@ -15,9 +15,8 @@ import lombok.Setter;
 public class Friend {
     @Id
     private Long frIndex;
-
-    // private Long myStuID;
-
-    // private Long frStuID;
-    // erd에 대한 얘기가 끝나지 않아서 비워둠
+    // Member FK
+     private Long myStuID;
+    // 친구 신청한 아이디
+     private Long frStuID;
 }

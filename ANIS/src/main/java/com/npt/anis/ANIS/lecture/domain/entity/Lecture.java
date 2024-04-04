@@ -23,9 +23,7 @@ public class Lecture {
     private int lecYear;
     private int lecSemester;
     private String lecProfessor;
-
-    // private ??? lecDay 아직 type 이 정해지지않았음
-
+    private String lecDay;
     private LocalDateTime lecTimeStart;
     private LocalDateTime lecTimeEnd;
 
