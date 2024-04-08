@@ -4,18 +4,17 @@ import com.npt.anis.ANIS.member.domain.entity.TestMongo;
 import com.npt.anis.ANIS.member.domain.entity.TestUser;
 import com.npt.anis.ANIS.member.service.TestMongoService;
 import com.npt.anis.ANIS.member.service.TestUserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api")
-public class ApiController {
-    @Autowired
-    TestMongoService testMongoService;
-    @Autowired
-    TestUserService testUserService;
+public class MemberController {
+    private final TestMongoService testMongoService;
+    private final TestUserService testUserService;
     @GetMapping("test")
     public String test() {
         TestMongo testMongo = new TestMongo("sibjagun2","seosang","kyungmin");
@@ -24,5 +23,4 @@ public class ApiController {
         testUserService.saveUser(testUser);
         return "index";
     }
-
 }
