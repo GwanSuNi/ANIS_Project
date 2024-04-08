@@ -30,7 +30,8 @@ public class Lecture {
     private int lecYear;
     private int lecSemester;
     private String lecProfessor;
-    private String lecDay;
+    // 1=월요일, 2=화요일, 3=수요일 ...
+    private int lecDay;
     private LocalDateTime lecTimeStart;
     private LocalDateTime lecTimeEnd;
 
