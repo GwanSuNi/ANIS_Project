@@ -40,11 +40,13 @@ public class LectureTest {
     private LecturePresetMapper lecturePresetMapper;
     private LecturePresetService lecturePresetService;
     private LectureService lectureService;
+    private LectureDto lectureDto;
 
     @BeforeEach
     public void dependencySetting(){
         lectureService = new LectureServiceImpl(lectureRepository, lectureMapper);
         lecturePresetService = new LecturePresetServiceImpl(lecturePresetRepository, lecturePresetMapper,lectureRepository);
+        lectureDto = new LectureDto(1,1,"name",100,2024,1,"서상현","금요일", LocalDateTime.now(),LocalDateTime.now());
     }
 
     /***
@@ -54,7 +56,7 @@ public class LectureTest {
     @Test
     @DisplayName("강의 생성하기 테스트")
     public void createTest(){
-        LectureDto lectureDto = new LectureDto(1,1,"name",100,2024,1,"서상현","금요일", LocalDateTime.now(),LocalDateTime.now());
+        lectureDto = new LectureDto(1,1,"name",100,2024,1,"서상현","금요일", LocalDateTime.now(),LocalDateTime.now());
         Lecture lecture = lectureService.createLecture(lectureDto);
         assertEquals(lectureRepository.findAll().get(0).getLecID(), lecture.getLecID());
     }
@@ -66,7 +68,7 @@ public class LectureTest {
     @DisplayName("강의 수정하기 테스트")
     @Transactional
     public void lectureUpdateTest(){
-        LectureDto lectureDto = new LectureDto(1,1,"name",100,2024,1,"서상현","금요일", LocalDateTime.now(),LocalDateTime.now());
+        lectureDto = new LectureDto(1,1,"name",100,2024,1,"서상현","금요일", LocalDateTime.now(),LocalDateTime.now());
         Lecture lecture = lectureService.createLecture(lectureDto);
         LectureDto newLecture = new LectureDto(1,1,"sanghyeon",300,2026,1,"서상현","금요일", LocalDateTime.now(),LocalDateTime.now());
         lectureService.updateLecture(lecture.getLecID(),newLecture);
@@ -77,7 +79,7 @@ public class LectureTest {
     @Test
     @DisplayName("강의 삭제하기 테스트")
     public void lectureDeleteTest(){
-        LectureDto lectureDto = new LectureDto(1,1,"name",100,2024,1,"서상현","금요일", LocalDateTime.now(),LocalDateTime.now());
+        lectureDto = new LectureDto(1,1,"name",100,2024,1,"서상현","금요일", LocalDateTime.now(),LocalDateTime.now());
         Lecture lecture = lectureService.createLecture(lectureDto);
         assertEquals(true,lectureService.deleteLecture(lecture.getLecID()));
     }
