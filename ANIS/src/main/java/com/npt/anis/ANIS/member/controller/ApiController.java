@@ -1,8 +1,8 @@
 package com.npt.anis.ANIS.member.controller;
 
-import com.npt.anis.ANIS.member.domain.entity.TestMongo;
+import com.npt.anis.ANIS.nosql.domain.entity.TestMongo;
 import com.npt.anis.ANIS.member.domain.entity.TestUser;
-import com.npt.anis.ANIS.member.service.TestMongoService;
+import com.npt.anis.ANIS.nosql.service.TestMongoService;
 import com.npt.anis.ANIS.member.service.TestUserService;
 import com.npt.anis.ANIS.nosql.domain.entity.Student;
 //import com.npt.anis.ANIS.nosql.service.StudentService;
@@ -32,7 +32,7 @@ public class ApiController {
         testUserService.saveUser(testUser);
         List<String> doneSurveys = new ArrayList<>();
         List<String> participatedSurveys = new ArrayList<>();
-        Student student = new Student("1",2,doneSurveys,participatedSurveys);
+        Student student = new Student(2,doneSurveys,participatedSurveys);
         doneSurveys.add("1");
         doneSurveys.add("2");
         doneSurveys.add("5");
