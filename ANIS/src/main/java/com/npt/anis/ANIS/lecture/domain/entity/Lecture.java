@@ -1,6 +1,8 @@
 package com.npt.anis.ANIS.lecture.domain.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +19,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Lecture {
     @Id
-    private Long lecID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long lecID;
+    /* 어드민에서 lecturePreset을 만들기위해서 lecturePreset에 등록되지않은
+    lecture들의 목록들을 보여주기위해서 lpIndex 가 필요하다고 생각함
+    */
+    private long lpIndex;
     private String lecName;
     private int lecCredit;
     private int lecYear;
