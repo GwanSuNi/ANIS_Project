@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Lecture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +32,7 @@ public class Lecture {
     private String lecProfessor;
     // 1=월요일, 2=화요일, 3=수요일 ...
     private int lecDay;
+    private int lecGrade;
     private LocalDateTime lecTimeStart;
     private LocalDateTime lecTimeEnd;
 

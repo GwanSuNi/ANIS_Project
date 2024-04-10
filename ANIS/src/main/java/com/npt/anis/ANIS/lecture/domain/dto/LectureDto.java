@@ -20,7 +20,8 @@ public class LectureDto {
         private int lecYear;
         private int lecSemester;
         private String lecProfessor;
-        private String lecDay;
+        private int lecDay;
+        private int lecGrade;
         private LocalDateTime lecTimeStart;
         private LocalDateTime lecTimeEnd;
 }
