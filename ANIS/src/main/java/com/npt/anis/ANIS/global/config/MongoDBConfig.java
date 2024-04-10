@@ -17,8 +17,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @RequiredArgsConstructor
 @EnableMongoRepositories(basePackages = "com.npt.anis.ANIS.nosql.*")
 public class MongoDBConfig {
-    @Autowired
-    private MongoMappingContext mongoMappingContext;
+    private final MongoMappingContext mongoMappingContext;
 
     @Bean
     public MappingMongoConverter mappingMongoConverter(

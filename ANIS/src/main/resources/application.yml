@@ -11,12 +11,21 @@ spring:
       path: /h2-console
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         show_sql: true
         format_sql: true
-
+  jwt:
+    secret: QW5pc1Byb2plY3RKd3RTZWNyZXRLZXk=
+  password : 1234
   data:
     mongodb:
       uri: mongodb://localhost:27017/ANIS
+
+
+logging:
+  level:
+    org:
+      springframework:
+        security=DEBUG:

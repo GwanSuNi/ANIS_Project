@@ -1,29 +1,46 @@
 package com.npt.anis.ANIS.member.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Blob;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class Member {
     @Id
-    private Long studentID;
+    private String studentID;
     // Department FK
     private Long departmentID;
     private String studentName;
+    private String password;
     private int birth;
     // BLOB
-    // role SET
-    private LocalDateTime lastLogin;
-    private boolean isQuit;
+    // 사용자 역할
+    private String role;
+    private LocalDateTime lastLogin = LocalDateTime.now();
+    private boolean isQuit = false;
+
+    @Builder
+    public Member(String studentID, String password, String studentName, int birth, String role) { // TODO: DTO로 변경
+        this.studentID = studentID;
+        this.password = password;
+        this.studentName = studentName;
+        this.birth = birth;
+        this.role = role;
+    }
+
+    public void quitUser() {
+
+        isQuit = true;
+    }
 }

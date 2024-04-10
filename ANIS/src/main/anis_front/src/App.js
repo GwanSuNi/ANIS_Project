@@ -3,6 +3,7 @@ import './App.css';
 
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Routers from "./Routers";
 
 function App() {
   const [hello, setHello] = useState('');
@@ -17,6 +18,7 @@ function App() {
   return (
       <div className="App">
         백엔드 데이터 : {hello}
+        <Routers/>
       </div>
   );
 }

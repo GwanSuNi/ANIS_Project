@@ -8,6 +8,7 @@ import com.npt.anis.ANIS.nosql.domain.entity.Student;
 //import com.npt.anis.ANIS.nosql.service.StudentService;
 import com.npt.anis.ANIS.nosql.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,14 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api")
-public class ApiController {
-    @Autowired
-    TestMongoService testMongoService;
-    @Autowired
-    TestUserService testUserService;
-    @Autowired
-    StudentService studentService;
+public class MemberController {
+    private final TestMongoService testMongoService;
+    private final TestUserService testUserService;
+    private final StudentService studentService;
     @GetMapping("test")
     public String test() {
         TestMongo testMongo = new TestMongo("sibjagun2","seosang","kyungmin");
@@ -43,5 +42,4 @@ public class ApiController {
 
         return "index";
     }
-
 }
