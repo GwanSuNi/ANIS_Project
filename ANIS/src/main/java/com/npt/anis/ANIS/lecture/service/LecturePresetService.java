@@ -6,9 +6,7 @@ import com.npt.anis.ANIS.lecture.domain.entity.LecturePreset;
 import java.util.List;
 
 public interface LecturePresetService {
-    LecturePreset createLecturePreset(String presetName);
-    LecturePreset updateLecturePreset(List<Long> lectureList);
-    void saveLecturePreset(LecturePreset lecturePreset);
+    LecturePreset createLecturePreset(long lecIndex,String presetName);
     List<Lecture> findLectureList(long lpIndex);
 
 }
