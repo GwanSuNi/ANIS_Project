@@ -22,21 +22,28 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.security:spring-security-oauth2-client'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-	testImplementation 'junit:junit:4.13.1'
 	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	implementation 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.projectlombok:lombok'
-	testAnnotationProcessor 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	// DB
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'com.h2database:h2'
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.assertj:assertj-core'
+	testImplementation 'junit:junit:4.13.1'
+  testImplementation 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+
+	// spring doc
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 
 	//JWT
