@@ -14,17 +14,17 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LecturePreset {
-
+public class LectureRegistered {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long lpIndex;
-    // lectureIndex FK
-    private Long lectureID;
-    private String presetName;
+    private Long lrIndex;
+    // Lecture FK
+    private Long lecID;
+    // Member FK
+    private String studentID;
 
-    public LecturePreset(long lectureID,String presetName){
-        this.lectureID = lectureID;
-        this.presetName = presetName;
+    public LectureRegistered(long lecID , String studentID){
+        this.lecID = lecID;
+        this.studentID = studentID;
     }
 }
