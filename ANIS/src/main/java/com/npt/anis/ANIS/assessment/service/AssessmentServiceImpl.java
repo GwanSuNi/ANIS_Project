@@ -95,7 +95,7 @@ public class AssessmentServiceImpl implements AssessmentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Assessment not found with id: " + id));
 
         assessmentMapper.updateFromDto(assessment, dto);
-        assessmentRepository.save(assessment);
+        assessment = assessmentRepository.save(assessment);
         AssessmentDto updatedDto = assessmentMapper.toDto(assessment);
 
         log.info("Service: Updated assessment: {}", updatedDto);
