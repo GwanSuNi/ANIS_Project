@@ -256,3 +256,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,intellij,java,react
+
+# MapStruct generated files
+generated/
