@@ -204,35 +204,20 @@
 													"top": 308,
 													"width": 185.88330078125,
 													"height": 13
-												},
-												{
-													"_type": "ERDColumnView",
-													"_id": "AAAAAAGOe0SrCTx3QVo=",
-													"_parent": {
-														"$ref": "AAAAAAGOO7m5CKpIRQ0="
-													},
-													"model": {
-														"$ref": "AAAAAAGOe0Sq9Tx0VvA="
-													},
-													"font": "Arial;13;0",
-													"left": 493,
-													"top": 293,
-													"width": 185.88330078125,
-													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 488,
 											"top": 183,
 											"width": 195.88330078125,
-											"height": 128
+											"height": 143
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 488,
 									"top": 160,
 									"width": 195.88330078125,
-									"height": 151,
+									"height": 166,
 									"nameLabel": {
 										"$ref": "AAAAAAGOO7m5CKpHi2k="
 									},
@@ -342,7 +327,7 @@
 											"font": "Arial;13;1",
 											"left": 592,
 											"top": 29,
-											"width": 141.2236328125,
+											"width": 163.376953125,
 											"height": 13,
 											"text": "Friend"
 										},
@@ -368,7 +353,7 @@
 													"font": "Arial;13;0",
 													"left": 597,
 													"top": 52,
-													"width": 131.2236328125,
+													"width": 153.376953125,
 													"height": 13
 												},
 												{
@@ -383,7 +368,7 @@
 													"font": "Arial;13;0",
 													"left": 597,
 													"top": 67,
-													"width": 131.2236328125,
+													"width": 153.376953125,
 													"height": 13
 												},
 												{
@@ -398,21 +383,21 @@
 													"font": "Arial;13;0",
 													"left": 597,
 													"top": 82,
-													"width": 131.2236328125,
+													"width": 153.376953125,
 													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 592,
 											"top": 47,
-											"width": 141.2236328125,
+											"width": 163.376953125,
 											"height": 53
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 592,
 									"top": 24,
-									"width": 141.2236328125,
+									"width": 163.376953125,
 									"height": 76,
 									"nameLabel": {
 										"$ref": "AAAAAAGOO+YUeqrPKbs="
@@ -2543,7 +2528,7 @@
 										"$ref": "AAAAAAGOO7m5B6pEllE="
 									},
 									"name": "studentID",
-									"type": "LONG",
+									"type": "VARCHAR",
 									"length": 0,
 									"primaryKey": true
 								},
@@ -2717,7 +2702,7 @@
 										"$ref": "AAAAAAGOO+YUeqrMcRo="
 									},
 									"name": "myStuId",
-									"type": "LONG",
+									"type": "VARCHAR",
 									"length": 0,
 									"foreignKey": true,
 									"referenceTo": {
@@ -2731,7 +2716,7 @@
 										"$ref": "AAAAAAGOO+YUeqrMcRo="
 									},
 									"name": "frStuId",
-									"type": "LONG",
+									"type": "VARCHAR",
 									"length": 0,
 									"foreignKey": true,
 									"referenceTo": {
