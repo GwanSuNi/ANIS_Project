@@ -95,7 +95,7 @@ public class SecurityConfig {
                                 corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
                                 corsConfiguration.setMaxAge(3600L);
 
-                                corsConfiguration.setExposedHeaders(Collections.singletonList("Authorization"));
+                                corsConfiguration.setExposedHeaders(Collections.singletonList("access")); // access 헤더를 노출
 
                                 return corsConfiguration;
                             }
