@@ -17,10 +17,10 @@ public class MemberController {
     private final TestUserService testUserService;
     @GetMapping("test")
     public String test() {
-        TestMongo testMongo = new TestMongo("sibjagun2","seosang","kyungmin");
-        TestUser testUser = new TestUser(1,"seosang");
-        testMongoService.saveUser(testMongo);
-        testUserService.saveUser(testUser);
+//        TestMongo testMongo = new TestMongo("sibjagun2","seosang","kyungmin");
+//        TestUser testUser = new TestUser(1,"seosang");
+//        testMongoService.saveUser(testMongo);
+//        testUserService.saveUser(testUser);
         return "index";
     }
 }

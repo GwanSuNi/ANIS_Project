@@ -58,7 +58,7 @@ public class SecurityConfig {
                         .requestMatchers("/", "/login", "/join", "/h2-console/**").permitAll()
                         .requestMatchers(PathRequest.toH2Console() + "/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
-                        .requestMatchers("/reissue").permitAll()
+                        .requestMatchers("/reissue", "/api/test").permitAll()
                         .anyRequest().authenticated()
                 );
 
