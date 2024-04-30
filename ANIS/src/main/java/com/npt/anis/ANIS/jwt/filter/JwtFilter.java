@@ -10,8 +10,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -25,6 +27,18 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        log.info(request.getRequestURI());
+        // '/api/test' 경로에 대한 요청이면 필터 체인을 계속 진행합니다.
+//        if ("/test".equals(request.getRequestURI())) {
+//            Authentication anonymousAuth = new AnonymousAuthenticationToken("anonymousUser", "anonymousUser",
+//                    AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS"));
+//            SecurityContextHolder.getContext().setAuthentication(anonymousAuth);
+//
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
+
         // 헤더에서 access키에 담긴 토큰을 꺼냄
         String accessToken = request.getHeader("access");
 

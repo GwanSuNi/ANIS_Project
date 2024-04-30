@@ -1,17 +1,17 @@
 import './App.css';
-
-import {useEffect, useState} from "react";
-import axios, {AxiosResponse} from "axios";
 import Routes from "./routes"; // Node.js와 TypeScript는 import문에서 디렉토리를 지정하면 해당 디렉토리의 index 파일을 불러옴
+import React, { useEffect, useState } from "react";
+import axios, {AxiosResponse} from "axios";
+import JoinComponent from "./components/JoinComponent";
+import LoginComponent from "./components/LoginComponent";
+import SecuredAPITest from "./components/SecuredAPITest";
 
 function App() {
     const [hello, setHello] = useState<string>('');
-
-
-// 토큰을 가져옵니다. 이 예제에서는 localStorage에서 토큰을 가져옵니다.
-    const token = localStorage.getItem('access');
-
-// Axios 인스턴스를 생성합니다.
+// // 토큰을 가져옵니다. 이 예제에서는 localStorage에서 토큰을 가져옵니다.
+//     const token = localStorage.getItem('access');
+//
+// // Axios 인스턴스를 생성합니다.
 //     const instance = axios.create({
 //         baseURL: '/api',
 //         timeout: 1000,
@@ -23,20 +23,24 @@ function App() {
 //         .then(response => {
 //             console.log(response.data);
 //         });
+  // useEffect(() => {
+  //   axios.get('/api/test')
+  //       .then((res: AxiosResponse<string>) => {
+  //         setHello(res.data);
+  //       });
+  // }, []);
 
-    // useEffect(() => {
-    //   axios.get('/api/test')
-    //       .then((res: AxiosResponse<string>) => {
-    //         setHello(res.data);
-    //       });
-    // }, []);
-
-    return (
-        <div className="App">
-            {/*{token}*/}
-            <Routes/>
-        </div>
-    );
+  return (
+      <div className="App">
+          {/*{token}*/}
+        {/*백엔드 데이터 : {hello}*/}
+        <JoinComponent/>
+          <hr/>
+          <LoginComponent/>
+          <hr/>
+          <SecuredAPITest/>
+      </div>
+  );
 }
 
 export default App;
