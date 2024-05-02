@@ -9,6 +9,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class ReissueController {
@@ -23,8 +25,9 @@ public class ReissueController {
     private final RefreshRepository refreshRepository;
     private final CookieUtil cookieUtil;
 
-    @PostMapping("/reissue")
+    @PostMapping("/api/token/reissue")
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
+        log.info("reissue 컨트롤러 진입");
         //get refresh token
         String refresh = null;
         Cookie[] cookies = request.getCookies();
@@ -32,11 +35,13 @@ public class ReissueController {
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("refresh")) {
                 refresh = cookie.getValue();
+                log.info("refresh token: " + refresh);
             }
         }
 
         if (refresh == null) {
             //response status code
+            log.warn("refresh token null");
             return new ResponseEntity<>("refresh token null", HttpStatus.BAD_REQUEST); // 프론트와 협업한 특정 응답코드 반환
         }
 
@@ -45,6 +50,7 @@ public class ReissueController {
             jwtUtil.isExpired(refresh);
         } catch (ExpiredJwtException e) {
             //response status code
+            log.warn("refresh token expired");
             return new ResponseEntity<>("refresh token expired", HttpStatus.BAD_REQUEST);
         }
 
@@ -53,6 +59,7 @@ public class ReissueController {
 
         if (!category.equals("refresh")) {
             //response status code
+            log.warn("invalid refresh token");
             return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
         }
 
@@ -60,6 +67,7 @@ public class ReissueController {
         Boolean isExist = refreshRepository.existsByRefresh(refresh);
         if (!isExist) {
             //response status code
+            log.warn("invalid refresh token");
             return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
         }
 
@@ -79,7 +87,7 @@ public class ReissueController {
         //response
         response.setHeader("access", newAccess);
         response.addCookie(cookieUtil.createCookie("refresh", newRefresh));
-
+        log.info("reissue success");
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
