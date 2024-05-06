@@ -1,39 +1,9 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React from 'react';
+import {useJoin} from "../hooks/useJoin";
 
 const JoinComponent = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [studentName, setStudentName] = useState('');
-    const [birth, setBirth] = useState(0);
-    const [role, setRole] = useState('');
-
-    const handleSubmit = async (event: React.FormEvent) => {
-        event.preventDefault();
-
-        const joinData = {
-            username,
-            password,
-            studentName,
-            birth,
-            role
-        };
-        const axiosInstance = axios.create({
-            baseURL: 'http://localhost:8080'
-        });
-
-        console.log(joinData);
-        try {
-            const response = await axiosInstance.post('/join', joinData);
-            if (response.status === 200) {
-                alert('회원가입 성공');
-
-            }
-        } catch (error) {
-            console.error(error);
-        }
-
-    };
+    // useJoin 훅을 사용
+    const {username, password, studentName, birth, role, setUsername, setPassword, setStudentName, setBirth, setRole, handleSubmit} = useJoin();
 
     return (
         <form onSubmit={handleSubmit} encType={"multipart/form-data"}>
@@ -54,7 +24,7 @@ const JoinComponent = () => {
             <br/>
             <label>
                 Birth:
-                <input type="number" value={birth} onChange={e => setBirth(Number(e.target.value))} />
+                <input type="number" value={birth} onChange={e => setBirth(e.target.value)} />
             </label>
             <br/>
             <label>
