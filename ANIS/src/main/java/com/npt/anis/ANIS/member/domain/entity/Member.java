@@ -19,10 +19,10 @@ import java.util.Set;
 public class Member {
     @Id
     private String studentID;
-    // private Long departmentID;
+    private Long departmentID;
     private String studentName;
     private String password;
-    private int birth;
+    private String birth;
     // BLOB
     // 사용자 역할
     private String role;
@@ -30,7 +30,7 @@ public class Member {
     private boolean isQuit = false;
 
     @Builder
-    public Member(String studentID, String password, String studentName, int birth, String role) { // TODO: DTO로 변경
+    public Member(String studentID, String password, String studentName, String birth, String role) { // TODO: DTO로 변경
         this.studentID = studentID;
         this.password = password;
         this.studentName = studentName;
