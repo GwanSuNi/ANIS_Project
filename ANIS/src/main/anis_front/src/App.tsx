@@ -7,6 +7,11 @@ import SecuredAPITest from "./components/SecuredAPITest";
 import LogoutComponent from "./components/LogoutComponent";
 import {Provider} from "react-redux";
 import store from "./redux/store";
+import QRLogin from "./components/QRLogin";
+import BarcodeScanner from "./components/QrReader";
+import SelfLogin from "./components/SelfLogin";
+import SignUp from "./components/SignUp";
+import DepartmentSelect from "./components/DepartmentSelect";
 
 function App() {
     const [hello, setHello] = useState<string>('');
@@ -30,18 +35,27 @@ function App() {
   // }, []);
 
   return (
+      // <Provider store={store}>
+      // <div className="App">
+      //     {/*{token}*/}
+      //   {/*백엔드 데이터 : {hello}*/}
+      //   <JoinComponent/>
+      //     <hr/>
+      //     <LoginComponent/>
+      //     <hr/>
+      //     <SecuredAPITest/>
+      //     <hr/>
+      //     <LogoutComponent/>
+      // </div>
+      // </Provider>
+
+
+      // <BarcodeScanner/>
+      // <QRLogin/>
       <Provider store={store}>
-      <div className="App">
-          {/*{token}*/}
-        {/*백엔드 데이터 : {hello}*/}
-        <JoinComponent/>
-          <hr/>
-          <LoginComponent/>
-          <hr/>
-          <SecuredAPITest/>
-          <hr/>
-          <LogoutComponent/>
-      </div>
+        {/*<SelfLogin/>*/}
+          <SignUp/>
+        {/*  <DepartmentSelect/>*/}
       </Provider>
   );
 }

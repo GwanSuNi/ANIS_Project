@@ -15,9 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class JoinController {
     private final JoinService joinService;
 
+    // TODO: 가입 실패시 처리
     @PostMapping("/join")
     public ResponseEntity<String> join(@Value("${spring.password}") String password, @RequestBody JoinDTO joinDto) { // 설정파일에 있는 고정된 비밀번호 사용
         joinService.joinProcess(password, joinDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // TODO: SignUp 페이지 분류에 따라 이 API로 Axios 요청하게 훅스 생성
+    @PostMapping("/join/admin")
+    public ResponseEntity<String> joinAdmin(@RequestBody JoinDTO joinDto) { // 관리자 유저는 개인의 비밀번호를 사용
+        joinService.joinProcess(joinDto.getPassword(), joinDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

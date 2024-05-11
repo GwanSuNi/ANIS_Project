@@ -1,21 +1,22 @@
 package com.npt.anis.ANIS.member.domain.dto;
 
+import com.mongodb.annotations.Sealed;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 @Getter
-@Setter
+@Sealed
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberDTO {
+public class MemberCreateDTO {
     private String studentID;
     private String studentName;
+    private String password;
     private String birth;
     private String role;
-    private String departmentID;
-    private LocalDateTime lastLogin;
-    private boolean isQuit;
+    private Long DepartmentId;
+    private LocalDateTime lastLogin = LocalDateTime.now();
+    private boolean isQuit = false;
 }

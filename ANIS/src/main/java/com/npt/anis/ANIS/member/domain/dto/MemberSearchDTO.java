@@ -5,17 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberDTO {
+public class MemberSearchDTO {
     private String studentID;
     private String studentName;
     private String birth;
-    private String role;
-    private String departmentID;
-    private LocalDateTime lastLogin;
-    private boolean isQuit;
+    private String departmentName;
 }
