@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import loginInstance from "../utils/loginInstance";
+import {useDispatch} from "react-redux";
+import {loginSuccess} from "../redux/authSlice";
 
 const LoginComponent = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const dispatch = useDispatch();
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -12,23 +15,9 @@ const LoginComponent = () => {
         formData.append('username', username);
         formData.append('password', password);
 
-        const axiosInstance = axios.create({
-            baseURL: 'http://localhost:8080',
-            withCredentials: true // 쿠키를 전송받기 위해 필요
-        });
-
         try {
-            const response = await axiosInstance.post('/login', formData);
-            if (response.status === 200) {
-                let accessToken = response.headers["access"].trim(); // 헤더에서 access 토큰 가져오기
-                console.log('Access Token:', accessToken);
-                // Access 토큰을 메모리에 저장
-                sessionStorage.setItem('access', accessToken);
-                // 메모리에 있는 ACCESS 토큰 출력
-                console.log('sessionStorage:', sessionStorage.getItem('access'));
-                // Refresh 토큰은 서버에서 HTTP Only 쿠키로 설정되어 클라이언트에서 직접 접근할 수 없습니다.
-                alert('로그인 성공');
-            }
+            await loginInstance.post('/login', formData);
+            dispatch(loginSuccess());
         } catch (error) {
             console.log(username);
             console.error(error);
