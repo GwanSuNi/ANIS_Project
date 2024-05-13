@@ -12,6 +12,7 @@ import BarcodeScanner from "./components/QrReader";
 import SelfLogin from "./components/SelfLogin";
 import SignUp from "./components/SignUp";
 import DepartmentSelect from "./components/DepartmentSelect";
+import SerialCom from "./components/SerialCom";
 
 function App() {
     const [hello, setHello] = useState<string>('');
@@ -49,14 +50,16 @@ function App() {
       // </div>
       // </Provider>
 
-
+        <Routes/>
       // <BarcodeScanner/>
-      // <QRLogin/>
-      <Provider store={store}>
-        {/*<SelfLogin/>*/}
-          <SignUp/>
-        {/*  <DepartmentSelect/>*/}
-      </Provider>
+      // <Provider store={store}>
+      //       <QRLogin/>
+      //     <LogoutComponent/>
+      //    <SelfLogin/>
+      // {/*//     <SignUp/>*/}
+      // {/*//     <DepartmentSelect/>*/}
+        // </Provider>
+    // {/*// <SerialCom/>*/}
   );
 }
 

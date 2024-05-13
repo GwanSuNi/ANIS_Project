@@ -1,13 +1,40 @@
 import {Outlet} from "react-router-dom";
+import QRLogin from "../components/QRLogin";
+import SelfLogin from "../components/SelfLogin";
+import SignUp from "../components/SignUp";
+import React from "react";
+import LogoutComponent from "../components/LogoutComponent";
+import ProtectedRoute from "../utils/ProtectedRoute";
 
 const MainRoutes = [
     {
         path: '/',
-        element: <div>MainLayout <Outlet/></div>,
+        element: <div>MainLayout <LogoutComponent/><Outlet/></div>,
         children: [
             {
                 path: '/',
-                element: <div>Main Page</div>
+                element: <ProtectedRoute element={<div>Main Page</div>}/>
+            },
+            {
+                path: 'login',
+                children: [
+                    {
+                        path: '',
+                        element: <QRLogin/>
+                    },
+                    {
+                        path: 'self',
+                        element: <SelfLogin/>
+                    },
+                    {
+                        path: 'select',
+                        element: <div>select login</div>
+                    }
+                ]
+            },
+            {
+                path: 'signup',
+                element: <SignUp/>
             },
             {
                 path: 'friend',
