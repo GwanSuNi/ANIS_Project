@@ -45,6 +45,22 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         // AuthenticationManager에게 인증을 요청
         return authenticationManager.authenticate(authenticationToken);
+
+        // 아래는 JSON 방식으로 로그인 요청을 받을 때 사용
+//        try {
+//            // 클라이언트 요청에서 JSON 형식의 username, password 추출
+//            User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
+//            String username = user.getUsername();
+//            String password = user.getPassword();
+//
+//            // 스프링 시큐리티에서 username과 password를 검증하기 위해서는 token에 담아야함
+//            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password, null);
+//
+//            // AuthenticationManager에게 인증을 요청
+//            return authenticationManager.authenticate(authenticationToken);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     @Override
