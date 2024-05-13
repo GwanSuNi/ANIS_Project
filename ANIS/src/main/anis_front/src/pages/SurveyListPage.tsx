@@ -6,6 +6,11 @@ import CircularProgressWithLabel from '../components/common/CircularProgressWith
 import {SurveySection} from '../components/survey';
 
 export default function SurveyListPage() {
+    //TODO: 서버로부터 데이터 받아와야 함
+    const assessmentCount = 10; // 총 진단평가 개수
+    const completeCount = 4; // 완료된 진단평가 개수
+    const incompleteCount = 6; // 미완료된 진단평가 개수
+
     return (
         <Container maxWidth='lg'>
             <Box display='flex' justifyContent='space-between' mb={8}>
@@ -16,11 +21,11 @@ export default function SurveyListPage() {
                     <Typography variant='h4'>
                         진행률
                     </Typography>
-                    <CircularProgressWithLabel value={100}/>
+                    <CircularProgressWithLabel value={completeCount / assessmentCount * 100}/>
                 </Stack>
             </Box>
-            <SurveySection isComplete={false} count={5}/>
-            <SurveySection isComplete={true} count={5}/>
+            <SurveySection isComplete={false} count={incompleteCount}/>
+            <SurveySection isComplete={true} count={completeCount}/>
         </Container>
     );
 }
