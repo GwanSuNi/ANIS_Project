@@ -13,9 +13,15 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {useLogin} from "../hooks/useLogin";
 import Copyright from "./Copyright";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../redux/store";
+import {setUsername} from "../redux/usernameSlice";
 
 export default function SelfLogin() {
-    const { username, password, setUsername, setPassword, handleSubmit } = useLogin();
+    const { password, setPassword, handleSubmit } = useLogin();
+    const username = useSelector((state:RootState) => state.username.username);
+    const dispatch =  useDispatch();
+
     return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
@@ -44,7 +50,7 @@ export default function SelfLogin() {
                             autoComplete="학번"
                             autoFocus
                             value={username}
-                            onChange={e => setUsername(e.target.value)}
+                            onChange={e => dispatch(setUsername(e.target.value))}
                         />
                         <TextField
                             margin="normal"

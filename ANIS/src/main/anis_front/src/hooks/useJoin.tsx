@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import {useNavigate} from "react-router-dom";
 
 export function useJoin() {
     const [username, setUsername] = useState('');
@@ -8,6 +9,7 @@ export function useJoin() {
     const [departmentId, setDepartmentId] = useState('');
     const [birth, setBirth] = useState('');
     const [role, setRole] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -34,6 +36,7 @@ export function useJoin() {
                 setStudentName('');
                 setBirth('');
                 setRole('');
+                navigate('/login');
             }
         } catch (error) {
             console.error(error);
