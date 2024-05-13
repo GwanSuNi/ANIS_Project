@@ -1,4 +1,5 @@
 import {Outlet} from "react-router-dom";
+import {SurveyListPage} from "../pages";
 
 const MainRoutes = [
     {
@@ -28,7 +29,7 @@ const MainRoutes = [
             },
             {
                 path: 'survey',
-                element: <div>Survey</div>
+                element: <SurveyListPage/>
             },
             {
                 path: 'mypage',
