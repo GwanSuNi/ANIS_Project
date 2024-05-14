@@ -1,5 +1,5 @@
 **/build/
-**/src/main/resources/
+**/src/main/resources/static/
 
 HELP.md
 .gradle
