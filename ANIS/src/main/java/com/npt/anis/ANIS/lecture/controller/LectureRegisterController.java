@@ -4,6 +4,7 @@ import com.npt.anis.ANIS.lecture.domain.dto.LectureDto;
 import com.npt.anis.ANIS.lecture.service.LecturePresetService;
 import com.npt.anis.ANIS.lecture.service.LectureRegisteredService;
 import com.npt.anis.ANIS.lecture.service.LectureService;
+import com.npt.anis.ANIS.member.domain.dto.MemberCreateDTO;
 import com.npt.anis.ANIS.member.domain.dto.MemberDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,9 +34,9 @@ public class LectureRegisterController {
 
     // 수강신청 친구들과 함께하기
     @PostMapping("/friends")
-    public ResponseEntity<Boolean> enrolmentWithFriends(@RequestBody List<MemberDto> memberDtoList){
+    public ResponseEntity<Boolean> enrolmentWithFriends(@RequestBody List<MemberCreateDTO> memberDtoList){
         String userID = SecurityContextHolder.getContext().getAuthentication().getName();
-        boolean flag = lectureRegisteredService.lectureRegisteredWithFriends(userID,memberDtoList);
+        boolean flag = lectureRegisteredService.lectureRegisteredWithFriends(memberDtoList,userID);
         return ResponseEntity.ok(flag);
     }
     // 친구 수강신청 따라하기

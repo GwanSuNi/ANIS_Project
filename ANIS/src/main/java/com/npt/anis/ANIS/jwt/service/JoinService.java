@@ -27,8 +27,8 @@ public class JoinService {
         data.setStudentID(username);
         data.setPassword(bCryptPasswordEncoder.encode(password));
         data.setStudentName(joinDto.getStudentName());
-        // TODO: 롤 부여 다양화
-        data.setRole("ROLE_ADMIN");
+        data.setDepartmentID(Long.valueOf(joinDto.getDepartmentId()));
+        data.setRole("ROLE_" + joinDto.getRole());
         data.setBirth(joinDto.getBirth());
         data.setLastLogin(LocalDateTime.now());
 

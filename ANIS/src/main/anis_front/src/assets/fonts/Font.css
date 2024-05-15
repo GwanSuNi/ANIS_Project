@@ -1,0 +1,28 @@
+/* NanumGothic 폰트 */
+@font-face {
+    font-family: 'NanumGothic';
+    src: url('nanum/NanumGothic.woff') format('woff');
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'NanumGothicBold';
+    src: url('nanum/NanumGothicBold.woff') format('woff');
+    font-style: normal;
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'NanumGothicExtraBold';
+    src: url('nanum/NanumGothicExtraBold.woff') format('woff');
+    font-style: normal;
+    font-weight: 800;
+}
+
+@font-face {
+    font-family: 'NanumGothicLight';
+    src: url('nanum/NanumGothicLight.woff') format('woff');
+    font-style: normal;
+    font-weight: 300;
+}

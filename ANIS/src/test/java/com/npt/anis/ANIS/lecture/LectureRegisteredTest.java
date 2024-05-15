@@ -9,7 +9,6 @@ import com.npt.anis.ANIS.lecture.repository.LecturePresetRepository;
 import com.npt.anis.ANIS.lecture.repository.LectureRegisteredRepository;
 import com.npt.anis.ANIS.lecture.repository.LectureRepository;
 import com.npt.anis.ANIS.lecture.service.*;
-import com.npt.anis.ANIS.member.domain.dto.MemberDto;
 import com.npt.anis.ANIS.member.domain.entity.Member;
 import com.npt.anis.ANIS.member.repository.MemberRepository;
 import jakarta.annotation.security.RolesAllowed;

@@ -107,7 +107,7 @@ public class LectureTest {
         assertEquals(true,flag);
     }
 
-    // 지금부터는 더미데이터를 받아왔다고 가정하고 만들었습니다 더미데이터는 resources/dummydata/insert_dummy_data.sql 에 있습니다
+    // 지금부터는 더미데이터를 받아왔다고 가정하고 만들었습니다 더미데이터는 공유해드리겠습니다
     @Test
     @DisplayName("프리셋에 등록할 수 있는 강의 목록 갖고오기 lpIndex == null 인 애들 갖고오기")
     public void showNoPresetLectureList(){
