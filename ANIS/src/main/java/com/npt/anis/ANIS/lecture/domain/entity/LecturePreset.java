@@ -19,12 +19,13 @@ public class LecturePreset {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long lpIndex;
-    // lectureIndex FK
-    private Long lectureID;
     private String presetName;
+    private int lecYear;
+    private int lecSemester;
 
-    public LecturePreset(long lectureID,String presetName){
-        this.lectureID = lectureID;
+    public LecturePreset(String presetName, int lecYear, int lecSemester){
         this.presetName = presetName;
+        this.lecYear = lecYear;
+        this.lecSemester = lecSemester;
     }
 }

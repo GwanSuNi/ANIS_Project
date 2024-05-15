@@ -14,6 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class LecturePresetDto {
     private Long lpIndex;
-    private Long lectureID;
     private String presetName;
+    private int lecYear;
+    private int lecSemester;
 }
