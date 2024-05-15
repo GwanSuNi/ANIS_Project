@@ -37,11 +37,18 @@ public class Lecture {
     private LocalTime lecTimeStart;
     private LocalTime lecTimeEnd;
     private String lectureRoom;
+
+    /***
+     * PrePersist의 단점은 코드가 JPA 에 너무 의존적이라는게 단점이다
+     * PrePersist는 엔티티가 처음 저장될때 한번 일어나고 그 이후에는 일어나지 않는다
+     * PrePersist를 사용하고싶지 않은 경우엔 먼저 save를 해서 엔티티를 저장한 후에 해당 값을 update 해주면 된다
+     */
     @PrePersist
     public void prePersist() {
         this.lecSemester = DateUtils.getCurrentSemester();
         this.lecYear = DateUtils.getCurrentYear();
     }
+
 }
 
 
