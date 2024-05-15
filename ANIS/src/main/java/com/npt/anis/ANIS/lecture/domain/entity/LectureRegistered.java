@@ -24,6 +24,8 @@ public class LectureRegistered {
     private String studentID;
     private int lecYear;
     private int lecSemester;
+    // 현재 수강중인지 아닌지에 대한 판단여부 컬럼
+    private boolean selected;
     @PrePersist
     public void prePersist() {
         this.lecSemester = DateUtils.getCurrentSemester();
