@@ -15,6 +15,8 @@ public class LectureRegisteredDto {
     private Long lecID;
     // Member FK
     private String studentID;
+    private int lecYear;
+    private int lecSemester;
 
     public LectureRegisteredDto(Long lecID, String studentID) {
         this.lecID = lecID;

@@ -1,9 +1,6 @@
 package com.npt.anis.ANIS.lecture.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +34,25 @@ public class Lecture {
     private LocalTime lecTimeStart;
     private LocalTime lecTimeEnd;
     private String lectureRoom;
+    @PrePersist
+    public void prePersist() {
+        this.lecSemester = getCurrentSemester();
+        this.lecYear = getCurrentYear();
+    }
+    private int getCurrentSemester() {
+        LocalDate now = LocalDate.now();
+        int month = now.getMonthValue();
+        //
+        if (month >= 3 && month <= 7) {
+            return 1;
+        } else {
+            return 2;
+        }
+    }
+    private int getCurrentYear() {
+        LocalDate now = LocalDate.now();
+        return now.getYear();
+    }
 
 }
 
