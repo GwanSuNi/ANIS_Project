@@ -18,4 +18,7 @@ public interface LectureRegisteredRepository extends JpaRepository<LectureRegist
     List<Tuple> getByLectureRegisteredWithLecture(@Param("studentID") String studentID);
 
     List<LectureRegistered> findByStudentID(String studentID);
+
+    boolean existsByStudentID(String studentID);
+
 }

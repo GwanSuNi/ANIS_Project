@@ -23,23 +23,41 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@Service("lectureServiceImpl")
 public class LectureServiceImpl implements LectureService{
     private final LectureRepository lectureRepository;
     private final LectureMapper lectureMapper;
     private final LecturePresetRepository lecturePresetRepository;
-    /***
+
+    @Override
+    public void saveLecture(LectureDto lectureDto){
+        Lecture newLecture = lectureMapper.toEntity(lectureDto);
+        lectureRepository.save(newLecture);
+    }
+    /**
      * //TODO 값 검증 해야함
      * @param lectureDto dto 를 받아와서 mapper를 사용하여 lecture 생성
      * @return
+     * lecture 는 등록할때 LecturePresetIndex 가 null 로 등록되고
+     * 프리셋에 등록할때 해당 프리셋에대한 강의 데이터들이 다시생성되게 만들었다
      */
     @Override
     public LectureDto createLecture(LectureDto lectureDto){
-        Lecture newLecture = lectureMapper.toEntity(lectureDto);
-        lectureRepository.save(newLecture);
+        lectureDto.setLpIndex(null);
+        saveLecture(lectureDto);
+        return lectureDto;
+    }
+    /**
+     *
+     * @param lectureDto lecturePreset을 등록할때 lpIndex가 null이 아닌 lecture를 만듬
+     * @return
+     */
+    @Override
+    public LectureDto createPresetLecture(LectureDto lectureDto){
+        saveLecture(lectureDto);
         return lectureDto;
     }
     /***
-     *
      * @param lecId 업데이트할 강의를 선택하기위해 Lecture의 pk 를 갖고옴
      * @param updateLectureDto 해당 변경사항을 감지하기 위해 LectureDto 를 통해 받아옴
      * @return 바뀐 Lecture 객체를 반환한다
@@ -52,8 +70,14 @@ public class LectureServiceImpl implements LectureService{
                 .orElseThrow(() -> new NotFoundLectureException("Lecture not found"));
         // mapper를 사용해서 최대한 은닉화 하였습니다
         lectureMapper.updateFromDto(updateLectureDto,lecture);
+        lectureRepository.save(lecture);
         return updateLectureDto;
     }
+    /***
+     *
+     * @param lecId 삭제할 lecture id 를 받아와서 삭제함
+     * @return 삭제되었는지 안되었는지 boolean 으로 판단
+     */
     @Override
     public boolean deleteLecture(long lecId){
         try {
@@ -77,25 +101,20 @@ public class LectureServiceImpl implements LectureService{
     }
 
     /***
-     * @return preset 에 속해있지 않은 강의리스트를 반환
+     * @return preset에 등록할 수 있는 Lecture 반환
+     * lpIndex 에 null 값이 있는 데이터들의 LectureList 반환 년도에 상관없이
      */
     @Override
     public List<LectureDto> showNoPresetLectureList(){
-        List<Lecture> showNoPresetLectureList = new ArrayList<>();
+        List<LectureDto> showNoPresetLectureList = new ArrayList<>();
         List<LectureDto> lectureList = showLectureList();
-        for (Lecture lecture: lectureMapper.toEntities(lectureList)) {
-            if (lecture.getLpIndex() == 0) {
-                showNoPresetLectureList.add(lecture);
+        for (LectureDto lectureDto: lectureList) {
+            if (lectureDto.getLpIndex() == null ) {
+                showNoPresetLectureList.add(lectureDto);
             }
         }
-        List<LectureDto> lectureDtoList = lectureMapper.toDtos(showNoPresetLectureList);
-        return lectureDtoList;
+        return showNoPresetLectureList;
     }
-    /***
-     *
-     * @param lecId 삭제할 lecture id 를 받아와서 삭제함
-     * @return 삭제되었는지 안되었는지 boolean 으로 판단
-     */
 
     /***
      * lecturePreset 찾기
@@ -111,6 +130,7 @@ public class LectureServiceImpl implements LectureService{
     }
     /***
      * preset과 lecture 을 join 해서 해당 preset 의 pk 를 fk 로 갖고있는 lecture의 List를 반환
+     * lecturePreset이 갖고있는 lectureList 반환
      * @param lpIndex presetIndex를 받음
      * @return
      */
@@ -133,35 +153,35 @@ public class LectureServiceImpl implements LectureService{
      * @return 수정할 강의 목록들 List로 반환
      */
     public List<LectureDto> updateLecturePresetOfLectureList(Long lpIndex,List<LectureDto> newLectureList){
-
         // 바꾸려는 LecturePreset이 있는지 확인
         lecturePresetRepository.findById(lpIndex).orElseThrow(()-> new NotFoundLecturePresetException("Not Found LecturePreset"));
         List<LectureDto> lectureList = getLectureListByPreset(lpIndex);
 
-        // 수정된 Lecture의 lpIndex 는 0으로 지정
+        // 수정된 LectureList는 모두 삭제
         for (Lecture lecture: lectureMapper.toEntities(lectureList)) {
-            lecture.setLpIndex(null);
+            deleteLecture(lecture.getLecID());
         }
         for (Lecture lecture: lectureMapper.toEntities(newLectureList)) {
-            lecture.setLpIndex(lpIndex);
+            createPresetLecture(lectureMapper.toDto(lecture));
         }
         return newLectureList;
     }
 
     /***
      * 현재 수강 가능한 수강신청 목록들을 갖고오는 메서드(현재 날짜의 년도와 학기에따라 달라짐)
-     * 2024년 1학기면 Lecture 데이터의 lecYear 가 2024년 , semester가 1인 LectureList를 반환
+     * 2024년 1학기면 Lecture 데이터의 lecYear 가 2024 , semester가 1인 LectureList를 반환
      * @return 현재수강가능한 LectureList반환
      */
     public List<LectureDto> showAvailableLectureList(){
-        List<Lecture> lectureList = lectureRepository.findAll();
-        List<Lecture> availableLectureList = new ArrayList<>();
-        for (Lecture lecture : lectureList) {
-            if(isCurrentSemester(lecture.getLecSemester(),lecture.getLecYear())){
-                availableLectureList.add(lecture);
+        // lpIndex가 null 인 LectureDtoList를 받아옴
+        List<LectureDto> lectureListDto = showNoPresetLectureList();
+        List<LectureDto> availableLectureList = new ArrayList<>();
+        for (LectureDto lectureDto : lectureListDto) {
+            if(isCurrentSemester(lectureDto.getLecSemester(),lectureDto.getLecYear())){
+                availableLectureList.add(lectureDto);
             }
         }
-        return lectureMapper.toDtos(availableLectureList);
+        return availableLectureList;
     }
 
     /***
@@ -198,6 +218,14 @@ public class LectureServiceImpl implements LectureService{
         int currentSemester = getCurrentSemester();
         int currentYear = getCurrentYear();
         return semester == currentSemester && year == currentYear;
+    }
+
+    // 두 개의 LectureDto 객체의 시간이 겹치는지 여부를 확인하는 메서드
+    public boolean areTimesOverlap(LectureDto lectureDto1, LectureDto lectureDto2) {
+        // 첫 번째 강의의 종료 시간이 두 번째 강의의 시작 시간보다 이후이고,
+        // 두 번째 강의의 종료 시간이 첫 번째 강의의 시작 시간보다 이후이면 겹침
+        return lectureDto1.getLecTimeEnd().isAfter(lectureDto2.getLecTimeStart()) &&
+                lectureDto2.getLecTimeEnd().isAfter(lectureDto1.getLecTimeStart());
     }
 }
 

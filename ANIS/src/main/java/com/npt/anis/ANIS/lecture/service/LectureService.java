@@ -9,8 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface LectureService {
-    // 강의 생성하기
+
+    void saveLecture(LectureDto lectureDto);
+    // 강의 생성하기 lpIndex == null
     LectureDto createLecture(LectureDto lectureDto);
+    // Preset에 들어가는 강의 생성하기 lpIndex =! null
+    LectureDto createPresetLecture(LectureDto lectureDto);
     // 강의 업데이트하기
     LectureDto updateLecture(long lecId,LectureDto updateLectureDto);
     // 강의 삭제하기
@@ -27,4 +31,5 @@ public interface LectureService {
     List<LectureDto> updateLecturePresetOfLectureList(Long lpIndex,List<LectureDto> newLectureList);
     // 현재 수강 가능한 수강신청 리스트를 갖고오는 메서드(현재년도,학기기준)
     List<LectureDto> showAvailableLectureList();
+    boolean areTimesOverlap(LectureDto lectureDto1, LectureDto lectureDto2);
 }

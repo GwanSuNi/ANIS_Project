@@ -17,7 +17,7 @@ public interface LectureRegisteredService {
     // 친구의 수강신청 따라하는 서비스 개인 -> 친구 (나의(myID) 시간표가 친구(friendID)의 시간표와 똑같아짐)
     public boolean lectureRegisteredWithFriend(String myID,String friendID);
     // 친구와 수강신청 함께하기 서비스 개인-> 단체 (나의(myID) 시간표와 친구(들)의 시간표가 똑같아짐)
-    public boolean lectureRegisteredWithFriends(List<MemberDto> friendList,String myID);
+    public boolean lectureRegisteredWithFriends(String myID,List<MemberDto> friendList);
     // 학생의 수강신청 목록 받아오기
     public List<LectureDto> studentLectureList(String studentID);
 }

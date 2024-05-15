@@ -24,4 +24,6 @@ public interface LectureRepository extends JpaRepository<Lecture,Long> {
 //    그래서 service 에서 검증해서 값을 반환함
 //    @Query(value = "SELECT * FROM lecture WHERE YEAR(lec_year) = YEAR(CURDATE())", nativeQuery = true)
 
+    boolean existsById(Long id);
+
 }
