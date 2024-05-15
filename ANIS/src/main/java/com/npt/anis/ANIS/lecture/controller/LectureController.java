@@ -1,6 +1,5 @@
 package com.npt.anis.ANIS.lecture.controller;
 import com.npt.anis.ANIS.lecture.service.LectureRegisteredService;
-import com.npt.anis.ANIS.member.domain.dto.MemberDto;
 import org.springframework.beans.factory.annotation.Qualifier;
 import com.npt.anis.ANIS.lecture.domain.dto.LectureDto;
 import com.npt.anis.ANIS.lecture.domain.dto.LecturePresetDto;

@@ -5,7 +5,6 @@ import com.npt.anis.ANIS.lecture.service.LecturePresetService;
 import com.npt.anis.ANIS.lecture.service.LectureRegisteredService;
 import com.npt.anis.ANIS.lecture.service.LectureService;
 import com.npt.anis.ANIS.member.domain.dto.MemberCreateDTO;
-import com.npt.anis.ANIS.member.domain.dto.MemberDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
