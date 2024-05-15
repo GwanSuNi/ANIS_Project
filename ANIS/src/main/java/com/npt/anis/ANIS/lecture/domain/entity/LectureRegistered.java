@@ -1,5 +1,6 @@
 package com.npt.anis.ANIS.lecture.domain.entity;
 
+import com.npt.anis.ANIS.jwt.util.DateUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,24 +26,9 @@ public class LectureRegistered {
     private int lecSemester;
     @PrePersist
     public void prePersist() {
-        this.lecSemester = getCurrentSemester();
-        this.lecYear = getCurrentYear();
+        this.lecSemester = DateUtils.getCurrentSemester();
+        this.lecYear = DateUtils.getCurrentYear();
     }
-    private int getCurrentSemester() {
-        LocalDate now = LocalDate.now();
-        int month = now.getMonthValue();
-        //
-        if (month >= 3 && month <= 7) {
-            return 1;
-        } else {
-            return 2;
-        }
-    }
-    private int getCurrentYear() {
-        LocalDate now = LocalDate.now();
-        return now.getYear();
-    }
-
     public LectureRegistered(long lecID , String studentID){
         this.lecID = lecID;
         this.studentID = studentID;
