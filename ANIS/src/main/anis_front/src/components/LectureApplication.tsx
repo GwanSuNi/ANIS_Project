@@ -3,7 +3,7 @@ import './LectureApplication.css';
 import Button from "@mui/material/Button";
 import { TimeTable } from "./Timetable";
 import {useNavigate} from "react-router-dom";
-import {Lecture,registrations} from "./LectureApi";
+import {fetchLectureOfPreset, Lecture, registrations} from "./LectureApi";
 import {useFetchLectures} from "./LectureApi";
 function LectureButton({ selectedLectures }: { selectedLectures: Lecture[] }) {
     const navigate = useNavigate();
@@ -27,14 +27,21 @@ function LectureButton({ selectedLectures }: { selectedLectures: Lecture[] }) {
     );
 }
 
-function LecturePresetButton(){
+function LecturePresetButton({ setSelectedLectures }: { setSelectedLectures: (lectures: Lecture[]) => void }){
+
+    // fetchLectureOfPreset
+    const fetchAndSetLectureOfPreset = async (presetName: string) => {
+        const lectures = await fetchLectureOfPreset(presetName);
+        console.log(lectures);
+        setSelectedLectures(lectures);
+    };
     return(
         <div className="LecturePreset">
-            <Button variant="contained" className="presetButton"
+            <Button onClick={() => fetchAndSetLectureOfPreset("A")} variant="contained" className="presetButton"
                     style={{ fontSize: '20px',backgroundColor: 'yellow',color:'black'}}>A</Button>
-            <Button variant="contained" className="presetButton"
+            <Button onClick={() => fetchAndSetLectureOfPreset("B")} variant="contained" className="presetButton"
                     style={{ fontSize: '20px',backgroundColor: 'yellow',color:'black'}}>B</Button>
-            <Button variant="contained" className="presetButton"
+            <Button onClick={() => fetchAndSetLectureOfPreset("C")} variant="contained" className="presetButton"
                     style={{ fontSize: '20px',backgroundColor: 'yellow',color:'black'}}>C</Button>
         </div>
     )
@@ -46,7 +53,7 @@ const LectureApplication: React.FC = () => {
     const { availableLectures, selectedLectures, setSelectedLectures} = useFetchLectures();
     return (
         <div className="LectureApplication">
-            <LecturePresetButton/>
+            <LecturePresetButton setSelectedLectures={setSelectedLectures} />
             <div className="main">
                 <TimeTable availableLectures={availableLectures} selectedLectures={selectedLectures}
                            isButtonDisabled={false} onLecturesChange={setSelectedLectures}/>

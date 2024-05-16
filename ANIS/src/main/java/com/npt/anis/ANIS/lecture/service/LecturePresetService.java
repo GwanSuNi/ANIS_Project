@@ -10,4 +10,5 @@ import java.util.List;
 public interface LecturePresetService {
     public LecturePresetDto createLecturePreset(LecturePresetDto lecturePresetDto);
     public List<LecturePresetDto> availableLecturePreset();
+    public long getLecturePresetIndex(String lpName);
 }
