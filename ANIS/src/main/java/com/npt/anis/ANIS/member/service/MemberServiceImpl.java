@@ -35,7 +35,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<MemberSearchDTO> getAnyMembers(MemberSearchDTO memberSearchDTO) {
-        return memberRepository.findByStudentNameContainingOrBirthContainingOrStudentIDContainingOrDepartmentNameContaining(memberSearchDTO.getStudentName(), memberSearchDTO.getBirth(), memberSearchDTO.getStudentID(), memberSearchDTO.getDepartmentName());
+        return memberRepository.findByStudentNameContainingOrBirthContainingOrStudentIDContainingOrDepartmentNameContaining(
+                memberSearchDTO.getStudentName(), memberSearchDTO.getBirth(), memberSearchDTO.getStudentID(),
+                memberSearchDTO.getDepartmentName());
     }
 
     @Override

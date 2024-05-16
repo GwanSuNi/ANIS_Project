@@ -14,25 +14,25 @@ const studentList = [
     {
         studentID: "19831033",
         studentName: "김막순",
-        department: "컴퓨터공학",
+        departmentName: "컴퓨터공학",
         birth: "1967-05-15",
     },
     {
         studentID: "19831034",
         studentName: "최덕자",
-        department: "정보공학시스템",
+        departmentName: "정보공학시스템",
         birth: "1959-10-25",
     },
     {
         studentID: "19831029",
         studentName: "김덕광",
-        department: "컴퓨터소프트웨어",
+        departmentName: "컴퓨터소프트웨어",
         birth: "1964-03-07",
     },
     {
         studentID: "19831022",
         studentName: "노춘섭",
-        department: "시스템케어",
+        departmentName: "시스템케어",
         birth: "1960-12-12",
     }
 ];
