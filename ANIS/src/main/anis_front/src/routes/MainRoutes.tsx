@@ -1,13 +1,11 @@
-import {Outlet} from "react-router-dom";
 import {LectureApplication} from "../components/LectureApplication";
 import {FriendListView, StudentCheckList, StudentItemList, StudentListAndDialog} from "../components/FriendList";
 import QRLogin from "../components/QRLogin";
 import SelfLogin from "../components/SelfLogin";
 import SignUp from "../components/SignUp";
-import React from "react";
-import LogoutComponent from "../components/LogoutComponent";
 import ProtectedRoute from "../utils/ProtectedRoute";
 import {SurveyListPage} from "../pages";
+import {MainLayout} from "../layout";
 
 // TODO 학생 리스트 Repository, Service 만들어서 서버에있는 값 반환하게 하기
 const studentList = [
@@ -39,32 +37,12 @@ const studentList = [
 const MainRoutes = [
     {
         path: '/',
-        element: <div>MainLayout <LogoutComponent/><Outlet/></div>,
+        element: <MainLayout/>,
         children: [
             {
                 path: '/',
-                element: <ProtectedRoute element={<div>Main Page</div>}/>
-            },
-            {
-                path: 'login',
-                children: [
-                    {
-                        path: '',
-                        element: <QRLogin/>
-                    },
-                    {
-                        path: 'self',
-                        element: <SelfLogin/>
-                    },
-                    {
-                        path: 'select',
-                        element: <div>select login</div>
-                    }
-                ]
-            },
-            {
-                path: 'signup',
-                element: <SignUp/>
+                // element: <ProtectedRoute element={<div>Main Page</div>}/>
+                element: <div>Main Page</div>
             },
             {
                 path: 'friend',
