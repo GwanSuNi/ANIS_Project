@@ -1,18 +1,18 @@
 import React from "react";
 import logoutInstance from "../utils/logoutInstance";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {logoutSuccess} from "../redux/authSlice";
-import {RootState} from "../redux/store";
 import {useNavigate} from "react-router-dom";
 import {Button} from "@mui/material";
 import LogoutIcon from '@mui/icons-material/Logout';
-import {useSerialPort} from "../hooks/useSerialPort";
 import {setUsername} from "../redux/usernameSlice";
 import {setQrInput} from "../redux/qrInputSlice";
+import Typography from "@mui/material/Typography";
+import {isLoggedIn} from "../utils";
 
 export default function LogoutComponent() {
     const dispatch = useDispatch();
-    const isLoggedIn = useSelector((state:RootState) => state.auth.isLoggedIn);
+    // const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
     const navigate = useNavigate();
 
     const handleLogout = async (event: React.MouseEvent) => {
@@ -33,8 +33,15 @@ export default function LogoutComponent() {
         }
     };
     return (
-        <>
-            { isLoggedIn && <Button variant="contained" onClick={handleLogout} endIcon={<LogoutIcon/>}>로그아웃</Button>}
-        </>
+        <Button
+            variant='text'
+            onClick={handleLogout}
+            endIcon={<LogoutIcon sx={{color: '#444444'}}/>}
+            sx={{visibility: isLoggedIn() ? 'visible' : 'hidden'}}
+        >
+            <Typography variant='h6' color='#444444'>
+                로그아웃
+            </Typography>
+        </Button>
     );
 }
