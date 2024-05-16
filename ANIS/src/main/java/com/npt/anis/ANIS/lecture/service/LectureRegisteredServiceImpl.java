@@ -1,6 +1,6 @@
 package com.npt.anis.ANIS.lecture.service;
 
-import com.npt.anis.ANIS.jwt.util.DateUtils;
+import com.npt.anis.ANIS.global.util.DateUtils;
 import com.npt.anis.ANIS.lecture.domain.dto.LectureDto;
 import com.npt.anis.ANIS.lecture.domain.dto.LectureRegisteredDto;
 import com.npt.anis.ANIS.lecture.domain.entity.Lecture;

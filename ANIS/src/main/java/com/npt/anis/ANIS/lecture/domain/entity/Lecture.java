@@ -1,16 +1,13 @@
 package com.npt.anis.ANIS.lecture.domain.entity;
 
-import com.npt.anis.ANIS.jwt.util.DateUtils;
+import com.npt.anis.ANIS.global.util.DateUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.LocalTime;
-import java.util.Date;
 
 
 @Entity

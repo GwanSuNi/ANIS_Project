@@ -1,9 +1,8 @@
 package com.npt.anis.ANIS.lecture.service;
 
-import com.npt.anis.ANIS.jwt.util.DateUtils;
+import com.npt.anis.ANIS.global.util.DateUtils;
 import com.npt.anis.ANIS.lecture.domain.dto.LectureDto;
 import com.npt.anis.ANIS.lecture.domain.entity.Lecture;
-import com.npt.anis.ANIS.lecture.domain.entity.LecturePreset;
 import com.npt.anis.ANIS.lecture.domain.mapper.LectureMapper;
 import com.npt.anis.ANIS.lecture.exception.NoSearchLectureList;
 import com.npt.anis.ANIS.lecture.exception.NotFoundLectureException;
@@ -11,14 +10,9 @@ import com.npt.anis.ANIS.lecture.exception.NotFoundLecturePresetException;
 import com.npt.anis.ANIS.lecture.repository.LecturePresetRepository;
 import com.npt.anis.ANIS.lecture.repository.LectureRepository;
 import jakarta.persistence.Tuple;
-import jakarta.persistence.TupleElement;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
