@@ -1,4 +1,4 @@
-package com.npt.anis.ANIS.jwt.util;
+package com.npt.anis.ANIS.global.util;
 
 import java.time.LocalDate;
 // 시간 관련해서 자주 사용하는 메서드들이 너무 많아 재사용을 위한 UtilClass 생성
