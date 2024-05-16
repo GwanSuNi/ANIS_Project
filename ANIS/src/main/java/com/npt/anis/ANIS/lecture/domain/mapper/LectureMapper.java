@@ -17,8 +17,8 @@ public interface LectureMapper {
 
     Lecture toEntity(LectureDto lectureDto);
 
-    List<Lecture> toEntities(List<LectureDto> lectureDtos);
-    List<LectureDto> toDtos(List<Lecture> lectures);
+    List<Lecture> toEntities(List<LectureDto> lectureDtoList);
+    List<LectureDto> toDtos(List<Lecture> lectureList);
     @Mapping(target = "lecName", source = "lecName", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "lecCredit", source = "lecCredit", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "lecYear", source = "lecYear", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

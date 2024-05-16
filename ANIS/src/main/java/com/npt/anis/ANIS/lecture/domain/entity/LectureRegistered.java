@@ -1,13 +1,13 @@
 package com.npt.anis.ANIS.lecture.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.npt.anis.ANIS.jwt.util.DateUtils;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -22,9 +22,18 @@ public class LectureRegistered {
     private Long lecID;
     // Member FK
     private String studentID;
-
+    private int lecYear;
+    private int lecSemester;
+    // 현재 수강중인지 아닌지에 대한 판단여부 컬럼
+    private boolean selected;
+    @PrePersist
+    public void prePersist() {
+        this.lecSemester = DateUtils.getCurrentSemester();
+        this.lecYear = DateUtils.getCurrentYear();
+    }
     public LectureRegistered(long lecID , String studentID){
         this.lecID = lecID;
         this.studentID = studentID;
     }
+
 }

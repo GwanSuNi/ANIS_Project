@@ -13,5 +13,5 @@ public interface LecturePresetMapper {
     LecturePresetDto toDto(LecturePreset lecturePreset);
     LecturePreset toEntity(LecturePresetDto lecturePresetDto);
     List<LecturePresetDto> toDtos(List<LecturePreset> lecturePresetList);
-    List<LecturePreset> toEntities(List<LecturePresetDto> lecturePresetDtos);
+    List<LecturePreset> toEntities(List<LecturePresetDto> lecturePresetDtoList);
 }

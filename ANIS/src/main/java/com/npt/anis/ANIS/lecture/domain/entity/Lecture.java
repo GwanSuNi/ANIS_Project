@@ -1,9 +1,7 @@
 package com.npt.anis.ANIS.lecture.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.npt.anis.ANIS.jwt.util.DateUtils;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +10,8 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.LocalTime;
+import java.util.Date;
+
 
 @Entity
 @Getter
@@ -37,6 +37,17 @@ public class Lecture {
     private LocalTime lecTimeStart;
     private LocalTime lecTimeEnd;
     private String lectureRoom;
+
+    /***
+     * PrePersist의 단점은 코드가 JPA 에 너무 의존적이라는게 단점이다
+     * PrePersist는 엔티티가 처음 저장될때 한번 일어나고 그 이후에는 일어나지 않는다
+     * PrePersist를 사용하고싶지 않은 경우엔 먼저 save를 해서 엔티티를 저장한 후에 해당 값을 update 해주면 된다
+     */
+    @PrePersist
+    public void prePersist() {
+        this.lecSemester = DateUtils.getCurrentSemester();
+        this.lecYear = DateUtils.getCurrentYear();
+    }
 
 }
 

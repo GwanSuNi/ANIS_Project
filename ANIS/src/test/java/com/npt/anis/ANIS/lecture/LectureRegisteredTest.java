@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.mapping.TextScore;
 import org.springframework.test.annotation.Rollback;
@@ -37,6 +38,7 @@ import static org.junit.Assert.assertEquals;
 public class LectureRegisteredTest {
     @Autowired
     private LectureRepository lectureRepository;
+    @Autowired
     private LectureService lectureService;
     @Autowired
     private LecturePresetRepository lecturePresetRepository;
@@ -59,6 +61,8 @@ public class LectureRegisteredTest {
     @BeforeEach
     public void dependencySetting(){
         // DDL 로 만든 더미데이터를 공유함
+        lectureService = new LectureServiceImpl(lectureRepository, lectureMapper,lecturePresetRepository);
+        lectureRegisteredService = new LectureRegisteredServiceImpl(lectureRegisteredRepository,lectureMapper,lectureRegisteredMapper,lectureService);
     }
     @Test
     @DisplayName("수강신청테스트")
@@ -132,6 +136,21 @@ public class LectureRegisteredTest {
     public void havaLectureRegistered(){
         boolean flag = lectureRegisteredRepository.existsByStudentID("19831033");
         assertEquals(true,flag);
+    }
+
+    @Test
+    @DisplayName("받아온 수강신청 리스트를 lpIndex가 null인 애들로 반환하는 메서드")
+    public void nullLectureRegistered(){
+        List<LectureDto> lectureListofPreset = lectureService.getLectureListByPreset(1L);
+        List<LectureDto> nullLectureRegistered = lectureRegisteredService.lpIndexNullLectureList(lectureListofPreset);
+        assertEquals(null,nullLectureRegistered.get(0).getLpIndex());
+        assertEquals(null,nullLectureRegistered.get(1).getLpIndex());
+        assertEquals(null,nullLectureRegistered.get(2).getLpIndex());
+        assertEquals(null,nullLectureRegistered.get(3).getLpIndex());
+        assertEquals(null,nullLectureRegistered.get(4).getLpIndex());
+        assertEquals(null,nullLectureRegistered.get(5).getLpIndex());
+        assertEquals(null,nullLectureRegistered.get(6).getLpIndex());
+        assertEquals(null,nullLectureRegistered.get(7).getLpIndex());
     }
 }
 
