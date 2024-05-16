@@ -27,5 +27,6 @@ public interface LectureMapper {
     @Mapping(target = "lecDay", source = "lecDay", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "lecTimeStart", source = "lecTimeStart", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "lecTimeEnd", source = "lecTimeEnd", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "lectureRoom", source = "lectureRoom", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateFromDto(LectureDto dto, @MappingTarget Lecture entity);
 }

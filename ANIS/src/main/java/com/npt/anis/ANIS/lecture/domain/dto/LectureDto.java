@@ -6,7 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -20,8 +21,9 @@ public class LectureDto {
         private int lecYear;
         private int lecSemester;
         private String lecProfessor;
-        private int lecDay;
+        private String lecDay;
         private int lecGrade;
-        private LocalDateTime lecTimeStart;
-        private LocalDateTime lecTimeEnd;
+        private LocalTime lecTimeStart;
+        private LocalTime lecTimeEnd;
+        private String lectureRoom;
 }

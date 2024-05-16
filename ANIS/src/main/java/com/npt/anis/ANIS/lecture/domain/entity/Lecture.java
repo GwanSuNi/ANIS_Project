@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -26,15 +27,16 @@ public class Lecture {
     */
     private Long lpIndex;
     private String lecName;
+    // hour
     private int lecCredit;
     private int lecYear;
     private int lecSemester;
     private String lecProfessor;
-    // 1=월요일, 2=화요일, 3=수요일 ...
-    private int lecDay;
+    private String lecDay;
     private int lecGrade;
-    private LocalDateTime lecTimeStart;
-    private LocalDateTime lecTimeEnd;
+    private LocalTime lecTimeStart;
+    private LocalTime lecTimeEnd;
+    private String lectureRoom;
 
 }
 

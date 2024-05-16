@@ -1,0 +1,42 @@
+.LectureApplication {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.LectureButton {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    align-items: center;
+    width: 500px;
+}
+.LecturePreset{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    align-items: center;
+    width: 500px;
+}
+
+.presetButton {
+    width: 110px;
+    height: 100px;
+}
+.lectureButton{
+    width: 110px;
+    height: 100px;
+}
+
+.main {
+    width: 650px;
+    height: 650px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+}

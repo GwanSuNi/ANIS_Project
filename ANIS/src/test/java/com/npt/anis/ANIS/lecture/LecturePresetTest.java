@@ -1,6 +1,7 @@
 package com.npt.anis.ANIS.lecture;
 
 import com.npt.anis.ANIS.lecture.domain.dto.LectureDto;
+import com.npt.anis.ANIS.lecture.domain.dto.LecturePresetDto;
 import com.npt.anis.ANIS.lecture.domain.entity.Lecture;
 import com.npt.anis.ANIS.lecture.domain.entity.LecturePreset;
 import com.npt.anis.ANIS.lecture.domain.mapper.LectureMapper;
@@ -29,7 +30,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +53,10 @@ public class LecturePresetTest {
     @Autowired
     private LecturePresetMapper lecturePresetMapper;
     private LecturePresetService lecturePresetService;
+    private LecturePresetDto lecturePresetDto1;
+    private LecturePresetDto lecturePresetDto2;
+    private LecturePresetDto lecturePresetDto3;
+
     private LectureDto lectureDto1;
     private LectureDto lectureDto2;
     private LectureDto lectureDto3;
@@ -60,8 +65,9 @@ public class LecturePresetTest {
     public void dependencySetting(){
         lectureService = new LectureServiceImpl(lectureRepository, lectureMapper,lecturePresetRepository);
         lecturePresetService = new LecturePresetServiceImpl(lecturePresetRepository,lecturePresetMapper,lectureRepository);
-        lectureDto1 = new LectureDto(1L,1L,"name",100,2024,1,"서상현",5,1, LocalDateTime.now(),LocalDateTime.now());
-        lectureDto2 = new LectureDto(2L,1L,"name",100,2024,1,"서상현",5, 1,LocalDateTime.now(),LocalDateTime.now());
-        lectureDto3 = new LectureDto(3L,1L,"name",100,2024,1,"서상현",5, 1,LocalDateTime.now(),LocalDateTime.now());
+        lectureDto1 = new LectureDto(1L,1L,"name",100,2024,1,"서상현","금요일",1, LocalTime.now(),LocalTime.now(),"효행관 401호");
+        lectureDto2 = new LectureDto(2L,1L,"name",100,2024,1,"서상현","금요일", 1,LocalTime.now(),LocalTime.now(),"효행관 401호");
+        lectureDto3 = new LectureDto(3L,1L,"name",100,2024,1,"서상현","금요일", 1,LocalTime.now(),LocalTime.now(),"효행관 401호");
+        lecturePresetDto1 = new LecturePresetDto();
     }
 }

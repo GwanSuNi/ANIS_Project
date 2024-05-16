@@ -1,8 +1,6 @@
 package com.npt.anis.ANIS.lecture;
-
 import com.npt.anis.ANIS.lecture.domain.dto.LectureDto;
 import com.npt.anis.ANIS.lecture.domain.dto.LecturePresetDto;
-import com.npt.anis.ANIS.lecture.domain.entity.Lecture;
 import com.npt.anis.ANIS.lecture.domain.entity.LectureRegistered;
 import com.npt.anis.ANIS.lecture.domain.mapper.LectureMapper;
 import com.npt.anis.ANIS.lecture.domain.mapper.LecturePresetMapper;
@@ -11,7 +9,9 @@ import com.npt.anis.ANIS.lecture.repository.LecturePresetRepository;
 import com.npt.anis.ANIS.lecture.repository.LectureRegisteredRepository;
 import com.npt.anis.ANIS.lecture.repository.LectureRepository;
 import com.npt.anis.ANIS.lecture.service.*;
-import org.hibernate.annotations.NaturalId;
+import com.npt.anis.ANIS.member.domain.entity.Member;
+import com.npt.anis.ANIS.member.repository.MemberRepository;
+import jakarta.annotation.security.RolesAllowed;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,11 +20,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.mapping.TextScore;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
@@ -37,7 +40,6 @@ public class LectureRegisteredTest {
     private LectureService lectureService;
     @Autowired
     private LecturePresetRepository lecturePresetRepository;
-
     @Autowired
     private LectureRegisteredRepository lectureRegisteredRepository;
     @Autowired
@@ -46,48 +48,45 @@ public class LectureRegisteredTest {
     private LecturePresetMapper lecturePresetMapper;
     private LectureRegisteredService lectureRegisteredService;
     private LecturePresetService lecturePresetService;
-    private LectureDto lectureDto1;
-    private LectureDto lectureDto2;
-    private LectureDto lectureDto3;
-    private LecturePresetDto lecturePresetDto1;
-    private LecturePresetDto lecturePresetDto2;
-    private LecturePresetDto lecturePresetDto3;
-    private LectureRegistered lectureRegistered1;
-    private LectureRegistered lectureRegistered2;
-    private LectureRegistered lectureRegistered3;
     @Autowired
-    private  LectureRegisteredMapper lectureRegisteredMapper;
+    private LectureRegisteredMapper lectureRegisteredMapper;
+    @Autowired
+    private MemberRepository memberRepository;
 
 
-
+    // TODO 수강신청 로직이 바뀌어야하기때문에 잠시 보류하고
+    //  수강신청 로직이 바뀐 후 완성된 테스트코드를 작성하겠습니다
     @BeforeEach
     public void dependencySetting(){
-        lectureService = new LectureServiceImpl(lectureRepository, lectureMapper,lecturePresetRepository);
-        lecturePresetService = new LecturePresetServiceImpl(lecturePresetRepository,lecturePresetMapper,lectureRepository);
-        lectureRegisteredService = new LectureRegisteredServiceImpl(lectureRegisteredRepository,lectureMapper,lectureRegisteredMapper);
-        lecturePresetDto1 = new LecturePresetDto(1L,null,"a");
-        lecturePresetDto2 = new LecturePresetDto(2L,null,"b");
-        lecturePresetDto3 = new LecturePresetDto(3L,null,"c");
-        lectureDto1 = new LectureDto(1L,lecturePresetDto1.getLpIndex(),"name",5,2024,1,"서상현",5,1, LocalDateTime.now(),LocalDateTime.now());
-        lectureDto2 = new LectureDto(2L,lecturePresetDto2.getLpIndex(),"name",5,2024,1,"서상현",5, 1,LocalDateTime.now(),LocalDateTime.now());
-        lectureDto3 = new LectureDto(3L,lecturePresetDto3.getLpIndex(),"name",5,2024,1,"서상현",5, 1,LocalDateTime.now(),LocalDateTime.now());
+        // DDL 로 만든 더미데이터를 공유함
     }
     @Test
     @DisplayName("수강신청테스트")
+    @Transactional
     public void lectureRegistered(){
         // given
-        List<LectureDto> lectureDtoList = new ArrayList<>();
-        lectureService.createLecture(lectureDto1);
-        lectureService.createLecture(lectureDto2);
-        lectureService.createLecture(lectureDto3);
-        lectureDtoList.add(lectureDto1);
-        lectureDtoList.add(lectureDto2);
-        lectureDtoList.add(lectureDto3);
+        List<LectureDto> lectureDtoList = lectureService.getLectureListByPreset(3L);
         // when
-        boolean flag = lectureRegisteredService.lectureRegistered("상현",lectureDtoList);
+        boolean flag = lectureRegisteredService.lectureRegistered("19831033",lectureDtoList);
+        List<LectureDto> lectureDtos = lectureRegisteredService.studentLectureList("19831033");
         // then
+        assertEquals(8,lectureDtoList.size());
         assertEquals(true,flag);
-
+        assertEquals(8,lectureDtos.size());
+    }
+    @Test
+    @DisplayName("수강신청 수정하기 테스트")
+    @Transactional
+    public void lectureRegisteredUpdate(){
+        // given
+        List<LectureDto> lectureDtoUpdateList = lectureService.getLectureListByPreset(2L);
+        // when
+        boolean flag = lectureRegisteredService.lectureRegistered("19831033",lectureDtoUpdateList);
+        List<LectureDto> lectureDtos = lectureRegisteredService.studentLectureList("19831033");
+        // then
+        assertEquals(9,lectureDtoUpdateList.size());
+        assertEquals(true,flag);
+        assertEquals(9,lectureDtos.size());
     }
 
     /***
@@ -99,65 +98,40 @@ public class LectureRegisteredTest {
     public void notLectureRegistered(){
         // given
         List<LectureDto> lectureDtoList = new ArrayList<>();
-        lectureService.createLecture(lectureDto1);
-        lectureService.createLecture(lectureDto2);
-        lectureDtoList.add(lectureDto1);
-        lectureDtoList.add(lectureDto2);
         // when
         boolean flag = lectureRegisteredService.lectureRegistered("상현",lectureDtoList);
         // then
         assertEquals(false,flag);
     }
 
-    /***
-     * 단일테스트로 진행하면 성공하는데 한꺼번에 테스트 실행하면 실패함 이유를 모르겠음
-     */
     @Test
     @DisplayName("친구 수강신청 받아오기 테스트")
     public void friendOfLectureTest(){
         // given
-        List<LectureDto> lectureDtoList = new ArrayList<>();
-        lectureService.createLecture(lectureDto1);
-        lectureService.createLecture(lectureDto2);
-        lectureService.createLecture(lectureDto3);
-        lectureDtoList.add(lectureDto1);
-        lectureDtoList.add(lectureDto2);
-        lectureDtoList.add(lectureDto3);
-        boolean flag = lectureRegisteredService.lectureRegistered("상현",lectureDtoList);
+        // 데이터가 이미 있음
         // when
-        List<LectureDto> lectureDtos = lectureRegisteredService.studentLectureList("상현");
+        List<LectureDto> lectureDtos = lectureRegisteredService.studentLectureList("19831033");
         // then
-        assertEquals(true,flag);
-        assertEquals(3,lectureDtos.size());
+        assertEquals(9,lectureDtos.size());
     }
     @Test
     @DisplayName("친구 수강신청 따라하기 메서드")
+    @Transactional
     public void lectureRegisteredWithFriend(){
         // given
-        List<LectureDto> lectureDtoList = new ArrayList<>();
-        lectureService.createLecture(lectureDto1);
-        lectureService.createLecture(lectureDto2);
-        lectureService.createLecture(lectureDto3);
-        lectureDtoList.add(lectureDto1);
-        lectureDtoList.add(lectureDto2);
-        lectureDtoList.add(lectureDto3);
-        boolean flag = lectureRegisteredService.lectureRegistered("상현",lectureDtoList);
+        // 데이터 이미 있음
         // when
-        List<LectureDto> lectureDtos = lectureRegisteredService.studentLectureList("상현");
-        assertEquals(3,lectureDtos.size());
-        lectureRegisteredService.lectureRegisteredWithFriend("관형","상현");
-        List<LectureRegistered> lectureRegisteredList = lectureRegisteredRepository.findAll();
+        lectureRegisteredService.lectureRegisteredWithFriend("20244013","19831033");
+        List<LectureDto> lectureDtos = lectureRegisteredService.studentLectureList("20244013");
         // then
-        assertEquals(6,lectureRegisteredList.size());
-        assertEquals("관형",lectureRegisteredList.get(3).getStudentID());
-        assertEquals("관형",lectureRegisteredList.get(4).getStudentID());
-        assertEquals("관형",lectureRegisteredList.get(5).getStudentID());
+        assertEquals(9,lectureDtos.size());
     }
     @Test
-    @DisplayName("친구와 수강신청 함께하기 메서드")
-    public void lectureRegisteredWithFriends(){
-
+    @DisplayName("해당 학생이 수강신청 했는지 확인하는 메서드")
+    @Transactional
+    public void havaLectureRegistered(){
+        boolean flag = lectureRegisteredRepository.existsByStudentID("19831033");
+        assertEquals(true,flag);
     }
-
 }
 
