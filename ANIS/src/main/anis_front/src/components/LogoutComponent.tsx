@@ -1,12 +1,12 @@
 import {MouseEvent} from "react";
-import {isLoggedIn, logoutInstance} from "utils";
+import {isLoggedIn, logoutInstance} from "@utils";
 import {useDispatch} from "react-redux";
-import {logoutSuccess} from "redux/authSlice";
+import {logoutSuccess} from "@redux/authSlice";
 import {useNavigate} from "react-router-dom";
 import {Button} from "@mui/material";
 import LogoutIcon from '@mui/icons-material/Logout';
-import {setUsername} from "redux/usernameSlice";
-import {setQrInput} from "redux/qrInputSlice";
+import {setUsername} from "@redux/usernameSlice";
+import {setQrInput} from "@redux/qrInputSlice";
 import Typography from "@mui/material/Typography";
 
 export default function LogoutComponent() {

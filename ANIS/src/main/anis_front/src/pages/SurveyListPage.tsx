@@ -2,7 +2,7 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-import {CircularProgressWithLabel, SurveySection} from 'components';
+import {CircularProgressWithLabel, SurveySection} from '@components';
 
 export default function SurveyListPage() {
     //TODO: 서버로부터 데이터 받아와야 함

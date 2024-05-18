@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import {MouseEvent, useState} from 'react';
 import {secInstance} from "utils";
 
 const SecuredAPITest = () => {
     const [res, setRes]= useState("");
-    const handleClick = async (event: React.MouseEvent) => {
+    const handleClick = async (event: MouseEvent) => {
         event.preventDefault();
 
         try {

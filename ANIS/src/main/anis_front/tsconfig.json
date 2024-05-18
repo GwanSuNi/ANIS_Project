@@ -18,17 +18,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    // TypeScript 컴파일러가 모듈을 찾기 시작하는 기본 디렉토리를 설정
-    "baseUrl": "./src",
-    // 모듈 이름을 경로 패턴에 매핑
-    "paths": {
-      "*": [
-        "*"
-      ]
-    }
+    "jsx": "react-jsx"
   },
   "include": [
     "src"
-  ]
+  ],
+  "extends": "./tsconfig.paths.json"
 }

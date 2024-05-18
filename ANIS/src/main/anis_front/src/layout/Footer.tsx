@@ -6,7 +6,7 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import PeopleIcon from '@mui/icons-material/People';
 import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
-import {usePreventSameNavigation} from 'hooks';
+import {usePreventSameNavigation} from '@hooks';
 
 export default function Footer() {
     const location = useLocation();
@@ -23,7 +23,7 @@ export default function Footer() {
     };
 
     return (
-        <Paper sx={{position: 'fixed', bottom: 0, left: 0, right: 0}} elevation={3}>
+        <Paper sx={{position: 'sticky', bottom: 0, left: 0, right: 0}} elevation={3}>
             <BottomNavigation
                 showLabels
                 value={location.pathname}

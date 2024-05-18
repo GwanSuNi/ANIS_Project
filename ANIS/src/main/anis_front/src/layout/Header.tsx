@@ -2,7 +2,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import LogoutComponent from 'components/LogoutComponent';
+import LogoutComponent from '../components/LogoutComponent';
 
 export default function Header() {
     return (
