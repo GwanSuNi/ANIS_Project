@@ -32,7 +32,6 @@ function LecturePresetButton({ setSelectedLectures }: { setSelectedLectures: (le
     // fetchLectureOfPreset
     const fetchAndSetLectureOfPreset = async (presetName: string) => {
         const lectures = await fetchLectureOfPreset(presetName);
-        console.log(lectures);
         setSelectedLectures(lectures);
     };
     return(

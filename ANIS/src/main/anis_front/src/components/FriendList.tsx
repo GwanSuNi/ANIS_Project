@@ -37,6 +37,7 @@ import {FixedSizeList} from 'react-window';
 
 // 로컬 컴포넌트
 import {fetchFriendLectureList, fetchSelectedLectures, Lecture} from "./LectureApi";
+import {Student} from "../components/MemberApi";
 import {TimeTable} from "./Timetable";
 
 
@@ -44,12 +45,7 @@ interface FriendList {
     items: Student[];
 }
 
-interface Student {
-    studentID: string;
-    studentName: string;
-    department: string;
-    birth: string;
-}
+
 
 const FriendListView: React.FC<FriendList> = ({items}) => {
     const navigate = useNavigate();
@@ -62,7 +58,7 @@ const FriendListView: React.FC<FriendList> = ({items}) => {
         // 0번째 index에 AddButton 이 들어가서 nullItem 을 추가함
         studentID: "nullItem",
         studentName: "nullItem",
-        department: "nullItem",
+        departmentName: "nullItem",
         birth: "nullItem"
     }
 
@@ -208,7 +204,7 @@ const FriendListView: React.FC<FriendList> = ({items}) => {
                                                                 이름 {item ? item.studentName : ''}
                                                             </Typography>
                                                             <Typography variant="body2" align="center">
-                                                                학과 {item ? item.department : ''}
+                                                                학과 {item ? item.departmentName : ''}
                                                             </Typography>
                                                             <Typography variant="body2" align="center">
                                                                 학번 {item ? item.studentID : ''}
@@ -369,7 +365,7 @@ const StudentCheckList: React.FC<StudentCheckProps> = ({items, onCheckedItemsCha
                             <ListItemText
                                 primary={
                                     <>
-                                        <div>이름: {item.studentName}학과: {item.department}</div>
+                                        <div>이름: {item.studentName}학과: {item.departmentName}</div>
                                         <div>학번: {item.studentID}생년월일: {item.birth}</div>
                                     </>
                                 }
@@ -409,7 +405,7 @@ const StudentItemList: React.FC<StudentListProps> = ({items, onListItemClick}) =
                     <ListItemText
                         primary={
                             <>
-                                <div>이름: {item.studentName} 학과: {item.department}</div>
+                                <div>이름: {item.studentName} 학과: {item.departmentName}</div>
                                 <div>학번: {item.studentID} 생년월일: {item.birth}</div>
                             </>
                         }
@@ -466,7 +462,7 @@ const CustomDialog: React.FC<DialogProps> = ({title, onConfirm, open, onClose, s
                                 <ListItemText
                                     primary={
                                         <>
-                                            <div>이름: {section.studentName} 학과: {section.department}</div>
+                                            <div>이름: {section.studentName} 학과: {section.departmentName}</div>
                                             <div>학번: {section.studentID} 생년월일: {section.birth}</div>
                                         </>
                                     }
