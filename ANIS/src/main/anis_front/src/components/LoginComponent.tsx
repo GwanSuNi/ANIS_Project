@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import loginInstance from "../utils/loginInstance";
+import {loginInstance} from "utils";
 import {useDispatch} from "react-redux";
-import {loginSuccess} from "../redux/authSlice";
-import {useLogin} from "../hooks/useLogin";
+import {loginSuccess} from "redux/authSlice";
+import {useLogin} from "hooks";
 
 const LoginComponent = () => {
     // const { username, password, setUsername, setPassword, handleSubmit } = useLogin();

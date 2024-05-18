@@ -1,5 +1,5 @@
-import {useSerialPort} from "../hooks/useSerialPort";
-import {RootState} from "../redux/store";
+import {useSerialPort} from "hooks";
+import {RootState} from "redux/store";
 import {useSelector} from "react-redux";
 
 export default function SerialCom() {

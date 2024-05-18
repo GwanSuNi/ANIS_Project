@@ -1,10 +1,10 @@
 import {createTheme} from '@mui/material';
 import typography from './typography';
+import palette from './palette';
 
-const theme = () => {
-    return createTheme({
-        typography: typography()
-    });
-};
+const theme = createTheme({
+    typography: typography,
+    palette: palette
+});
 
 export default theme;

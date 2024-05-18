@@ -24,7 +24,7 @@ import FormLabel from '@mui/material/FormLabel';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import {Divider} from "@mui/material";
-import {useJoin} from "../hooks/useJoin";
+import {useJoin} from "hooks";
 
 export default function SignUp() {
     const {username, password, studentName, departmentId, birth, role, setUsername, setPassword, setStudentName, setDepartmentId, setBirth, setRole, handleSubmit} = useJoin();

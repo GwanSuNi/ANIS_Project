@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import loginInstance from '../utils/loginInstance';
-import { loginSuccess } from '../redux/authSlice';
+import {loginInstance} from 'utils';
+import {loginSuccess} from 'redux/authSlice';
 import {useNavigate} from "react-router-dom";
-import {RootState} from "../redux/store";
+import {RootState} from "redux/store";
 
 export function useLogin() {
     const username = useSelector((state:RootState) => state.username.username);

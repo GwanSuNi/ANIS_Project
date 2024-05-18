@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import secInstance from "../utils/secInstance";
+import {secInstance} from "utils";
 
 const SecuredAPITest = () => {
     const [res, setRes]= useState("");

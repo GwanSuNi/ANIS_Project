@@ -1,11 +1,7 @@
-import {LectureApplication} from "../components/LectureApplication";
-import {FriendListView, StudentCheckList, StudentItemList, StudentListAndDialog} from "../components/FriendList";
-import QRLogin from "../components/QRLogin";
-import SelfLogin from "../components/SelfLogin";
-import SignUp from "../components/SignUp";
-import ProtectedRoute from "../utils/ProtectedRoute";
-import {SurveyListPage} from "../pages";
-import {MainLayout} from "../layout";
+import {LectureApplication} from "components/LectureApplication";
+import {FriendListView, StudentCheckList, StudentItemList, StudentListAndDialog} from "components/FriendList";
+import {SurveyListPage} from "pages";
+import {MainLayout} from "layout";
 
 // TODO 학생 리스트 Repository, Service 만들어서 서버에있는 값 반환하게 하기
 const studentList = [
