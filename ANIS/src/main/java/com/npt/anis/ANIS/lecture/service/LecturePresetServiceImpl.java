@@ -41,4 +41,25 @@ public class LecturePresetServiceImpl implements LecturePresetService {
         }
         return availableLecturePresetList;
     }
+
+    /***
+     * LecturePresetName 을 입력받으면 해당 학기와 년도의 lpIndex 를 반환받음
+     * @param lpName LecturePresetName
+     * @return 해당 하기와 년도의 lpIndex
+     */
+    @Override
+    public long getLecturePresetIndex(String lpName){
+        List<LecturePresetDto> lecturePresetList = lecturePresetMapper.toDtos(lecturePresetRepository.findByPresetName(lpName));
+        long lpIndex = 0;
+        int currentYear = DateUtils.getCurrentYear();
+        int currentSemester = DateUtils.getCurrentSemester();
+
+        for (LecturePresetDto lecturePresetDto : lecturePresetList) {
+            if (DateUtils.isCurrentSemester(lecturePresetDto.getLecSemester(), lecturePresetDto.getLecYear())) {
+                lpIndex = lecturePresetDto.getLpIndex();
+                break;
+            }
+        }
+        return lpIndex;
+    }
 }

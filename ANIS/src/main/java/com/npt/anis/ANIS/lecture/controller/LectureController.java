@@ -31,9 +31,10 @@ public class LectureController {
     }
 
     // lecturePreset 의 등록되어있는 강의 리스트 갖고오기
-    @GetMapping("/lecturePreset/{lecturePresetID}")
-    public ResponseEntity<List<LectureDto>> lecturePresetOfLectureList(@PathVariable("lecturePresetID") long lecturePresetIndex){
-        List<LectureDto> lectureDtoList = lectureService.getLectureListByPreset(lecturePresetIndex);
+    @GetMapping("/lecturePreset/{lecturePresetName}")
+    public ResponseEntity<List<LectureDto>> lecturePresetOfLectureList(@PathVariable("lecturePresetName") String lecturePresetName){
+        long lpIndex = lecturePresetService.getLecturePresetIndex(lecturePresetName);
+        List<LectureDto> lectureDtoList = lectureService.getLectureListByPreset(lpIndex);
         return ResponseEntity.ok(lectureDtoList);
     }
     // 현재 수강 가능한 강의 리스트 갖고오기

@@ -53,6 +53,9 @@ const fetchAvailableLectures = async () => {
 const fetchFriendLectureList = async (studentID: string) => {
     return fetchTimetable(`http://localhost:8080/api/lecture/lectureList/${studentID}`);
 };
+const fetchLectureOfPreset = async (lecturePresetName: string) => {
+    return fetchTimetable(`http://localhost:8080/api/lecture/lecturePreset/${lecturePresetName}`);
+}
 
 // Main , LectureApplication 에서 사용됨
 const useFetchLectures = () => {
@@ -91,4 +94,4 @@ const registrations = async (selectedLectures: Lecture[]) => {
 };
 
 export {registrations,useFetchLectures,fetchSelectedLectures,
-    fetchAvailableLectures,fetchFriendLectureList,fetchTimetable,formatLecture}
+    fetchAvailableLectures,fetchFriendLectureList,fetchTimetable,formatLecture,fetchLectureOfPreset}

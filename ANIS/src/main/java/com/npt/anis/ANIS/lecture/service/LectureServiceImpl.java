@@ -2,8 +2,11 @@ package com.npt.anis.ANIS.lecture.service;
 
 import com.npt.anis.ANIS.global.util.DateUtils;
 import com.npt.anis.ANIS.lecture.domain.dto.LectureDto;
+import com.npt.anis.ANIS.lecture.domain.dto.LecturePresetDto;
 import com.npt.anis.ANIS.lecture.domain.entity.Lecture;
+import com.npt.anis.ANIS.lecture.domain.entity.LecturePreset;
 import com.npt.anis.ANIS.lecture.domain.mapper.LectureMapper;
+import com.npt.anis.ANIS.lecture.domain.mapper.LecturePresetMapper;
 import com.npt.anis.ANIS.lecture.exception.NoSearchLectureList;
 import com.npt.anis.ANIS.lecture.exception.NotFoundLectureException;
 import com.npt.anis.ANIS.lecture.exception.NotFoundLecturePresetException;
@@ -23,6 +26,7 @@ public class LectureServiceImpl implements LectureService{
     private final LectureRepository lectureRepository;
     private final LectureMapper lectureMapper;
     private final LecturePresetRepository lecturePresetRepository;
+    private final LecturePresetMapper lecturePresetMapper;
 
     @Override
     public void saveLecture(LectureDto lectureDto){
