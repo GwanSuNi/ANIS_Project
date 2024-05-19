@@ -1,28 +1,36 @@
-/* NanumGothic 폰트 */
+/* 나눔고딕 */
+@font-face {
+    font-family: 'NanumGothicLight';
+    src: url('./nanum/NanumGothicLight.woff') format('woff');
+    font-style: normal;
+    font-weight: 300;
+}
+
 @font-face {
     font-family: 'NanumGothic';
-    src: url('nanum/NanumGothic.woff') format('woff');
+    src: url('./nanum/NanumGothic.woff') format('woff');
     font-style: normal;
     font-weight: normal;
 }
 
 @font-face {
     font-family: 'NanumGothicBold';
-    src: url('nanum/NanumGothicBold.woff') format('woff');
+    src: url('./nanum/NanumGothicBold.woff') format('woff');
     font-style: normal;
     font-weight: bold;
 }
 
 @font-face {
     font-family: 'NanumGothicExtraBold';
-    src: url('nanum/NanumGothicExtraBold.woff') format('woff');
+    src: url('./nanum/NanumGothicExtraBold.woff') format('woff');
     font-style: normal;
     font-weight: 800;
 }
 
+/* 나눔손글씨 붓 */
 @font-face {
-    font-family: 'NanumGothicLight';
-    src: url('nanum/NanumGothicLight.woff') format('woff');
+    font-family: 'NanumBrush';
+    src: url('./nanum/NanumBrush.woff') format('woff');
     font-style: normal;
-    font-weight: 300;
+    font-weight: 400;
 }

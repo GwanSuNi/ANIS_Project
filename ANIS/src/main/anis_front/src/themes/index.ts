@@ -1,3 +1,4 @@
+import '@assets/fonts/Font.css'
 import {createTheme} from '@mui/material';
 import typography from './typography';
 import palette from './palette';

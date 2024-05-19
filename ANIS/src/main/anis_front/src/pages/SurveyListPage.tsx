@@ -13,11 +13,11 @@ export default function SurveyListPage() {
     return (
         <Container maxWidth='lg'>
             <Box display='flex' justifyContent='space-between' mt={10} mb={8}>
-                <Typography variant='h3' fontWeight='bold' gutterBottom>
+                <Typography variant='h3' fontFamily='NanumGothicExtraBold' gutterBottom>
                     설문조사 · 진단평가
                 </Typography>
                 <Stack direction='row' justifyContent='flex-end' alignItems='center' spacing={2}>
-                    <Typography variant='h4'>
+                    <Typography fontFamily='NanumGothicBold' variant='h4'>
                         진행률
                     </Typography>
                     <CircularProgressWithLabel value={completeCount / assessmentCount * 100}/>
