@@ -87,8 +87,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.addHeader("access", access);
         response.addCookie(cookieUtil.createCookie("refresh", refresh));
         response.setStatus(HttpStatus.OK.value());
-
-
     }
 
     private void addRefreshEntity(String username, String refresh, Long expiredMs) {
