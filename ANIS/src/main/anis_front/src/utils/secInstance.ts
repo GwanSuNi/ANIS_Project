@@ -1,6 +1,8 @@
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 import {getAccessToken, setAccessToken} from "./authUtils";
 
+const navigate = useNavigate();
 // Axios 인스턴스 생성
 const secInstance = axios.create({
     baseURL: 'http://localhost:8080',
@@ -51,7 +53,7 @@ secInstance.interceptors.response.use(
                 // 리프레시 토큰이 만료되었을 때의 처리
                 alert("다시 로그인 해주세요.")
                 // 리프레시 토큰 만료 시 로그인 페이지로 이동
-                window.location.href = '/';
+                navigate('/');
             }
         } else if (error.response.status === 403) {
             // Forbidden

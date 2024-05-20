@@ -1,5 +1,5 @@
 import {MouseEvent, useState} from 'react';
-import {secInstance} from "utils";
+import {secInstance} from "@utils";
 
 const SecuredAPITest = () => {
     const [res, setRes]= useState("");
