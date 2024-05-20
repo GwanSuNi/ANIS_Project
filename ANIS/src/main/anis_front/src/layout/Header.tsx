@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import LogoutComponent from '../components/LogoutComponent';
 
 export default function Header() {
+    // TODO: 사용자 이름을 서버에서 받아와서 출력
     return (
         <AppBar position='sticky' component='nav'>
             <Toolbar sx={{height: '70px'}}>
