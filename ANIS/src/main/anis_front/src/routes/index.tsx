@@ -4,5 +4,5 @@ import AuthenticationRoutes from "./AuthenticationRoutes";
 import AdminRoutes from "./AdminRoutes";
 
 export default function ThemeRoutes() {
-    return useRoutes([...MainRoutes, AuthenticationRoutes, AdminRoutes]);
+    return useRoutes([...MainRoutes, ...AuthenticationRoutes, AdminRoutes]);
 }

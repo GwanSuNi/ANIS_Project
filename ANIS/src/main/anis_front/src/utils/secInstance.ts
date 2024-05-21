@@ -1,4 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
+import {getAccessToken, setAccessToken} from './authUtils';
+import history from './history';
 
 // Axios 인스턴스 생성
 const secInstance = axios.create({
@@ -11,7 +13,7 @@ const secInstance = axios.create({
 secInstance.interceptors.request.use(config => {
     // /api/token/reissue 요청이 아닐 때만 access 토큰을 헤더에 포함
     if (config.url !== '/api/token/reissue') {
-        config.headers['access'] = sessionStorage.getItem('access');
+        config.headers['access'] = getAccessToken();
     }
     return config;
 });
@@ -29,13 +31,13 @@ secInstance.interceptors.response.use(
             const errorMessage = error.response.data;
             if (errorMessage === "access token expired") {
                 console.log('Access token expired!');
-                console.log('header에 담아보낸 access토큰:', sessionStorage.getItem('access'));
+                console.log('header에 담아보낸 access토큰:', getAccessToken());
 
 
                 const res = await secInstance.post('/api/token/reissue');
                 let newAccessToken = res.headers["access"].trim();
                 console.log('새로 발급받은 access토큰:', newAccessToken);
-                sessionStorage.setItem('access', newAccessToken);
+                setAccessToken(newAccessToken);
 
                 return secInstance(error.config);
 
@@ -50,7 +52,7 @@ secInstance.interceptors.response.use(
                 // 리프레시 토큰이 만료되었을 때의 처리
                 alert("다시 로그인 해주세요.")
                 // 리프레시 토큰 만료 시 로그인 페이지로 이동
-                window.location.href = '/';
+                history.push('/login');
             }
         } else if (error.response.status === 403) {
             // Forbidden

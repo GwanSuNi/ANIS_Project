@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { useZxing, DecodeHintType, Result } from 'react-zxing';
+import {useState} from 'react';
+import {Result, useZxing} from 'react-zxing';
 import {Box, Button} from "@mui/material";
 
 function BarcodeScanner() {

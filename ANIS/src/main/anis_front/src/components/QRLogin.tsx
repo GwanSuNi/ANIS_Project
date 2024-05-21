@@ -1,12 +1,11 @@
-import React, {useEffect, useRef} from "react";
+import {MouseEvent, useEffect, useRef} from "react";
 import {Box, Button, Link, Typography} from "@mui/material";
 import QrReader from "./QrReader";
-import {useSerialPort} from "../hooks/useSerialPort";
-import {useLogin} from "../hooks/useLogin";
+import {useLogin, useSerialPort} from "@hooks";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../redux/store";
-import {setUsername} from "../redux/usernameSlice";
+import {RootState} from "@redux/store";
+import {setUsername} from "@redux/usernameSlice";
 
 export default function QRLogin() {
     const navigate = useNavigate();
@@ -28,12 +27,12 @@ export default function QRLogin() {
         }
     }, [qrInput, username]);
 
-    const handleSelectLogin = (event: React.MouseEvent) => {
+    const handleSelectLogin = (event: MouseEvent) => {
         event.preventDefault();
         navigate('/login/select');
     }
 
-    const handleSelfLogin = (event: React.MouseEvent) => {
+    const handleSelfLogin = (event: MouseEvent) => {
         event.preventDefault();
         navigate('/login/self');
     }

@@ -1,13 +1,19 @@
-import React from "react";
-import {Autocomplete} from "@mui/material";
-import TextField from "@mui/material/TextField";
+import QRLogin from "../components/QRLogin";
+import SelfLogin from "../components/SelfLogin";
+import SignUp from "../components/SignUp";
 import {DirectInputLogin} from "../components/DirectInputLogin";
-const AuthenticationRoutes = {
+
+const AuthenticationRoutes = [
+    {
         path: '/login',
         children: [
             {
-                path: 'qr-code',
-                element: <div>QR Code</div>
+                path: '',
+                element: <QRLogin/>
+            },
+            {
+                path: 'self',
+                element: <SelfLogin/>
             },
             {
                 path: 'direct-input', //모바일 로그인 직접입력
@@ -19,7 +25,11 @@ const AuthenticationRoutes = {
                     </>
             }
         ]
+    },
+    {
+        path: 'signup',
+        element: <SignUp/>
     }
-;
+];
 
 export default AuthenticationRoutes;

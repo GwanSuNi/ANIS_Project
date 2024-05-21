@@ -1,5 +1,5 @@
 import {useDispatch} from "react-redux";
-import {setQrInput} from "../redux/qrInputSlice";
+import {setQrInput} from "@redux/qrInputSlice";
 
 export function useSerialPort() {
     const dispatch = useDispatch();
