@@ -10,6 +10,9 @@ spring:
       enabled: true
       path: /h2-console
   jpa:
+    # Hibernate 스키마 생성이 수행된 후에,데이터베이스를 채우기 위해
+    # 추가 data.sql 실행되도록 보장해주는 코드
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: none
     properties:
@@ -23,7 +26,13 @@ spring:
     mongodb:
       uri: mongodb://localhost:27017/ANIS
 
-
+# mode: always data.sql 에 sql 문을 자동으로 읽어줘서 데이터 삽입
+# mode: never data.sql 에 sql 문을 읽지않음
+# 더미데이터를 맨 처음에 넣을때 always로 바꿔서 데이터를 넣어준 후,
+# 넣고 나서 sql: init: mode: never 로 바꿔주기
+  sql:
+    init:
+      mode: never
 logging:
   level:
     org:
