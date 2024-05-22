@@ -3,6 +3,7 @@ package com.npt.anis.ANIS.lecture.service;
 import com.npt.anis.ANIS.lecture.domain.dto.LectureDto;
 import com.npt.anis.ANIS.lecture.domain.dto.LectureRegisteredDto;
 import com.npt.anis.ANIS.member.domain.dto.MemberCreateDTO;
+import com.npt.anis.ANIS.member.domain.dto.MemberSearchDTO;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface LectureRegisteredService {
     // 친구의 수강신청 따라하는 서비스 개인 -> 친구 (나의(myID) 시간표가 친구(friendID)의 시간표와 똑같아짐)
     public boolean lectureRegisteredWithFriend(String myID,String friendID);
     // 친구와 수강신청 함께하기 서비스 개인-> 단체 (나의(myID) 시간표와 친구(들)의 시간표가 똑같아짐)
-    public boolean lectureRegisteredWithFriends(List<MemberCreateDTO> friendList, String myID);
+    public boolean lectureRegisteredWithFriends(List<MemberSearchDTO> friendList, String myID);
     // 학생의 수강신청 목록 받아오기
     public List<LectureDto> studentLectureList(String studentID);
     // 입력받은 강의 리스트가 lpIndex가 null 인 강의 리스트로 바꾸는 메서드(데이터의 일관성을 위해 만들어진 메서드)

@@ -9,6 +9,8 @@ import com.npt.anis.ANIS.lecture.domain.mapper.LectureMapper;
 import com.npt.anis.ANIS.lecture.domain.mapper.LectureRegisteredMapper;
 import com.npt.anis.ANIS.lecture.repository.LectureRegisteredRepository;
 import com.npt.anis.ANIS.member.domain.dto.MemberCreateDTO;
+import com.npt.anis.ANIS.member.domain.dto.MemberDTO;
+import com.npt.anis.ANIS.member.domain.dto.MemberSearchDTO;
 import jakarta.persistence.Tuple;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -108,10 +110,10 @@ public class LectureRegisteredServiceImpl implements LectureRegisteredService {
      * @return 성공하면 true 실패하면 false
      */
     @Override
-    public boolean lectureRegisteredWithFriends(List<MemberCreateDTO> friendList, String myID){
+    public boolean lectureRegisteredWithFriends(List<MemberSearchDTO> friendList, String myID){
         // 나의 수강신청 목록 갖고오기
-        for (MemberCreateDTO memberDto:friendList) {
-            lectureRegisteredWithFriend(memberDto.getStudentID(),myID);
+        for (MemberSearchDTO memberSearchDTO:friendList) {
+            lectureRegisteredWithFriend(memberSearchDTO.getStudentID(),myID);
         }
         return true;
     }

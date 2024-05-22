@@ -15,7 +15,10 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     List<Member> findByStudentNameContainingOrStudentIDContaining(String birth, String studentID);
     @Query("SELECT m FROM Member m JOIN Department d WHERE m.departmentID = d.depIndex and m.studentName LIKE %:name% OR d.depName LIKE %:departmentName%")
     List<Member> findByStudentNameContainingOrDepartmentNameContaining(String studentName, String departmentName);
-    @Query("SELECT new com.npt.anis.ANIS.member.domain.dto.MemberSearchDTO(m.studentID, m.studentName, m.birth, d.depName) FROM Member m JOIN Department d ON m.departmentID = d.depIndex WHERE m.studentName LIKE %:studentName% OR m.birth LIKE %:birth% OR m.studentID LIKE %:studentID% OR d.depName LIKE %:departmentName%")
+    @Query("SELECT new com.npt.anis.ANIS.member.domain.dto.MemberSearchDTO(m.studentID, m.studentName, m.birth, d.depName) " +
+            "FROM Member m JOIN Department d ON m.departmentID = d.depIndex " +
+            "WHERE m.studentName LIKE %:studentName% OR m.birth LIKE %:birth% OR m.studentID " +
+            "LIKE %:studentID% OR d.depName LIKE %:departmentName%")
     List<MemberSearchDTO> findByStudentNameContainingOrBirthContainingOrStudentIDContainingOrDepartmentNameContaining(@Param("studentName") String studentName,
                                                                                                              @Param("birth") String birth,
                                                                                                              @Param("studentID") String studentID,
@@ -24,4 +27,9 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     List<Member> findByIsQuit(boolean isQuit);
     @Query("SELECT new com.npt.anis.ANIS.member.domain.dto.MemberSearchDTO(m.studentID, m.studentName, m.birth, d.depName) FROM Member m JOIN Department d ON m.departmentID = d.depIndex WHERE d.depName like %:depName%")
     List<MemberSearchDTO> findMembersByDepartmentName(@Param("depName") String depName);
+
+    @Query("SELECT new com.npt.anis.ANIS.member.domain.dto.MemberSearchDTO(m.studentID, m.studentName, m.birth, d.depName) " +
+            "FROM Member m JOIN Department d ON m.departmentID = d.depIndex WHERE m.studentID = :studentID")
+    MemberSearchDTO getOneFindByStudentNameContainingOrBirthContainingOrStudentIDContainingOrDepartmentNameContaining(@Param("studentID") String studentID);
+
 }
