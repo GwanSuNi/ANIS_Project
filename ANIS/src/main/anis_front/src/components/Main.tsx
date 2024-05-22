@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import {useNavigate} from "react-router-dom";
 import './Main.css';
 import {TimeTable} from "./Timetable";
-import {useFetchLectures} from "./LectureApi";
+import {useFetchLectures} from "../hooks/LectureHooks";
 
 export default function Main() {
     // 겹치는 부분 리팩토링 자세한 부분은 LectureApi 참고
@@ -39,5 +39,3 @@ function ButtonContainer() {
         </div>
     );
 }
-
-export { Main }
