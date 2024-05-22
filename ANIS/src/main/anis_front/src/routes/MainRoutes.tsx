@@ -1,21 +1,20 @@
-import {Outlet} from "react-router-dom";
 import {LectureApplication} from "../components/LectureApplication";
-import {FriendListView, StudentCheckList, StudentItemList, StudentListAndDialog} from "../components/CustomFriendList";
 import QRLogin from "../components/QRLogin";
 import SelfLogin from "../components/SelfLogin";
 import SignUp from "../components/SignUp";
 import React from "react";
-import LogoutComponent from "../components/LogoutComponent";
 import ProtectedRoute from "../utils/ProtectedRoute";
-import {SurveyListPage} from "../pages";
 import {FriendAdd} from "../components/FriendAdd";
 import {EnrolmentTogether} from "../components/EnrolmentTogether";
 import {LectureCopy} from "../components/LectureCopy";
 import Main from "../components/Main";
+import {SurveyListPage} from "@pages";
+import {MainLayout} from "@layout";
+import {FriendListView} from "../components/CustomFriendList";
 const MainRoutes = [
     {
         path: '/',
-        element: <div>MainLayout <LogoutComponent/><Outlet/></div>,
+        element: <MainLayout/>,
         children: [
             {
                 path: '/',

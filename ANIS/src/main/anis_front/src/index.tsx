@@ -14,7 +14,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     <StrictMode>
-        <ThemeProvider theme={theme()}>
+        <ThemeProvider theme={theme}>
             <CssBaseline>
                 <BrowserRouter>
                     <Provider store={store}>

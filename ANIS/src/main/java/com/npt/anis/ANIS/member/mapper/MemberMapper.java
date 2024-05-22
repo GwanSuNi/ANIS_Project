@@ -17,5 +17,4 @@ public interface MemberMapper {
     List<MemberDTO> toDTOs(List<Member> members);
     List<MemberSearchDTO> toMemberSearchDTOs(List<Member> members);
     List<Member> toEntities(List<MemberDTO> memberDTOs);
-    }
 }

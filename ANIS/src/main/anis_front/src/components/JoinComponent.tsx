@@ -1,5 +1,5 @@
 import React from 'react';
-import {useJoin} from "../hooks/useJoin";
+import {useJoin} from "@hooks";
 
 const JoinComponent = () => {
     // useJoin 훅을 사용

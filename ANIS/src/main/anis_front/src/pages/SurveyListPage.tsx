@@ -2,8 +2,7 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-import CircularProgressWithLabel from '../components/common/CircularProgressWithLabel';
-import {SurveySection} from '../components/survey';
+import {CircularProgressWithLabel, SurveySection} from '@components';
 
 export default function SurveyListPage() {
     //TODO: 서버로부터 데이터 받아와야 함
@@ -13,12 +12,12 @@ export default function SurveyListPage() {
 
     return (
         <Container maxWidth='lg'>
-            <Box display='flex' justifyContent='space-between' mb={8}>
-                <Typography variant='h3' fontWeight='bold' gutterBottom>
+            <Box display='flex' justifyContent='space-between' mt={10} mb={8}>
+                <Typography variant='h3' fontFamily='NanumGothicExtraBold' gutterBottom>
                     설문조사 · 진단평가
                 </Typography>
                 <Stack direction='row' justifyContent='flex-end' alignItems='center' spacing={2}>
-                    <Typography variant='h4'>
+                    <Typography fontFamily='NanumGothicBold' variant='h4'>
                         진행률
                     </Typography>
                     <CircularProgressWithLabel value={completeCount / assessmentCount * 100}/>
