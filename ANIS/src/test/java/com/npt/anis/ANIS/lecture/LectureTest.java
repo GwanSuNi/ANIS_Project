@@ -58,7 +58,7 @@ public class LectureTest {
 
     @BeforeEach
     public void dependencySetting(){
-        lectureService = new LectureServiceImpl(lectureRepository, lectureMapper,lecturePresetRepository);
+        lectureService = new LectureServiceImpl(lectureRepository, lectureMapper,lecturePresetRepository,lecturePresetMapper);
         lecturePresetService = new LecturePresetServiceImpl(lecturePresetRepository, lecturePresetMapper,lectureRepository);
         lectureDto = new LectureDto(1L,1L,"name",100,2024,1,"서상현","금요일",1, LocalTime.now(),LocalTime.now(),"효행관 401호");
     }
