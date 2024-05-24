@@ -4,7 +4,8 @@ import Button from "@mui/material/Button";
 import { TimeTable } from "./Timetable";
 import {useNavigate} from "react-router-dom";
 import {fetchLectureOfPreset, Lecture, registrations} from "./LectureApi";
-import {useFetchLectures} from "./LectureApi";
+import {useFetchLectures} from "../hooks/LectureHooks";
+
 function LectureButton({ selectedLectures }: { selectedLectures: Lecture[] }) {
     const navigate = useNavigate();
     const enrolmentTogether = () => {
@@ -28,7 +29,6 @@ function LectureButton({ selectedLectures }: { selectedLectures: Lecture[] }) {
 }
 
 function LecturePresetButton({ setSelectedLectures }: { setSelectedLectures: (lectures: Lecture[]) => void }){
-
     // fetchLectureOfPreset
     const fetchAndSetLectureOfPreset = async (presetName: string) => {
         const lectures = await fetchLectureOfPreset(presetName);

@@ -46,9 +46,8 @@ public class LectureController {
     // 현재 로그인 되어있는 회원의 강의 리스트 갖고오기
     @GetMapping("/lectureList")
     public ResponseEntity<List<LectureDto>> userLectureList(){
-//        String userID = SecurityContextHolder.getContext().getAuthentication().getName();
-//        List<LectureDto> lectureDtoList = lectureRegisteredService.studentLectureList(userID);
-        List<LectureDto> lectureDtoList = lectureRegisteredService.studentLectureList("19831033");
+        String userID = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<LectureDto> lectureDtoList = lectureRegisteredService.studentLectureList(userID);
         return ResponseEntity.ok(lectureDtoList);
     }
     // 내가 알고싶은 친구의 아이디로 강의 리스트 갖고오기

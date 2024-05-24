@@ -1,6 +1,5 @@
 import {MouseEvent, useEffect, useRef} from "react";
 import {Box, Button, Link, Typography} from "@mui/material";
-import QrReader from "./QrReader";
 import {useLogin, useSerialPort} from "@hooks";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";

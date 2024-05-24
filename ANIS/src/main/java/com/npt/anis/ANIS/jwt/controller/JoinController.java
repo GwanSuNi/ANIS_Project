@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class JoinController {
@@ -26,6 +28,12 @@ public class JoinController {
     @PostMapping("/join/admin")
     public ResponseEntity<String> joinAdmin(@RequestBody JoinDTO joinDto) { // 관리자 유저는 개인의 비밀번호를 사용
         joinService.joinProcess(joinDto.getPassword(), joinDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/joinList")
+    public ResponseEntity<String> join(@Value("${spring.password}") String password, @RequestBody List<JoinDTO> joinDTOList) {
+        joinService.joinProcess(password, joinDTOList);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -25,7 +25,7 @@ export function useLogin() {
                 }
             });
             dispatch(loginSuccess());
-            navigate('/');
+            navigate('/main');
         } catch (error) {
             console.log(username);
             console.error(error);

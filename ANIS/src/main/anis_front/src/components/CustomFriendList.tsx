@@ -37,22 +37,14 @@ import {FixedSizeList} from 'react-window';
 
 // 로컬 컴포넌트
 import {fetchFriendLectureList, fetchSelectedLectures, Lecture} from "./LectureApi";
-import {Student} from "../components/MemberApi";
+import {deleteFriend, fetchFriendList, Student} from "./MemberApi";
 import {TimeTable} from "./Timetable";
 
-
-interface FriendList {
-    items: Student[];
-}
-
-
-
-const FriendListView: React.FC<FriendList> = ({items}) => {
-    const navigate = useNavigate();
-    const lightTheme = createTheme({palette: {mode: 'light'}});
-    const [open, setOpen] = React.useState<boolean[]>([]);
-    const anchorRef = React.useRef<(HTMLButtonElement | null)[]>([]);
-
+/**
+ *
+ * @constructor
+ */
+const FriendListView = () => {
     // TODO nullItem 추가 말고 다른방법을 생각해보기
     const nullItem = {
         // 0번째 index에 AddButton 이 들어가서 nullItem 을 추가함
@@ -61,20 +53,22 @@ const FriendListView: React.FC<FriendList> = ({items}) => {
         departmentName: "nullItem",
         birth: "nullItem"
     }
+    const navigate = useNavigate();
+    const lightTheme = createTheme({palette: {mode: 'light'}});
+    const [open, setOpen] = React.useState<boolean[]>([]);
+    const anchorRef = React.useRef<(HTMLButtonElement | null)[]>([]);
 
-    // 대화 상자 상태 추가
     const [dialogOpen, setDialogOpen] = React.useState(false);
     const [selectedStudent, setSelectedStudent] = React.useState<Student | null>(null);
     const [showTimeTable, setShowTimeTable] = React.useState(false);
     const [friendLectures, setFriendLectures] = React.useState<Lecture[]>([]);
     const [myLectures, setMyLectures] = React.useState<Lecture[]>([]);
-
+    const [friendList, setFriendList] = React.useState<Student[]>([]);
 
     const StyledPaper = styled(Paper)({
         width: '100%',
         height: '100%',
     });
-
     const handleToggle = (index: number) => {
         setOpen((prevOpen) => {
             const newOpen = [...prevOpen];
@@ -99,7 +93,11 @@ const FriendListView: React.FC<FriendList> = ({items}) => {
             return newOpen;
         });
     };
-
+    /**
+     *
+     * @param event
+     * @param index
+     */
     const handleListKeyDown = (event: React.KeyboardEvent, index: number) => {
         if (event.key === 'Tab') {
             event.preventDefault();
@@ -116,15 +114,31 @@ const FriendListView: React.FC<FriendList> = ({items}) => {
             });
         }
     };
+    /**
+     * 친구리스트 받아오기
+     */
+    useEffect(() => {
+        const fetchMyFriendList = async () => {
+            try {
+                const fetchedFriends = await fetchFriendList();
+                setFriendList(fetchedFriends);
+            } catch (error) {
+                console.error('Error fetching friend list:', error);
+            }
+        };
+        fetchMyFriendList();
+    }, []);
+
+
     // 나의 시간표를 갖고옴
     const prevOpen = React.useRef(open);
-    React.useEffect(() => {
+    useEffect(() => {
         const fetchMyLectureData = async () => {
             const fetchedLectures = await fetchSelectedLectures();
             setMyLectures(fetchedLectures);
         };
         for (let i = 0; i < open.length; i++) {
-            if (prevOpen.current[i] === true && open[i] === false) {
+            if (prevOpen.current[i] && !open[i]) {
                 anchorRef.current[i]!.focus();
             }
         }
@@ -149,7 +163,7 @@ const FriendListView: React.FC<FriendList> = ({items}) => {
                                 alignItems: 'center'
                             }}
                         >
-                            {[nullItem, ...items].map((item: Student | null, index: number) => {
+                            {[nullItem, ...friendList].map((item: Student | null, index: number) => {
                                 if (!open[index]) {
                                     open[index] = false;
                                 }
@@ -278,8 +292,14 @@ const FriendListView: React.FC<FriendList> = ({items}) => {
                 title="친구를 삭제하시겠습니까?"
                 open={dialogOpen}
                 onClose={() => setDialogOpen(false)}
-                onConfirm={() => {
+                onConfirm={async () => {
                     //TODO 친구 삭제 로직 추가하기
+                    const studentIDToDelete: string = selectedStudent?.studentID || ''; // 기본값으로 빈 문자열 설정
+                    // 친구 삭제 로직
+                    await deleteFriend(studentIDToDelete);
+                    // 친구 리스트 다시 받아오기
+                    const fetchedFriends = await fetchFriendList();
+                    setFriendList(fetchedFriends);
                     setDialogOpen(false);
                 }}
                 section={selectedStudent}
@@ -292,7 +312,8 @@ const FriendListView: React.FC<FriendList> = ({items}) => {
                 <DialogContent>
                     {/* TODO 친구의 시간표 , 나의 시간표 색으로 표시해서 보여주기*/}
                     {/* availableLectures -> 친구의 시간표 , selectedLectures -> 나의 시간표 겹치는 부분 색칠로 표시*/}
-                    <TimeTable onLecturesChange={setMyLectures} availableLectures={friendLectures} selectedLectures={myLectures} isButtonDisabled={true}/>
+                    <TimeTable onLecturesChange={setMyLectures} availableLectures={friendLectures}
+                               selectedLectures={myLectures} isButtonDisabled={true}/>
                 </DialogContent>
             </Dialog>
         </Grid>
@@ -436,7 +457,7 @@ interface StudentListProps {
 interface DialogProps {
     title: string;
     onClose: () => void;
-    onConfirm: () => void;
+    onConfirm: (section: Student | null) => void; // 타입 변경
     open: boolean;
     section: Student | null;
 }
@@ -473,7 +494,7 @@ const CustomDialog: React.FC<DialogProps> = ({title, onConfirm, open, onClose, s
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={onConfirm}>{"예"}</Button>
+                <Button onClick={() => onConfirm(section)}>{"예"}</Button>
                 <Button onClick={onClose}>{"아니요"}</Button>
             </DialogActions>
         </Dialog>
@@ -483,7 +504,7 @@ const CustomDialog: React.FC<DialogProps> = ({title, onConfirm, open, onClose, s
 interface StudentListAndDialogProps {
     ListComponent: React.ComponentType<{ onListItemClick: (section: Student) => void }>;
     dialogTitle: string;
-    onConfirm: () => void;
+    onConfirm: (section: Student | null, handleClose: () => void) => void; // 타입 변경
 }
 
 /***
@@ -517,7 +538,7 @@ const StudentListAndDialog: React.FC<StudentListAndDialogProps> = ({ListComponen
                 open={dialog.open}
                 onClose={handleCloseDialog}
                 section={dialog.section}
-                onConfirm={onConfirm} // 외부에서 받은 onConfirm을 사용합니다.
+                onConfirm={() => onConfirm(dialog.section, handleCloseDialog)} // handleCloseDialog를 인자로 전달
                 title={dialogTitle} // 외부에서 받은 title을 사용합니다.
             />
         </>

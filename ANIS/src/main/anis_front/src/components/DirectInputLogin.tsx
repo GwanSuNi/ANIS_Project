@@ -1,14 +1,17 @@
 import {Autocomplete} from "@mui/material";
 import TextField from "@mui/material/TextField";
-import {StudentItemList, StudentListAndDialog} from "./FriendList";
+import {StudentItemList, StudentListAndDialog} from "./CustomFriendList";
 import React from "react";
-import {useStudentSearch} from "./MemberApi";
+import {useStudentSearch} from "../hooks/SearchHooks";
 
-export const DirectInputLogin = () => {
+/**
+ * 직접 선택해서 로그인하는 컴포넌트
+ */
+const DirectInputLogin = () => {
     const { studentID,setStudentID,studentName,
         setStudentName,departmentName,setDepartmentName
         ,birth,setBirth
-        ,studentList, } = useStudentSearch();
+        ,studentList} = useStudentSearch();
 
     return (
         //TODO 컴포넌트끼리 CSS 정리하기
@@ -42,3 +45,4 @@ export const DirectInputLogin = () => {
         </>
     );
 };
+export {DirectInputLogin}

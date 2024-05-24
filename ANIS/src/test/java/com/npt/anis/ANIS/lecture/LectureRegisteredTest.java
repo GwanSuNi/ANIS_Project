@@ -61,7 +61,7 @@ public class LectureRegisteredTest {
     @BeforeEach
     public void dependencySetting(){
         // DDL 로 만든 더미데이터를 공유함
-        lectureService = new LectureServiceImpl(lectureRepository, lectureMapper,lecturePresetRepository);
+        lectureService = new LectureServiceImpl(lectureRepository, lectureMapper,lecturePresetRepository,lecturePresetMapper);
         lectureRegisteredService = new LectureRegisteredServiceImpl(lectureRegisteredRepository,lectureMapper,lectureRegisteredMapper,lectureService);
     }
     @Test
