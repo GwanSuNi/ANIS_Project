@@ -2,7 +2,7 @@ import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
-import Grid from "@mui/material/Unstable_Grid2";
+import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
 export default function SurveyCard({isComplete}: { isComplete: boolean }) {

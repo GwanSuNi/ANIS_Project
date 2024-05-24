@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import {Autocomplete, Box, ListItem, ListItemButton, ListItemText, Stack, TextField} from "@mui/material";
+import {useState} from 'react';
+import {Autocomplete, Box, ListItem, ListItemButton, ListItemText, Stack, TextField} from '@mui/material';
 import {FixedSizeList, ListChildComponentProps} from 'react-window';
 
 // 상현이가 만든 컴포넌트와 겹쳐서 개발 중단된 컴포넌트
@@ -8,9 +8,9 @@ export default function DeprecatedSelfLogin() {
         const {index, style} = props;
 
         return (
-            <ListItem style={style} key={index} component="div" disablePadding>
+            <ListItem style={style} key={index} component='div' disablePadding>
                 <ListItemButton>
-                    <ListItemText primary={`학생 ${index + 1}`} secondary={"학번 이름 생일 등"}/>
+                    <ListItemText primary={`학생 ${index + 1}`} secondary={'학번 이름 생일 등'}/>
                 </ListItemButton>
             </ListItem>
         );
@@ -164,6 +164,7 @@ function FreeSolo() {
         {title: '3 Idiots', year: 2009},
         {title: 'Monty Python and the Holy Grail', year: 1975},
     ];
+
     interface User {
         name: string;
         studentId: string;
@@ -171,7 +172,7 @@ function FreeSolo() {
         department: string;
     }
 
-    const [users, setUsers] =  useState<User[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
     return (
         <Stack spacing={2} sx={{width: 300}}>
             <Autocomplete

@@ -1,7 +1,7 @@
-import { configureStore } from '@reduxjs/toolkit';
-import authSlice from "./authSlice";
-import usernameSlice from "./usernameSlice";
-import qrInputSlice from "./qrInputSlice";
+import {configureStore} from '@reduxjs/toolkit';
+import authSlice from './authSlice';
+import usernameSlice from './usernameSlice';
+import qrInputSlice from './qrInputSlice';
 
 const store = configureStore({
     reducer: {

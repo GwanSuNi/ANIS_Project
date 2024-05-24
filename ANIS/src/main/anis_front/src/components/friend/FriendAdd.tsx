@@ -1,20 +1,20 @@
-import {Autocomplete} from "@mui/material";
-import TextField from "@mui/material/TextField";
-import {StudentItemList, StudentListAndDialog} from "./CustomFriendList";
-import React from "react";
-import {Student} from "./MemberApi";
-import secInstance from "../utils/secInstance";
-import {useFriendSearch} from "../hooks/SearchHooks";
+import {Autocomplete} from '@mui/material';
+import TextField from '@mui/material/TextField';
+import {StudentItemList, StudentListAndDialog} from './CustomFriendList';
+import {Student, useFriendSearch} from '@hooks';
+import {secInstance} from '@utils';
 
 /**
  * 친구 추가하기
  */
-export const FriendAdd = () => {
+export default function FriendAdd() {
     // 친구 찾는 훅스 갖고오기
-    const { studentID,setStudentID,studentName,
-        setStudentName,departmentName,setDepartmentName
-        ,birth,setBirth
-        ,studentList,fetchAndSetStudents} = useFriendSearch();
+    const {
+        studentID, setStudentID, studentName,
+        setStudentName, departmentName, setDepartmentName
+        , birth, setBirth
+        , studentList, fetchAndSetStudents
+    } = useFriendSearch();
 
     return (
         //TODO 컴포넌트끼리 CSS 정리하기
@@ -23,7 +23,7 @@ export const FriendAdd = () => {
                 options={studentList}
                 // 이름기준으로 검색되게
                 getOptionLabel={(option) => option.studentName}
-                style={{ width: 300 }}
+                style={{width: 300}}
                 onInputChange={(event, newInputValue) => {
                     setStudentID(newInputValue);
                     setStudentName(newInputValue);
@@ -41,7 +41,7 @@ export const FriendAdd = () => {
                     />
                 }
                 dialogTitle="친구로 추가하시겠습니까?"
-                onConfirm={(section: Student |  null, handleClose) => {
+                onConfirm={(section: Student | null, handleClose) => {
                     if (section != null) {
                         const friendID = section.studentID; // 친구의 ID를 여기에 입력하세요.
                         secInstance.post(`/api/friend/${friendID}`)
@@ -61,4 +61,4 @@ export const FriendAdd = () => {
             />
         </>
     );
-};
+}

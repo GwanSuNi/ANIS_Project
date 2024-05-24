@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import {FormEvent, useState} from 'react';
 import axios from 'axios';
-import {useNavigate} from "react-router-dom";
+import {useNavigate} from 'react-router-dom';
 
 export function useJoin() {
     const [username, setUsername] = useState('');
@@ -11,7 +11,7 @@ export function useJoin() {
     const [role, setRole] = useState('');
     const navigate = useNavigate();
 
-    const handleSubmit = async (event: React.FormEvent) => {
+    const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
 
         const joinData = {
@@ -43,5 +43,19 @@ export function useJoin() {
         }
     };
 
-    return { username, password, studentName, departmentId, birth, role, setUsername, setPassword, setStudentName, setDepartmentId, setBirth, setRole, handleSubmit };
+    return {
+        username,
+        password,
+        studentName,
+        departmentId,
+        birth,
+        role,
+        setUsername,
+        setPassword,
+        setStudentName,
+        setDepartmentId,
+        setBirth,
+        setRole,
+        handleSubmit
+    };
 }

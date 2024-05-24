@@ -1,13 +1,13 @@
-import {StudentCheckList} from "./CustomFriendList";
-import React, {useEffect, useState} from "react";
-import {fetchFriendList, Student} from "./MemberApi";
-import Button from "@mui/material/Button";
-import secInstance from "../utils/secInstance";
+import React, {useEffect, useState} from 'react';
+import Button from '@mui/material/Button';
+import {StudentCheckList} from '@components';
+import {fetchFriendList, Student} from '@hooks';
+import {secInstance} from '@utils';
 
 /**
  * 수강신청 함께하기 컴포넌트
  */
-const EnrolmentTogether = () => {
+export default function EnrolmentTogether() {
     const [friendList, setFriendList] = useState<Student[]>([]);
     const [checkedStudents, setCheckedStudents] = useState<Student[]>([]);
     useEffect(() => {
@@ -44,5 +44,3 @@ const EnrolmentTogether = () => {
         </>
     );
 }
-
-export {EnrolmentTogether}

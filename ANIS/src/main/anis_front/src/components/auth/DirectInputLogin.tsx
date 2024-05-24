@@ -1,17 +1,18 @@
-import {Autocomplete} from "@mui/material";
-import TextField from "@mui/material/TextField";
-import {StudentItemList, StudentListAndDialog} from "./CustomFriendList";
-import React from "react";
-import {useStudentSearch} from "../hooks/SearchHooks";
+import {Autocomplete} from '@mui/material';
+import TextField from '@mui/material/TextField';
+import {StudentItemList, StudentListAndDialog} from '@components';
+import {useStudentSearch} from '@hooks';
 
 /**
  * 직접 선택해서 로그인하는 컴포넌트
  */
-const DirectInputLogin = () => {
-    const { studentID,setStudentID,studentName,
-        setStudentName,departmentName,setDepartmentName
-        ,birth,setBirth
-        ,studentList} = useStudentSearch();
+export default function DirectInputLogin() {
+    const {
+        studentID, setStudentID, studentName,
+        setStudentName, departmentName, setDepartmentName
+        , birth, setBirth
+        , studentList,
+    } = useStudentSearch();
 
     return (
         //TODO 컴포넌트끼리 CSS 정리하기
@@ -20,7 +21,7 @@ const DirectInputLogin = () => {
                 options={studentList}
                 // 이름기준으로 검색되게
                 getOptionLabel={(option) => option.studentName}
-                style={{ width: 300 }}
+                style={{width: 300}}
                 onInputChange={(event, newInputValue) => {
                     setStudentID(newInputValue);
                     setStudentName(newInputValue);
@@ -44,5 +45,4 @@ const DirectInputLogin = () => {
             />
         </>
     );
-};
-export {DirectInputLogin}
+}

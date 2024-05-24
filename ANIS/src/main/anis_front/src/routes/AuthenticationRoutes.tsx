@@ -1,7 +1,4 @@
-import QRLogin from "../components/QRLogin";
-import SelfLogin from "../components/SelfLogin";
-import SignUp from "../components/SignUp";
-import {DirectInputLogin} from "../components/DirectInputLogin";
+import {DirectInputLogin, QRLogin, SelfLogin, SignUp} from '@components';
 
 const AuthenticationRoutes = [
     {
@@ -17,12 +14,9 @@ const AuthenticationRoutes = [
             },
             {
                 path: 'direct-input', //모바일 로그인 직접입력
-                element:
                 // TODO 확인버튼 클릭시 로그인되게 만들기(onConfirm 구현하기)
                 //      페이지틀 통일화시키기
-                    <>
-                        <DirectInputLogin/>
-                    </>
+                element: <DirectInputLogin/>
             }
         ]
     },

@@ -1,5 +1,5 @@
-import {useDispatch} from "react-redux";
-import {setQrInput} from "@redux/qrInputSlice";
+import {useDispatch} from 'react-redux';
+import {setQrInput} from '@redux';
 
 export function useSerialPort() {
     const dispatch = useDispatch();
@@ -8,12 +8,12 @@ export function useSerialPort() {
         if ('serial' in navigator) {
             try {
                 const filters = [
-                    { usbVendorId: 1504, usbProductId: 5889 }, // 바코드 스캐너 정보
+                    {usbVendorId: 1504, usbProductId: 5889}, // 바코드 스캐너 정보
                 ];
 
                 // 사용자가 바코드 스캐너를 선택할 수 있게 프롬프트를 띄운다.
                 // @ts-ignore
-                const port = await navigator.serial.requestPort({ filters });
+                const port = await navigator.serial.requestPort({filters});
                 await port.open({baudRate: 11500});
 
                 while (port.readable) {
@@ -43,5 +43,5 @@ export function useSerialPort() {
         }
     };
 
-    return { selectPort };
+    return {selectPort};
 }

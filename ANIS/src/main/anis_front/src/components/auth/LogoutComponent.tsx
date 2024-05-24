@@ -1,13 +1,11 @@
-import {MouseEvent} from "react";
-import {isLoggedIn, logoutInstance} from "@utils";
-import {useDispatch} from "react-redux";
-import {logoutSuccess} from "@redux/authSlice";
-import {useNavigate} from "react-router-dom";
-import {Button} from "@mui/material";
+import {MouseEvent} from 'react';
+import {isLoggedIn, logoutInstance} from '@utils';
+import {useDispatch} from 'react-redux';
+import {useNavigate} from 'react-router-dom';
+import {Button} from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
-import {setUsername} from "@redux/usernameSlice";
-import {setQrInput} from "@redux/qrInputSlice";
-import Typography from "@mui/material/Typography";
+import Typography from '@mui/material/Typography';
+import {setQrInput, setUsername} from '@redux';
 
 export default function LogoutComponent() {
     const dispatch = useDispatch();
@@ -23,7 +21,6 @@ export default function LogoutComponent() {
                 sessionStorage.removeItem('access');
                 dispatch(setUsername(''));
                 dispatch(setQrInput(''));
-                dispatch(logoutSuccess());
                 alert('로그아웃 되었습니다.');
                 navigate('/login');
             }

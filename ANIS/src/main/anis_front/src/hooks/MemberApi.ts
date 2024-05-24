@@ -1,4 +1,4 @@
-import secInstance from "../utils/secInstance";
+import {secInstance} from '@utils';
 
 export interface Student {
     studentID: string;
@@ -14,7 +14,7 @@ export interface Student {
  */
 const fetchStudents = async (url: string, params?: object): Promise<Student[]> => {
     try {
-        const response = await secInstance.get(url, { params });
+        const response = await secInstance.get(url, {params});
         if (response.status === 200) {
             return response.data.map((item: any): Student => ({
                 studentID: item.studentID,
@@ -60,14 +60,14 @@ const fetchFriendList = async (): Promise<Student[]> => {
  * 로그인하려고하는 회원을 찾는 axios통신
  */
 const fetchMembers = async (studentID: string, studentName: string, departmentName: string, birth: string): Promise<Student[]> => {
-    return fetchStudents('/api/members/search', { studentID, studentName, departmentName, birth });
+    return fetchStudents('/api/members/search', {studentID, studentName, departmentName, birth});
 };
 
 /**
  * 현재 로그인한 유저의 친구추가할 친구를찾는 axios 통신
  */
 const fetchFriends = async (studentID: string, studentName: string, departmentName: string, birth: string): Promise<Student[]> => {
-    return fetchStudents('/api/members/friendSearch', { studentID, studentName, departmentName, birth });
+    return fetchStudents('/api/members/friendSearch', {studentID, studentName, departmentName, birth});
 };
 
 export {deleteFriend, fetchFriendList, fetchMembers, fetchFriends}

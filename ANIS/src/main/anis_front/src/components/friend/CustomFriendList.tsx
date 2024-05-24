@@ -1,6 +1,6 @@
 // React 관련 라이브러리
-import React, {useEffect, useState} from 'react';
-import {useNavigate} from "react-router-dom";
+import {ComponentType, CSSProperties, FC, KeyboardEvent, SyntheticEvent, useEffect, useRef, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 // MUI 관련 라이브러리
 import AddIcon from '@mui/icons-material/Add';
@@ -27,18 +27,15 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
-import {styled, Theme} from '@mui/material/styles';
+import {createTheme, styled, Theme, ThemeProvider} from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 // 기타 라이브러리
-import axios from 'axios';
 import {FixedSizeList} from 'react-window';
 
 // 로컬 컴포넌트
-import {fetchFriendLectureList, fetchSelectedLectures, Lecture} from "./LectureApi";
-import {deleteFriend, fetchFriendList, Student} from "./MemberApi";
-import {TimeTable} from "./Timetable";
+import {deleteFriend, fetchFriendLectureList, fetchFriendList, fetchSelectedLectures, Lecture, Student} from '@hooks';
+import {TimeTable} from '@components';
 
 /**
  *
@@ -55,15 +52,15 @@ const FriendListView = () => {
     }
     const navigate = useNavigate();
     const lightTheme = createTheme({palette: {mode: 'light'}});
-    const [open, setOpen] = React.useState<boolean[]>([]);
-    const anchorRef = React.useRef<(HTMLButtonElement | null)[]>([]);
+    const [open, setOpen] = useState<boolean[]>([]);
+    const anchorRef = useRef<(HTMLButtonElement | null)[]>([]);
 
-    const [dialogOpen, setDialogOpen] = React.useState(false);
-    const [selectedStudent, setSelectedStudent] = React.useState<Student | null>(null);
-    const [showTimeTable, setShowTimeTable] = React.useState(false);
-    const [friendLectures, setFriendLectures] = React.useState<Lecture[]>([]);
-    const [myLectures, setMyLectures] = React.useState<Lecture[]>([]);
-    const [friendList, setFriendList] = React.useState<Student[]>([]);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+    const [showTimeTable, setShowTimeTable] = useState(false);
+    const [friendLectures, setFriendLectures] = useState<Lecture[]>([]);
+    const [myLectures, setMyLectures] = useState<Lecture[]>([]);
+    const [friendList, setFriendList] = useState<Student[]>([]);
 
     const StyledPaper = styled(Paper)({
         width: '100%',
@@ -79,7 +76,7 @@ const FriendListView = () => {
     const handleClick = () => {
         navigate("/friend/add");
     };
-    const handleClose = (event: React.SyntheticEvent | Event, index: number) => {
+    const handleClose = (event: SyntheticEvent | Event, index: number) => {
         if (
             anchorRef.current[index] &&
             anchorRef.current[index]!.contains(event.target as Node)
@@ -98,7 +95,7 @@ const FriendListView = () => {
      * @param event
      * @param index
      */
-    const handleListKeyDown = (event: React.KeyboardEvent, index: number) => {
+    const handleListKeyDown = (event: KeyboardEvent, index: number) => {
         if (event.key === 'Tab') {
             event.preventDefault();
             setOpen((prevOpen) => {
@@ -131,7 +128,7 @@ const FriendListView = () => {
 
 
     // 나의 시간표를 갖고옴
-    const prevOpen = React.useRef(open);
+    const prevOpen = useRef(open);
     useEffect(() => {
         const fetchMyLectureData = async () => {
             const fetchedLectures = await fetchSelectedLectures();
@@ -331,7 +328,7 @@ interface StudentCheckProps {
  * @param onCheckedItemsChange
  * @constructor
  */
-const StudentCheckList: React.FC<StudentCheckProps> = ({items, onCheckedItemsChange}) => {
+const StudentCheckList: FC<StudentCheckProps> = ({items, onCheckedItemsChange}) => {
     const [checked, setChecked] = useState<number[]>([]); // 체크된 아이템을 저장할 state
     // 체크박스 토글 핸들러
     const handleToggle = (index: number) => () => {
@@ -402,11 +399,11 @@ const StudentCheckList: React.FC<StudentCheckProps> = ({items, onCheckedItemsCha
 
 interface ListRow {
     index: number;
-    style: React.CSSProperties;
+    style: CSSProperties;
 }
 
-const StudentItemList: React.FC<StudentListProps> = ({items, onListItemClick}) => {
-    const Row: React.FC<ListRow> = ({index, style}) => {
+const StudentItemList: FC<StudentListProps> = ({items, onListItemClick}) => {
+    const Row: FC<ListRow> = ({index, style}) => {
         const item = items[index];
         return (
             <ListItem
@@ -462,7 +459,7 @@ interface DialogProps {
     section: Student | null;
 }
 
-const CustomDialog: React.FC<DialogProps> = ({title, onConfirm, open, onClose, section}) => {
+const CustomDialog: FC<DialogProps> = ({title, onConfirm, open, onClose, section}) => {
     return (
         <Dialog
             open={open}
@@ -502,7 +499,7 @@ const CustomDialog: React.FC<DialogProps> = ({title, onConfirm, open, onClose, s
 }
 
 interface StudentListAndDialogProps {
-    ListComponent: React.ComponentType<{ onListItemClick: (section: Student) => void }>;
+    ListComponent: ComponentType<{ onListItemClick: (section: Student) => void }>;
     dialogTitle: string;
     onConfirm: (section: Student | null, handleClose: () => void) => void; // 타입 변경
 }
@@ -514,7 +511,7 @@ interface StudentListAndDialogProps {
  * @param onConfirm 확인 버튼 클릭시 실행될 메서드 입력
  * @constructor
  */
-const StudentListAndDialog: React.FC<StudentListAndDialogProps> = ({ListComponent, dialogTitle, onConfirm}) => {
+const StudentListAndDialog: FC<StudentListAndDialogProps> = ({ListComponent, dialogTitle, onConfirm}) => {
 
     const [dialog, setDialog] = useState<{ open: boolean; section: Student | null }>({
         open: false,
@@ -545,4 +542,4 @@ const StudentListAndDialog: React.FC<StudentListAndDialogProps> = ({ListComponen
     );
 }
 
-export {StudentListAndDialog, StudentItemList, CustomDialog, StudentCheckList, FriendListView,}
+export {StudentListAndDialog, StudentItemList, CustomDialog, StudentCheckList, FriendListView}

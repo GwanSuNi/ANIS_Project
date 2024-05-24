@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from "react";
-import {fetchFriendList, Student} from "./MemberApi";
-import {StudentItemList, StudentListAndDialog} from "./CustomFriendList";
-import secInstance from "../utils/secInstance";
+import {useEffect, useState} from 'react';
+import {StudentItemList, StudentListAndDialog} from '@components';
+import {fetchFriendList, Student} from '@hooks';
+import {secInstance} from '@utils';
 
 /**
  * 수강신청 따라하기 컴포넌트
  */
-const LectureCopy = () => {
+export default function LectureCopy() {
     const [friendList, setFriendList] = useState<Student[]>([]);
     useEffect(() => {
         const fetchMyFriendList = async () => {
@@ -19,7 +19,7 @@ const LectureCopy = () => {
         };
         fetchMyFriendList();
     }, []);
-    return(
+    return (
         <StudentListAndDialog
             ListComponent={(listProps) =>
                 <StudentItemList
@@ -31,7 +31,7 @@ const LectureCopy = () => {
             // 모달안에 들어가는 텍스트를 바꾸기
             dialogTitle="해당 친구의 시간표대로 수강신청 할까요?"
             // "예" 를 클릭했을때 작동하는 메서드 넣기
-            onConfirm={(section: Student |  null, handleClose) => {
+            onConfirm={(section: Student | null, handleClose) => {
                 if (section != null) {
                     const friendID = section.studentID; // 친구의 ID를 여기에 입력하세요.
                     secInstance.post(`/api/registrations/${friendID}`)
@@ -50,5 +50,3 @@ const LectureCopy = () => {
         />
     );
 }
-export {LectureCopy}
-

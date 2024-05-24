@@ -1,16 +1,7 @@
-import {LectureApplication} from "../components/LectureApplication";
-import QRLogin from "../components/QRLogin";
-import SelfLogin from "../components/SelfLogin";
-import SignUp from "../components/SignUp";
-import React from "react";
-import ProtectedRoute from "../utils/ProtectedRoute";
-import {FriendAdd} from "../components/FriendAdd";
-import {EnrolmentTogether} from "../components/EnrolmentTogether";
-import {LectureCopy} from "../components/LectureCopy";
-import Main from "../components/Main";
-import {SurveyListPage} from "@pages";
-import {MainLayout} from "@layout";
-import {FriendListView} from "../components/CustomFriendList";
+import {EnrolmentTogether, FriendAdd, FriendListView, LectureApplication, LectureCopy} from '@components';
+import {SurveyListPage} from '@pages';
+import {MainLayout} from '@layout';
+
 const MainRoutes = [
     {
         path: '/',
@@ -18,32 +9,8 @@ const MainRoutes = [
         children: [
             {
                 path: '/',
-                element: <ProtectedRoute element={<div>Main Page</div>}/>
-            },
-            {
-                path: 'login',
-                children: [
-                    {
-                        path: '',
-                        element: <QRLogin/>
-                    },
-                    {
-                        path: 'self',
-                        element: <SelfLogin/>
-                    },
-                    {
-                        path: 'select',
-                        element: <div>select login</div>
-                    }
-                ]
-            },
-            {
-                path: 'main',
-                element: <Main/>
-            },
-            {
-                path: 'signup',
-                element: <SignUp/>
+                // element: <ProtectedRoute element={<div>Main Page</div>}/>
+                element: <div>Main Page</div>
             },
             {
                 path: 'friend',
