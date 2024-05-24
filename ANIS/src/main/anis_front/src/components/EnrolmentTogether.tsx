@@ -26,7 +26,7 @@ const EnrolmentTogether = () => {
             <StudentCheckList items={friendList} onCheckedItemsChange={(checkedStudents) => {
                 setCheckedStudents(checkedStudents); // 체크된 학생들의 목록을 상태로 저장
             }}/>
-            // TODO 에러처리하기
+            {/* TODO 에러처리하기*/}
             <Button onClick={async () => {
                 try {
                     const response = await secInstance.post('/api/registrations/friends', checkedStudents);
