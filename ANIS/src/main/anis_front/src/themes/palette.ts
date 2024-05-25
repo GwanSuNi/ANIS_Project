@@ -11,7 +11,7 @@ const palette: PaletteOptions = {
     error: {
         main: '#d32f2f',
         light: '#ff0000'
-    },
+    }
 };
 
 export default palette;

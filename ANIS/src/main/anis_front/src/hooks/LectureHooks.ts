@@ -1,5 +1,5 @@
-import {useEffect, useState} from "react";
-import {fetchAvailableLectures, fetchSelectedLectures, Lecture} from "../components/LectureApi";
+import {useEffect, useState} from 'react';
+import {fetchAvailableLectures, fetchSelectedLectures, Lecture} from './LectureApi';
 
 
 /**
@@ -22,7 +22,7 @@ const useFetchLectures = () => {
         fetchData();
     }, []);
 
-    return { availableLectures, selectedLectures, setSelectedLectures};
+    return {availableLectures, selectedLectures, setSelectedLectures};
 };
 
 export {useFetchLectures}

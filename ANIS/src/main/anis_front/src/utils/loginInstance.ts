@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import {getAccessToken, setAccessToken} from './authUtils';
 
 // Axios 인스턴스 생성

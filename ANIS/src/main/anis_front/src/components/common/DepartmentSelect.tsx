@@ -2,11 +2,14 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, {SelectChangeEvent} from '@mui/material/Select';
-import {useEffect, useState} from "react";
-import axios from "axios";
+import {useEffect, useState} from 'react';
+import axios from 'axios';
 
-export default function DepartmentSelect({selectedDepIndex, setSelectedDepIndex}: {selectedDepIndex: string, setSelectedDepIndex: (value: string) => void}) {
-    const [departments, setDepartments] = useState<{depIndex: number, depName: string}[]>([]);
+export default function DepartmentSelect({selectedDepIndex, setSelectedDepIndex}: {
+    selectedDepIndex: string,
+    setSelectedDepIndex: (value: string) => void
+}) {
+    const [departments, setDepartments] = useState<{ depIndex: number, depName: string }[]>([]);
 
     useEffect(() => {
         const fetchDepartments = async () => {
@@ -28,7 +31,7 @@ export default function DepartmentSelect({selectedDepIndex, setSelectedDepIndex}
 
     return (
         <div>
-            <FormControl required sx={{ minWidth: 190 }}>
+            <FormControl required sx={{minWidth: 190}}>
                 <InputLabel id="demo-simple-select-helper-label">학과</InputLabel>
                 <Select
                     required

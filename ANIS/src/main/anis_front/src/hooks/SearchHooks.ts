@@ -1,6 +1,5 @@
-import {useEffect, useState} from "react";
-import {fetchFriends, fetchMembers, Student} from "../components/MemberApi";
-import exp from "node:constants";
+import {useEffect, useState} from 'react';
+import {fetchFriends, fetchMembers, Student} from './MemberApi';
 
 /**
  * @param fetchFunction 친구추가에서 사용할 훅인지, 로그인시에 사용할 훅인지
@@ -21,7 +20,18 @@ const useStudentSearchBase = (fetchFunction: (studentID: string, studentName: st
         fetchAndSetStudents();
     }, [studentID, studentName, departmentName, birth]);
 
-    return { studentID, setStudentID, studentName, setStudentName, departmentName, setDepartmentName, birth, setBirth, studentList,fetchAndSetStudents };
+    return {
+        studentID,
+        setStudentID,
+        studentName,
+        setStudentName,
+        departmentName,
+        setDepartmentName,
+        birth,
+        setBirth,
+        studentList,
+        fetchAndSetStudents
+    };
 };
 
 /**
@@ -39,4 +49,4 @@ const useStudentSearch = () => {
 const useFriendSearch = () => {
     return useStudentSearchBase(fetchFriends);
 };
-export{useStudentSearch,useFriendSearch}
+export {useStudentSearch, useFriendSearch}

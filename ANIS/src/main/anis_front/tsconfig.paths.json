@@ -7,7 +7,7 @@
       "@hooks": ["./hooks"],
       "@layout": ["./layout"],
       "@pages": ["./pages"],
-      "@redux/*": ["./redux/*"],
+      "@redux": ["./redux"],
       "@routes": ["./routes"],
       "@themes": ["./themes"],
       "@utils": ["./utils"]

@@ -10,8 +10,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Copyright from "./Copyright";
-import DepartmentSelect from "./DepartmentSelect";
+import {Copyright, DepartmentSelect} from '@components';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -22,11 +21,25 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import FormLabel from '@mui/material/FormLabel';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
-import {Divider} from "@mui/material";
-import {useJoin} from "@hooks";
+import {Divider} from '@mui/material';
+import {useJoin} from '@hooks';
 
 export default function SignUp() {
-    const {username, password, studentName, departmentId, birth, role, setUsername, setPassword, setStudentName, setDepartmentId, setBirth, setRole, handleSubmit} = useJoin();
+    const {
+        username,
+        password,
+        studentName,
+        departmentId,
+        birth,
+        role,
+        setUsername,
+        setPassword,
+        setStudentName,
+        setDepartmentId,
+        setBirth,
+        setRole,
+        handleSubmit
+    } = useJoin();
     const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -57,7 +70,7 @@ export default function SignUp() {
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <FormControl>
-                                <FormLabel id="demo-radio-buttons-group-label" sx={{mt:2}}>분류</FormLabel>
+                                <FormLabel id="demo-radio-buttons-group-label" sx={{mt: 2}}>분류</FormLabel>
                                 <RadioGroup
                                     row
                                     aria-labelledby="demo-radio-buttons-group-label"
@@ -66,8 +79,8 @@ export default function SignUp() {
                                     value={role}
                                     onChange={e => setRole(e.target.value)}
                                 >
-                                    <FormControlLabel value="MEMBER" control={<Radio />} label="학생" />
-                                    <FormControlLabel value="ADMIN" control={<Radio />} label="관리자" />
+                                    <FormControlLabel value="MEMBER" control={<Radio/>} label="학생"/>
+                                    <FormControlLabel value="ADMIN" control={<Radio/>} label="관리자"/>
                                 </RadioGroup>
                             </FormControl>
                         </Grid>
@@ -128,7 +141,7 @@ export default function SignUp() {
                                                 onMouseDown={handleMouseDownPassword}
                                                 edge="end"
                                             >
-                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                {showPassword ? <VisibilityOff/> : <Visibility/>}
                                             </IconButton>
                                         </InputAdornment>
                                     }

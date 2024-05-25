@@ -1,6 +1,4 @@
-import axios from 'axios';
-import {useEffect, useState} from "react";
-import secInstance from "../utils/secInstance";
+import {secInstance} from '@utils';
 // 타입스크립트에서 export {} 안에 들어가는 요소들은 이미 모듈로 인정이 되어있고 그 안에 사용하는 타입 또한 모듈로 인정되어있어
 // export 안에 타입만 정의한것을 넣으려면 모듈을 두번 export 하는 상황이 발생하여 타입스크립트에서 막는다
 // 그래서 타입만을 다른곳에서 사용하고싶으면 타입만 따로 export 해줘야한다
@@ -18,6 +16,7 @@ export interface Lecture {
     lecCredit: number;
     lecGrade: number;
 }
+
 // 받아오는 LectureDto 타입과 매핑시켜주는함수
 const formatLecture = (lecture: any): Lecture => ({
     lecID: lecture.lecID,
@@ -35,6 +34,7 @@ const formatLecture = (lecture: any): Lecture => ({
     lecCredit: lecture.lecCredit,
     lecGrade: lecture.lecGrade,
 });
+
 // lectureList를 반환하는 url 을 받아서 lectureList 에 대해 반환하는 함수
 async function fetchTimetable(url: string): Promise<Lecture[]> {
     const response = await secInstance.get(url);
@@ -42,6 +42,7 @@ async function fetchTimetable(url: string): Promise<Lecture[]> {
     const timetable: Lecture[] = timetableData.map((item: any) => formatLecture(item));
     return timetable;
 }
+
 // 현재 로그인되어있는 회원의 id로 값을 받아오기
 const fetchSelectedLectures = async () => {
     return fetchTimetable("/api/lecture/lectureList");
@@ -83,5 +84,7 @@ const registrations = async (selectedLectures: Lecture[]) => {
         console.error("수강신청 중 오류가 발생했습니다:", error);
     }
 };
-export {registrations,fetchSelectedLectures,
-    fetchAvailableLectures,fetchFriendLectureList,fetchTimetable,formatLecture,fetchLectureOfPreset}
+export {
+    registrations, fetchSelectedLectures,
+    fetchAvailableLectures, fetchFriendLectureList, fetchTimetable, formatLecture, fetchLectureOfPreset
+}

@@ -1,8 +1,8 @@
 import {MouseEvent, useState} from 'react';
-import {secInstance} from "@utils";
+import {secInstance} from '@utils';
 
-const SecuredAPITest = () => {
-    const [res, setRes]= useState("");
+export default function SecuredAPITest() {
+    const [res, setRes] = useState('');
     const handleClick = async (event: MouseEvent) => {
         event.preventDefault();
 
@@ -13,16 +13,14 @@ const SecuredAPITest = () => {
                 setRes(response.data);
             }
         } catch (error) {
-            setRes("어드민이 아닙니다.")
+            setRes('어드민이 아닙니다.')
             console.error('Error:', error); // 오류 메시지 출력
         }
     };
 
-    return ( <>
-        <button onClick={handleClick}>어드민 체크</button>
+    return (<>
+            <button onClick={handleClick}>어드민 체크</button>
             <p>{res}</p>
         </>
     );
-};
-
-export default SecuredAPITest;
+}

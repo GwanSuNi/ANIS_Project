@@ -1,8 +1,8 @@
+import {FC, memo, useEffect, useMemo, useState} from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
 import Button from '@mui/material/Button';
-import {Box} from "@mui/material";
-import {FC, memo, useEffect, useMemo, useState} from "react";
-import {Lecture} from "./LectureApi";
+import {Box} from '@mui/material';
+import {Lecture} from '@hooks';
 
 interface LectureList {
     availableLectures: Lecture[]
