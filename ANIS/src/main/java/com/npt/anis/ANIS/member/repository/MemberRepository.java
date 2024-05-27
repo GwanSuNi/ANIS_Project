@@ -27,4 +27,9 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     List<Member> findByIsQuit(boolean isQuit);
     @Query("SELECT new com.npt.anis.ANIS.member.domain.dto.MemberSearchDTO(m.studentID, m.studentName, m.birth, d.depName) FROM Member m JOIN Department d ON m.departmentID = d.depIndex WHERE d.depName like %:depName%")
     List<MemberSearchDTO> findMembersByDepartmentName(@Param("depName") String depName);
+
+    @Query("SELECT new com.npt.anis.ANIS.member.domain.dto.MemberSearchDTO(m.studentID, m.studentName, m.birth, d.depName) " +
+            "FROM Member m JOIN Department d ON m.departmentID = d.depIndex WHERE m.studentID = :studentID")
+    MemberSearchDTO getOneFindByStudentNameContainingOrBirthContainingOrStudentIDContainingOrDepartmentNameContaining(@Param("studentID") String studentID);
+
 }

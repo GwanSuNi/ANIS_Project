@@ -1,7 +1,5 @@
-const themeTypography = () => {
-    return {
-        fontFamily: 'NanumGothic'
-    };
+const themeTypography = {
+    fontFamily: 'NanumGothic'
 };
 
 export default themeTypography;

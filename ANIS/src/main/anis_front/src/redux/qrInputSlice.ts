@@ -1,8 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 
 const qrInputSlice = createSlice({
     name: 'qrInputSlice',
-    initialState: { qrInput: '' },
+    initialState: {qrInput: ''},
     reducers: {
         setQrInput: (state, action) => {
             state.qrInput = action.payload;
@@ -10,6 +10,6 @@ const qrInputSlice = createSlice({
     },
 });
 
-export const { setQrInput } = qrInputSlice.actions;
+export const {setQrInput} = qrInputSlice.actions;
 
 export default qrInputSlice;

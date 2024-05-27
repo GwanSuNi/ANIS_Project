@@ -7,12 +7,15 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.npt.anis.ANIS.member.domain.dto.MemberDTO;
 import com.npt.anis.ANIS.member.domain.dto.MemberSearchDTO;
+import com.npt.anis.ANIS.member.repository.MemberRepository;
+import com.npt.anis.ANIS.member.service.FriendService;
 import com.npt.anis.ANIS.member.service.MemberService;
 import com.npt.anis.ANIS.member.service.TestMongoService;
 import com.npt.anis.ANIS.member.service.TestUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -29,6 +33,8 @@ public class MemberController {
     private final MemberService memberService;
     private final TestMongoService testMongoService;
     private final TestUserService testUserService;
+    private final FriendService friendService;
+    private final MemberRepository memberRepository;
 
     @GetMapping("test")
     public String test() {
@@ -116,5 +122,32 @@ public class MemberController {
         }catch (Exception e){log.warn("QR Code OutputStream 도중 Excpetion 발생, {}", e.getMessage());}
 
         return null;
+    }
+    
+    // TODO 코드중복 해결하기
+    @GetMapping("/members/friendSearch")
+    public ResponseEntity<List<MemberSearchDTO>> searchFriendMembers(@RequestParam(name = "studentID", required = false) String studentID,
+                                                                     @RequestParam(name = "studentName", required = false) String studentName,
+                                                                     @RequestParam(name = "birth", required = false) String birth,
+                                                                     @RequestParam(name = "departmentName", required = false) String departmentName) {
+        log.info("{} {} {} {}", studentID, studentName, birth, departmentName);
+        MemberSearchDTO memberSearchDTO = new MemberSearchDTO(studentID, studentName, birth, departmentName);
+        String myID = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<MemberSearchDTO> result = memberService.getAnyMembers(memberSearchDTO);
+        // 현재 사용자의 친구 목록 가져오기
+        List<MemberSearchDTO> myFriends = friendService.getMyFriends(myID);
+
+        // 나의 정보 또한 myFriends 에 담기
+        myFriends.add(memberService.getMember(myID));
+
+        // 친구 목록을 사용하여 검색 결과 필터링
+        result = result.stream()
+                .filter(member -> myFriends.stream().noneMatch(friend -> friend.getStudentID().equals(member.getStudentID())))
+                .collect(Collectors.toList());
+
+        if (result.isEmpty()) {
+            return ResponseEntity.status(404).body(null);
+        }
+        return ResponseEntity.ok(result);
     }
 }

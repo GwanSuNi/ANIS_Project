@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios from 'axios';
+import {getAccessToken, removeAccessToken} from './authUtils';
 
 const logoutInstance = axios.create({
     baseURL: 'http://localhost:8080',
@@ -7,13 +8,13 @@ const logoutInstance = axios.create({
 });
 
 logoutInstance.interceptors.request.use(config => {
-    config.headers['access'] = sessionStorage.getItem('access');
+    config.headers['access'] = getAccessToken();
     return config;
 });
 
 logoutInstance.interceptors.response.use(response => {
     if (response.status === 200) {
-        sessionStorage.removeItem('access');
+        removeAccessToken();
         return response;
     }
     return response;
@@ -21,6 +22,5 @@ logoutInstance.interceptors.response.use(response => {
     console.error('Error:', error);
     return Promise.reject(error);
 })
-
 
 export default logoutInstance;
