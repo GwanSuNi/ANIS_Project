@@ -9,6 +9,9 @@ import LogoutComponent from "../components/LogoutComponent";
 import ProtectedRoute from "../utils/ProtectedRoute";
 import {SurveyListPage} from "../pages";
 import SecuredAPITest from "../components/SecuredAPITest";
+import MyInfo from "../components/MyInfo";
+import {Button} from "@mui/material";
+import MyInfoBtn from "../components/MyInfoBtn";
 
 // TODO 학생 리스트 Repository, Service 만들어서 서버에있는 값 반환하게 하기
 const studentList = [
@@ -40,11 +43,11 @@ const studentList = [
 const MainRoutes = [
     {
         path: '/',
-        element: <div>MainLayout <LogoutComponent/> <SecuredAPITest/><Outlet/></div>,
+        element: <div>MainLayout <LogoutComponent/> <SecuredAPITest/> <Outlet/></div>,
         children: [
             {
                 path: '/',
-                element: <ProtectedRoute element={<div>Main Page</div>}/>
+                element: <ProtectedRoute element={<div>Main Page <MyInfoBtn/></div>}/>
             },
             {
                 path: 'login',
@@ -66,6 +69,10 @@ const MainRoutes = [
             {
                 path: 'signup',
                 element: <SignUp/>
+            },
+            {
+                path: 'myInfo',
+                element: <MyInfo/>
             },
             {
                 path: 'friend',
