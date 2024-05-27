@@ -1,15 +1,9 @@
-import {Outlet} from "react-router-dom";
-import {FriendListView, StudentCheckList, StudentItemList, StudentListAndDialog} from "../components/FriendList";
 import React from "react";
-import LogoutComponent from "../components/LogoutComponent";
-import ProtectedRoute from "../utils/ProtectedRoute";
-import SecuredAPITest from "../components/SecuredAPITest";
 import MyInfo from "../components/MyInfo";
-import {Button} from "@mui/material";
-import MyInfoBtn from "../components/MyInfoBtn";
 import {EnrolmentTogether, FriendAdd, FriendListView, LectureApplication, LectureCopy} from '@components';
 import {SurveyListPage} from '@pages';
 import {MainLayout} from '@layout';
+import {ProtectedRoute} from "@utils";
 
 const MainRoutes = [
     {
@@ -18,8 +12,8 @@ const MainRoutes = [
         children: [
             {
                 path: '/',
-                // element: <ProtectedRoute element={<div>Main Page <MyInfoBtn/></div>}/>
-                element: <div>Main Page <MyInfoBtn/></div>
+                element: <ProtectedRoute element={<div>Main Page</div>}/>
+                // element: <div>Main Page <MyInfoBtn/></div>
             },
             {
                 path: 'myInfo',

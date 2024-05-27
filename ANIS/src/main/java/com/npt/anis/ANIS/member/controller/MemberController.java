@@ -45,6 +45,16 @@ public class MemberController {
         return "index";
     }
 
+    @GetMapping("/")
+    public ResponseEntity<String> getUsername() {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (name == null || name.equals("anonymousUser")) {
+            return ResponseEntity.status(403).body("로그인이 필요합니다.");
+        }
+        return ResponseEntity.ok(name);
+    }
+
+
     // TODO: MemberService 사용 컨트롤러 작성
     @GetMapping("/members")
     public ResponseEntity<List<MemberDTO>> getMembers() {
@@ -138,7 +148,7 @@ public class MemberController {
         List<MemberSearchDTO> myFriends = friendService.getMyFriends(myID);
 
         // 나의 정보 또한 myFriends 에 담기
-        myFriends.add(memberService.getMember(myID));
+        myFriends.add(memberService.getMemberSearch(myID));
 
         // 친구 목록을 사용하여 검색 결과 필터링
         result = result.stream()
