@@ -9,6 +9,7 @@ import secInstance from "../utils/secInstance";
 import Paper from "@mui/material/Paper";
 import Card from "@mui/material/Card";
 import CardMedia from '@mui/material/CardMedia';
+import {useUserInfo} from "../hooks/useUserInfo";
 
 interface UserInfo {
     studentID: string;
@@ -27,7 +28,7 @@ function MyInfoTable(userInfo: UserInfo) {
     ];
     return (
         <TableContainer component={Paper}>
-            <Table sx={{minWidth: 200}} size="medium" aria-label="a dense table">
+            <Table sx={{minWidth: '250px', minHeight:'250px'}} size="medium" aria-label="a dense table">
                 <TableBody>
                     {data.map((row) => (
                         <TableRow key={row.label}>
@@ -46,14 +47,12 @@ function MyInfoTable(userInfo: UserInfo) {
 }
 
 export default function MyInfo() {
-    const [userInfo, setUserInfo] = useState<UserInfo>();
+    const userInfo = useUserInfo();
     const [qrCode, setQrCode] = useState<string>();
 
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
-                const response = await secInstance.get('/api/member/myInfo');
-                setUserInfo(response.data);
                 const qrResponse = await secInstance.get('/api/qr', {responseType: 'arraybuffer'});
                 const base64 = btoa(
                     new Uint8Array(qrResponse.data).reduce(
@@ -66,9 +65,8 @@ export default function MyInfo() {
                 console.error('내 정보를 불러오기에 실패했습니다:', error);
             }
         };
-
         fetchUserInfo();
-    }, []);
+    }, [userInfo]);
 
     if (!userInfo) {
         return <div>로딩중 입니다...</div>;
@@ -79,7 +77,6 @@ export default function MyInfo() {
             <CssBaseline/>
             <Box
                 sx={{
-                    marginTop: 8,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -89,17 +86,17 @@ export default function MyInfo() {
                 <Grid container spacing={2} maxWidth={"xl"} direction={"column"} justifyContent="center" alignItems="center" >
                     <Grid container spacing={4} xs={12} justifyContent="center" alignItems="center"  direction={{ xs: 'column', sm: 'row' }}
                           width={'600px'}
-                          columnSpacing={{ xs: 2, sm: 2, md: 3 }}
+                          columnSpacing={{ xs: 2, sm: 2, md: 4 }}
                           rowSpacing={{ xs: 2, sm: 4, md: 4 }}
-                          sx={{border: '1px solid black', p:0, m:0}}>
+                          sx={{p:0, m:0}}>
                         <Grid xs={'auto'} display={'flex'} justifyContent="center" alignItems="center">
                             {/*    이미지 박스*/}
                             {/*    TODO: DB에서 본인 증명사진 받아오기 */}
                             <Card
-                                style={{minWidth: '200px', minHeight: '200px', maxWidth: '300px', maxHeight: '300px'}}>
+                                style={{minWidth: '250px', minHeight: '250px', maxWidth: '300px', maxHeight: '300px'}}>
                                 <CardMedia
                                     component="img"
-                                    image="https://via.placeholder.com/200"
+                                    image="https://via.placeholder.com/250"
                                     alt="profile"
                                 />
                             </Card>
