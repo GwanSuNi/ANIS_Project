@@ -1,6 +1,7 @@
 import {EnrolmentTogether, FriendAdd, FriendListView, LectureApplication, LectureCopy} from '@components';
 import {SurveyListPage} from '@pages';
 import {MainLayout} from '@layout';
+import Main from "../pages/Main";
 
 const MainRoutes = [
     {
@@ -10,7 +11,7 @@ const MainRoutes = [
             {
                 path: '/',
                 // element: <ProtectedRoute element={<div>Main Page</div>}/>
-                element: <div>Main Page</div>
+                element: <Main/>
             },
             {
                 path: 'friend',
