@@ -60,6 +60,10 @@ dependencies {
 	// lombok보다 뒤에 선언 되어야 함
 	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
+	// zxing
+	implementation 'com.google.zxing:core:3.4.1'
+	implementation 'com.google.zxing:javase:3.4.1'
 }
 
 tasks.named('test') {
