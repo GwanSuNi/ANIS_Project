@@ -27,8 +27,8 @@ function MyInfoTable(userInfo: UserInfo) {
         {label: '생년월일', value: birth},
     ];
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{minWidth: '250px', minHeight:'250px'}} size="medium" aria-label="a dense table">
+        <TableContainer sx={{minWidth: '250px', minHeight:'250px', maxWidth:'300px', maxHeight:'300px'}} component={Paper}>
+            <Table  size="medium" aria-label="a dense table">
                 <TableBody>
                     {data.map((row) => (
                         <TableRow key={row.label}>
@@ -49,6 +49,7 @@ function MyInfoTable(userInfo: UserInfo) {
 export default function MyInfo() {
     const userInfo = useUserInfo();
     const [qrCode, setQrCode] = useState<string>();
+    const [profileImage, setProfileImage] = useState<string>();
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -68,6 +69,26 @@ export default function MyInfo() {
         fetchUserInfo();
     }, [userInfo]);
 
+    useEffect(() => {
+        const fetchProfileImage = async () => {
+            try {
+                const imageResponse = await secInstance.get(`/api/image/download/${userInfo?.studentID}`, {responseType: 'arraybuffer'});
+                const base64 = btoa(
+                    new Uint8Array(imageResponse.data).reduce(
+                        (data, byte) => data + String.fromCharCode(byte),
+                        '',
+                    ),
+                );
+                setProfileImage(`data:image/png;base64,${base64}`);
+            } catch (error) {
+                console.error('프로필 이미지를 불러오기에 실패했습니다:', error);
+            }
+        };
+        if (userInfo) {
+            fetchProfileImage();
+        }
+    }, [userInfo]); // 사용자 정보가 변경될 때만 프로필 이미지를 다시 요청합니다.
+
     if (!userInfo) {
         return <div>로딩중 입니다...</div>;
     }
@@ -85,28 +106,28 @@ export default function MyInfo() {
             >
                 <Grid container spacing={2} maxWidth={"xl"} direction={"column"} justifyContent="center" alignItems="center" >
                     <Grid container spacing={4} xs={12} justifyContent="center" alignItems="center"  direction={{ xs: 'column', sm: 'row' }}
-                          width={'600px'}
-                          columnSpacing={{ xs: 2, sm: 2, md: 4 }}
+                          width={'900px'}
+                          columnSpacing={{ xs: 2, sm: 4, md: 4 }}
                           rowSpacing={{ xs: 2, sm: 4, md: 4 }}
-                          sx={{p:0, m:0}}>
+                          sx={{p:0, mt:3}}>
                         <Grid xs={'auto'} display={'flex'} justifyContent="center" alignItems="center">
                             {/*    이미지 박스*/}
                             {/*    TODO: DB에서 본인 증명사진 받아오기 */}
                             <Card
-                                style={{minWidth: '250px', minHeight: '250px', maxWidth: '300px', maxHeight: '300px'}}>
+                                style={{width:'203px', height:'260px'}}>
                                 <CardMedia
                                     component="img"
-                                    image="https://via.placeholder.com/250"
+                                    image={profileImage}
                                     alt="profile"
                                 />
                             </Card>
                         </Grid>
-                        <Grid xs={6}>
+                        <Grid container xs={6} justifyContent="center" alignItems="center">
                             <MyInfoTable {...userInfo}/>
                         </Grid>
                     </Grid>
                     <Grid display={'flex'} xs={12} justifyContent="center" alignItems="center">
-                        <Card style={{minWidth: '100px', minHeight: '100px', maxWidth:'250px', maxHeight:'250px'}}>
+                        <Card style={{minWidth: '100px', minHeight: '100px', maxWidth:'300px', maxHeight:'300px', marginTop:10}}>
                             <CardMedia
                                 component="img"
                                 src={qrCode}
