@@ -13,13 +13,13 @@ loginInstance.interceptors.response.use(
     response => {
         if (response.status === 200) {
             let accessToken = response.headers["access"].trim(); // 헤더에서 access 토큰 가져오기
-            console.log('Access Token:', accessToken);
+            // console.log('Access Token:', accessToken);
             // Access 토큰을 메모리에 저장
             setAccessToken(accessToken);
             // 메모리에 있는 ACCESS 토큰 출력
-            console.log('sessionStorage:', getAccessToken());
+            // console.log('sessionStorage:', getAccessToken());
             // Refresh 토큰은 서버에서 HTTP Only 쿠키로 설정되어 클라이언트에서 직접 접근할 수 없습니다.
-            alert('로그인 성공');
+            // alert('로그인 성공');
         }
         return response;
     },
