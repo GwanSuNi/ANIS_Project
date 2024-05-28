@@ -19,9 +19,11 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Slf4j
 public class ImageController {
-    // 이미지 저장
+
     private final IdPhotoService idPhotoService;
 
+    // 이미지 저장
+    // 어드민이 학생의 사진을 업로드할 때 사용
     @PostMapping("/upload")
     public ResponseEntity<IdPhoto> uploadImage(@RequestParam("studentId") String studentId, @RequestParam("file") MultipartFile file) {
         try {
@@ -58,6 +60,26 @@ public class ImageController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
     // 이미지 삭제
+    @DeleteMapping("/{studentId}")
+    public ResponseEntity<HttpStatus> deleteImage(@PathVariable("studentId") String studentId) {
+        try {
+            idPhotoService.deleteImage(studentId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     // 이미지 수정
+    @PutMapping("/")
+    public ResponseEntity<HttpStatus> updateImage(@RequestParam("studentId") String studentId, @RequestParam("file") MultipartFile file) {
+        try {
+            idPhotoService.updateImage(studentId, file);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -14,4 +14,10 @@ public interface IdPhotoService {
 
     // 사진 메타데이터 조회
     IdPhoto getImageMetadata(String studentId);
+
+    // 사진 삭제
+    void deleteImage(String studentId);
+
+    // 사진 변경
+    void updateImage(String studentId, MultipartFile file) throws IOException;
 }
