@@ -15,7 +15,7 @@ export default function Footer() {
     const navigationItems = [
         {label: '친구', value: '/friend', icon: <PeopleIcon/>},
         {label: '홈', value: '/', icon: <HomeIcon/>},
-        {label: '내정보', value: '/mypage', icon: <PersonIcon/>},
+        {label: '내정보', value: '/myInfo', icon: <PersonIcon/>},
     ];
 
     const handleChange = (_: ChangeEvent<{}>, newValue: string) => {

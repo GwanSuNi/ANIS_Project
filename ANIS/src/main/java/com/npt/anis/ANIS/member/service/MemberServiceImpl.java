@@ -21,11 +21,14 @@ public class MemberServiceImpl implements MemberService {
     private final MemberMapper memberMapper;
 
     @Override
-    public MemberSearchDTO getMember(String studentID) {
+    public MemberSearchDTO getMemberSearch(String studentID) {
         // 일단 MemberSearchDTO로 만들어서 가려진 값만 리턴하게 했는데, 어드민이 조회하는 메서드를 따로 만들어야하나?
-        MemberSearchDTO memberSearchDTO = new MemberSearchDTO();
-        memberSearchDTO.setStudentID(studentID);
-        return memberRepository.getOneFindByStudentNameContainingOrBirthContainingOrStudentIDContainingOrDepartmentNameContaining(memberSearchDTO.getStudentID());
+        return memberRepository.findByStudentIDToSearchDTO(studentID);
+    }
+
+    @Override
+    public MemberDTO getMemberDetail(String studentID) {
+        return memberMapper.toDTO(memberRepository.findByStudentID(studentID));
     }
 
     @Override

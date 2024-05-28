@@ -1,6 +1,9 @@
+import React from "react";
+import MyInfo from "../components/MyInfo";
 import {EnrolmentTogether, FriendAdd, FriendListView, LectureApplication, LectureCopy} from '@components';
 import {SurveyListPage} from '@pages';
 import {MainLayout} from '@layout';
+import {ProtectedRoute} from "@utils";
 
 const MainRoutes = [
     {
@@ -9,8 +12,12 @@ const MainRoutes = [
         children: [
             {
                 path: '/',
-                // element: <ProtectedRoute element={<div>Main Page</div>}/>
-                element: <div>Main Page</div>
+                element: <ProtectedRoute element={<div>Main Page</div>}/>
+                // element: <div>Main Page <MyInfoBtn/></div>
+            },
+            {
+                path: 'myInfo',
+                element: <MyInfo/>
             },
             {
                 path: 'friend',
