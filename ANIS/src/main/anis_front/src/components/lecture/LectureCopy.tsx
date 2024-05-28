@@ -28,6 +28,7 @@ export default function LectureCopy() {
                     {...listProps}
                 />
             }
+            showTimeTableCheck={true}
             // 모달안에 들어가는 텍스트를 바꾸기
             dialogTitle="해당 친구의 시간표대로 수강신청 할까요?"
             // "예" 를 클릭했을때 작동하는 메서드 넣기

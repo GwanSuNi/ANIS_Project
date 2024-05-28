@@ -304,8 +304,7 @@ const FriendListView = () => {
             <Dialog
                 open={showTimeTable}
                 onClose={() => setShowTimeTable(false)}
-                PaperComponent={StyledPaper}  // 스타일이 적용된 Paper 컴포넌트를 사용합니다.
-            >
+                PaperProps={{style: {width: '100%', height: '690px', maxWidth: '690px'}}}>
                 <DialogContent>
                     {/* TODO 친구의 시간표 , 나의 시간표 색으로 표시해서 보여주기*/}
                     {/* availableLectures -> 친구의 시간표 , selectedLectures -> 나의 시간표 겹치는 부분 색칠로 표시*/}
@@ -457,13 +456,24 @@ interface DialogProps {
     onConfirm: (section: Student | null) => void; // 타입 변경
     open: boolean;
     section: Student | null;
+    showTimeTable?: boolean;  // 테이블을 보여줄지 말지를 결정하는 prop
 }
 
-const CustomDialog: FC<DialogProps> = ({title, onConfirm, open, onClose, section}) => {
+const CustomDialog: FC<DialogProps> = ({title, onConfirm, open, onClose, section, showTimeTable = false}) => {
+    const [myLectures, setMyLectures] = useState<Lecture[]>([]);  // 강의 목록을 상태로 관리합니다.
+    const [friendLectures, setFriendLectures] = useState<Lecture[]>([]);
+
+    useEffect(() => {
+        if (showTimeTable) {  // showTimeTable이 true일 때만 강의 목록을 가져옵니다.
+            fetchSelectedLectures().then(setMyLectures);  // 강의 목록을 가져와서 상태를 업데이트합니다.
+            fetchFriendLectureList(section?.studentID).then(setFriendLectures);
+        }
+    }, [showTimeTable, section]);
     return (
         <Dialog
             open={open}
             onClose={onClose}
+            PaperProps={showTimeTable ? {style: {width: '100%', height: '1000px', maxWidth: '800px'}} : {}}
         >
             <DialogTitle>{title}</DialogTitle>
             <DialogContent>
@@ -471,17 +481,27 @@ const CustomDialog: FC<DialogProps> = ({title, onConfirm, open, onClose, section
                     {section && (
                         <>
                             <ListItem sx={{flexDirection: 'row'}}>
-                                <ListItemAvatar>
-                                    <Avatar
-                                        // 사진넣는곳
-                                        // src={`/static/images/avatar/.jpg`}
-                                    />
-                                </ListItemAvatar>
                                 <ListItemText
                                     primary={
                                         <>
-                                            <div>이름: {section.studentName} 학과: {section.departmentName}</div>
-                                            <div>학번: {section.studentID} 생년월일: {section.birth}</div>
+                                            <div style={{display: 'flex', flexDirection: 'row'}}>
+                                                <div>
+                                                    <ListItemAvatar>
+                                                        <Avatar
+                                                            // 사진넣는곳
+                                                            // src={`/static/images/avatar/.jpg`}
+                                                        />
+                                                    </ListItemAvatar>
+                                                </div>
+                                                <div style={{flexDirection: 'column'}}>
+                                                    <div>이름: {section.studentName} 학과: {section.departmentName}</div>
+                                                    <div>학번: {section.studentID} 생년월일: {section.birth}</div>
+                                                </div>
+                                            </div>
+                                            {showTimeTable && <TimeTable onLecturesChange={setMyLectures}
+                                                                         availableLectures={friendLectures}
+                                                                         selectedLectures={myLectures}
+                                                                         isButtonDisabled={true}/>}
                                         </>
                                     }
                                 />
@@ -502,6 +522,7 @@ interface StudentListAndDialogProps {
     ListComponent: ComponentType<{ onListItemClick: (section: Student) => void }>;
     dialogTitle: string;
     onConfirm: (section: Student | null, handleClose: () => void) => void; // 타입 변경
+    showTimeTableCheck?: boolean;  // 테이블을 보여줄지 말지를 결정하는 prop
 }
 
 /***
@@ -511,7 +532,12 @@ interface StudentListAndDialogProps {
  * @param onConfirm 확인 버튼 클릭시 실행될 메서드 입력
  * @constructor
  */
-const StudentListAndDialog: FC<StudentListAndDialogProps> = ({ListComponent, dialogTitle, onConfirm}) => {
+const StudentListAndDialog: FC<StudentListAndDialogProps> = ({
+                                                                 ListComponent,
+                                                                 dialogTitle,
+                                                                 onConfirm,
+                                                                 showTimeTableCheck = false
+                                                             }) => {
 
     const [dialog, setDialog] = useState<{ open: boolean; section: Student | null }>({
         open: false,
@@ -537,6 +563,7 @@ const StudentListAndDialog: FC<StudentListAndDialogProps> = ({ListComponent, dia
                 section={dialog.section}
                 onConfirm={() => onConfirm(dialog.section, handleCloseDialog)} // handleCloseDialog를 인자로 전달
                 title={dialogTitle} // 외부에서 받은 title을 사용합니다.
+                showTimeTable={showTimeTableCheck} // TimeTable을 보여줄지 말지를 결정하는 prop
             />
         </>
     );

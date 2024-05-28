@@ -52,7 +52,7 @@ const fetchAvailableLectures = async () => {
     return fetchTimetable("/api/lecture/availableLectureList");
 };
 // 해당 studentID 가 수강하는 강의 모음 받아오기
-const fetchFriendLectureList = async (studentID: string) => {
+const fetchFriendLectureList = async (studentID: string | undefined) => {
     return fetchTimetable(`/api/lecture/lectureList/${studentID}`);
 };
 // 프리셋 클릭시에 현재 학기와 현재 년도에 해당하는 프리셋 A,B,C를 갖고옴
