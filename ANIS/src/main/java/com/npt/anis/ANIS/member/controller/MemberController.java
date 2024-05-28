@@ -110,7 +110,7 @@ public class MemberController {
         // QR 정보
         int width = 300;
         int height = 300;
-        String studentID = SecurityContextHolder.getContext().getAuthentication().getName();;
+        String studentID = SecurityContextHolder.getContext().getAuthentication().getName();
 
         // QR Code - BitMatrix: qr code 정보 생성
         BitMatrix encode = new MultiFormatWriter()

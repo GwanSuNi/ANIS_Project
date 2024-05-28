@@ -10,6 +10,8 @@ import Paper from "@mui/material/Paper";
 import Card from "@mui/material/Card";
 import CardMedia from '@mui/material/CardMedia';
 import {useUserInfo} from "../hooks/useUserInfo";
+import useProfileImage from "../hooks/useProfileImage";
+import useQrCode from "../hooks/useQrCode";
 
 interface UserInfo {
     studentID: string;
@@ -48,46 +50,8 @@ function MyInfoTable(userInfo: UserInfo) {
 
 export default function MyInfo() {
     const userInfo = useUserInfo();
-    const [qrCode, setQrCode] = useState<string>();
-    const [profileImage, setProfileImage] = useState<string>();
-
-    useEffect(() => {
-        const fetchUserInfo = async () => {
-            try {
-                const qrResponse = await secInstance.get('/api/qr', {responseType: 'arraybuffer'});
-                const base64 = btoa(
-                    new Uint8Array(qrResponse.data).reduce(
-                        (data, byte) => data + String.fromCharCode(byte),
-                        '',
-                    ),
-                );
-                setQrCode(`data:image/png;base64,${base64}`);
-            } catch (error) {
-                console.error('내 정보를 불러오기에 실패했습니다:', error);
-            }
-        };
-        fetchUserInfo();
-    }, [userInfo]);
-
-    useEffect(() => {
-        const fetchProfileImage = async () => {
-            try {
-                const imageResponse = await secInstance.get(`/api/image/download/${userInfo?.studentID}`, {responseType: 'arraybuffer'});
-                const base64 = btoa(
-                    new Uint8Array(imageResponse.data).reduce(
-                        (data, byte) => data + String.fromCharCode(byte),
-                        '',
-                    ),
-                );
-                setProfileImage(`data:image/png;base64,${base64}`);
-            } catch (error) {
-                console.error('프로필 이미지를 불러오기에 실패했습니다:', error);
-            }
-        };
-        if (userInfo) {
-            fetchProfileImage();
-        }
-    }, [userInfo]); // 사용자 정보가 변경될 때만 프로필 이미지를 다시 요청합니다.
+    const qrCode = useQrCode();
+    const profileImage = useProfileImage(userInfo?.studentID);
 
     if (!userInfo) {
         return <div>로딩중 입니다...</div>;
