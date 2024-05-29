@@ -13,9 +13,7 @@ const AuthenticationRoutes = [
                 element: <SelfLogin/>
             },
             {
-                path: 'direct-input', //모바일 로그인 직접입력
-                // TODO 확인버튼 클릭시 로그인되게 만들기(onConfirm 구현하기)
-                //      페이지틀 통일화시키기
+                path: 'select',
                 element: <DirectInputLogin/>
             }
         ]
