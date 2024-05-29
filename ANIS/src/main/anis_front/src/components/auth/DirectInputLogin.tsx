@@ -1,7 +1,11 @@
 import {Autocomplete} from '@mui/material';
 import TextField from '@mui/material/TextField';
 import {StudentItemList, StudentListAndDialog} from '@components';
-import {useStudentSearch} from '@hooks';
+import {Student, useLogin, useStudentSearch} from '@hooks';
+import {useDispatch, useSelector} from "react-redux";
+import {RootState, setUsername} from "@redux";
+import {secInstance} from "@utils";
+import {useEffect, useState} from "react";
 
 /**
  * 직접 선택해서 로그인하는 컴포넌트
@@ -13,6 +17,15 @@ export default function DirectInputLogin() {
         , birth, setBirth
         , studentList,
     } = useStudentSearch();
+    const {password, setPassword, handleSubmit} = useLogin();
+    const dispatch = useDispatch();
+    const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+
+    useEffect(() => {
+        if (selectedStudent) {
+            handleSubmit();
+        }
+    }, [selectedStudent]);
 
     return (
         //TODO 컴포넌트끼리 CSS 정리하기
@@ -39,8 +52,18 @@ export default function DirectInputLogin() {
                     />
                 }
                 dialogTitle="정말로 본인이 맞습니까?"
-                onConfirm={() => {
-                    //TODO 예를 눌렀을때 로그인하는 기능을 만들어주세요 @Gwansuni
+                onConfirm={(section: Student | null, handleClose) => {
+                    if (section != null) {
+                        const friendID = section.studentID;
+                        try {
+                            dispatch(setUsername(friendID));
+                            setSelectedStudent(section);
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    } else {
+                        console.error('섹션이 없습니다.');
+                    }
                 }}
             />
         </>

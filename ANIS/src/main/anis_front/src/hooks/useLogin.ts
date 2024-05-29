@@ -9,13 +9,14 @@ export function useLogin() {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    const handleSubmit = async (event: FormEvent) => {
-        event.preventDefault();
-        // console.log('useLogin의 ', username);
+    const handleSubmit = async (event?: FormEvent) => {
+        // event 가 없는경우에도 매개변수로 받기위해 설정
+        if (event) {
+            event.preventDefault();
+        }
         const formData = new FormData();
         formData.append('username', username);
         formData.append('password', password);
-
         try {
             await loginInstance.post('/login', formData, {
                 headers: {
