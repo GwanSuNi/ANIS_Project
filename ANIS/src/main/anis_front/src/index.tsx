@@ -1,4 +1,4 @@
-import {StrictMode} from 'react';
+import React, {StrictMode} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
@@ -8,6 +8,10 @@ import {CssBaseline, ThemeProvider} from "@mui/material";
 import theme from './themes'
 import {Provider} from "react-redux";
 import store from "./redux/store";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
+
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -18,7 +22,10 @@ root.render(
             <CssBaseline>
                 <BrowserRouter>
                     <Provider store={store}>
-                        <App/>
+                        <QueryClientProvider client={queryClient}>
+                            <App />
+                            <ReactQueryDevtools initialIsOpen={false} />
+                        </QueryClientProvider>
                     </Provider>
                 </BrowserRouter>
             </CssBaseline>

@@ -1,28 +1,34 @@
-import { useState, useEffect } from 'react';
+// useProfileImage.ts
+import {useQuery, useSuspenseQuery} from '@tanstack/react-query';
 import secInstance from '../utils/secInstance';
+import {AxiosResponse} from "axios";
 
-const useProfileImage = (studentID: string | undefined) => {
-    const [profileImage, setProfileImage] = useState<string>();
+    // Skeleton 테스트를 위해 고의적 딜레이
+// function delay(t: number, v:AxiosResponse) {
+//     return new Promise<AxiosResponse>(function(resolve) {
+//         setTimeout(resolve.bind(null, v), t)
+//     });
+// }
 
-    useEffect(() => {
-        const fetchProfileImage = async () => {
-            try {
-                const imageResponse = await secInstance.get(`/api/image/download/${studentID}`, {responseType: 'arraybuffer'});
-                const base64 = btoa(
-                    new Uint8Array(imageResponse.data).reduce(
-                        (data, byte) => data + String.fromCharCode(byte),
-                        '',
-                    ),
-                );
-                setProfileImage(`data:image/png;base64,${base64}`);
-            } catch (error) {
-                console.error('프로필 이미지를 불러오기에 실패했습니다:', error);
-            }
-        };
-        fetchProfileImage();
-    }, [studentID]); // 학번이 변경될 때만 프로필 이미지를 다시 요청합니다.
+const fetchProfileImage = async (studentID: string) => {
+    // const imageResponse: AxiosResponse = await secInstance.get(`/api/image/download/${studentID}`, {responseType: 'arraybuffer'}).then(res => delay(30000, res));
+    const imageResponse: AxiosResponse = await secInstance.get(`/api/image/download/${studentID}`, {responseType: 'arraybuffer'});
+    const base64 = btoa(
+        new Uint8Array(imageResponse.data).reduce(
+            (data, byte) => data + String.fromCharCode(byte),
+            '',
+        ),
+    );
+    return `data:image/png;base64,${base64}`;
+};
 
-    return profileImage;
+const useProfileImage = (studentID: string) => {
+    return useQuery({
+        queryKey: ['profileImage', studentID],
+        queryFn: () => fetchProfileImage(studentID as string),
+        staleTime: 5 * 60 * 1000, // 데이터가 신선한 상태로 유지되는 시간 (5분)
+        gcTime: 10 * 60 * 1000 // 데이터가 캐시에 남아있는 시간 (10분) // v5는 cacheTime에서 이름이 변경됨
+    });
 };
 
 export default useProfileImage;

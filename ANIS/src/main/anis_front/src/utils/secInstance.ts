@@ -57,6 +57,7 @@ secInstance.interceptors.response.use(
         } else if (error.response.status === 403) {
             // Forbidden
             // 사용자에게 권한이 없음을 알리는 메시지 표시 등의 작업 수행
+            alert('권한이 없습니다.');
             console.log('403 발생!');
         } else if (error.response.status === 500) {
             // Internal Server Error

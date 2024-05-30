@@ -1,10 +1,10 @@
 import React from "react";
-import MyInfo from "../components/MyInfo";
 import {EnrolmentTogether, FriendAdd, FriendListView, LectureApplication, LectureCopy} from '@components';
 import {SurveyListPage} from '@pages';
 import {MainLayout} from '@layout';
 import Main from "../pages/Main";
 import {ProtectedRoute} from "@utils";
+import MyInfo from "../components/myInfo/MyInfo";
 
 const MainRoutes = [
     {
