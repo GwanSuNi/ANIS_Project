@@ -18,8 +18,8 @@ export default function ImageCard({userInfo, handleUploadClick}: {
                 if (handleUploadClick) handleUploadClick(userInfo.studentID);
             }}>
                 {(!userInfo.studentID || status === 'pending') ? (
-                    <Skeleton variant="rectangular" width={203}
-                              height={260}/>) : status === 'error' ? (
+                    <Skeleton variant="rectangular" width={203} height={260}/>)
+                    : status === 'error' ? (
                         <span>Error: {error.message}</span>)
                     : (
                         <CardMedia

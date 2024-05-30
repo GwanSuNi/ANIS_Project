@@ -11,6 +11,7 @@ import {useUserInfo} from "../../hooks/useUserInfo";
 import useQrCode from "../../hooks/useQrCode";
 import useUpdateProfileImage from "../../hooks/useUpdateProfileImage";
 import ImageCard from "./ImageCard";
+import QrCard from "./QrCard";
 
 export interface UserInfo {
     studentID: string;
@@ -50,7 +51,6 @@ function MyInfoTable(userInfo: UserInfo) {
 
 export default function MyInfo() {
     const userInfo = useUserInfo();
-    const qrCode = useQrCode();
     const {mutate: updateProfileImage} = useUpdateProfileImage();
 
     const handleUploadClick = async (studentID:string) => {
@@ -99,29 +99,14 @@ export default function MyInfo() {
                           rowSpacing={{xs: 2, sm: 4, md: 4}}
                           sx={{p: 0, mt: 3}}>
                         <Grid xs={'auto'} display={'flex'} justifyContent="center" alignItems="center">
-                            {/*    이미지 박스*/}
-                            {/*    TODO: DB에서 본인 증명사진 받아오기 */}
                             <ImageCard userInfo={userInfo} handleUploadClick={handleUploadClick}/>
-                            {/*{Image(handleUploadClick, userInfo.studentID)}*/}
                         </Grid>
                         <Grid container xs={6} justifyContent="center" alignItems="center">
                             <MyInfoTable {...userInfo}/>
                         </Grid>
                     </Grid>
                     <Grid display={'flex'} xs={12} justifyContent="center" alignItems="center">
-                        <Card style={{
-                            minWidth: '100px',
-                            minHeight: '100px',
-                            maxWidth: '300px',
-                            maxHeight: '300px',
-                            marginTop: 10
-                        }}>
-                            <CardMedia
-                                component="img"
-                                src={qrCode}
-                                alt="qrCode"
-                            />
-                        </Card>
+                      <QrCard studentID={userInfo.studentID}/>
                     </Grid>
                 </Grid>
             </Box>
