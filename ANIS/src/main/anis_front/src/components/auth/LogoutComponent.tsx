@@ -56,7 +56,8 @@ export default function LogoutComponent() {
                 </Alert>
             </Snackbar>
             <Button
-                variant='text'
+                variant='contained'
+                disableElevation
                 onClick={handleLogout}
                 endIcon={<LogoutIcon sx={{color: '#444444'}}/>}
                 sx={{visibility: isLoggedIn() ? 'visible' : 'hidden'}}

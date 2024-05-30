@@ -5,8 +5,8 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import PeopleIcon from '@mui/icons-material/People';
 import HomeIcon from '@mui/icons-material/Home';
-import PersonIcon from '@mui/icons-material/Person';
 import {usePreventSameNavigation} from '@hooks';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 export default function Footer() {
     const location = useLocation();
@@ -15,7 +15,7 @@ export default function Footer() {
     const navigationItems = [
         {label: '친구', value: '/friend', icon: <PeopleIcon/>},
         {label: '홈', value: '/', icon: <HomeIcon/>},
-        {label: '내정보', value: '/myInfo', icon: <PersonIcon/>},
+        {label: '설문조사', value: '/survey', icon: <AssignmentIcon/>},
     ];
 
     const handleChange = (_: ChangeEvent<{}>, newValue: string) => {
