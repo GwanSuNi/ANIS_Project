@@ -3,8 +3,9 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Button from '@mui/material/Button';
 import {Box} from '@mui/material';
 import {useDispatch, useSelector} from 'react-redux';
-import {Lecture, useFetchRegisteredLecturesQuery} from '@api';
+import {useFetchRegisteredLecturesQuery} from '@api';
 import {addSelectedLecture, removeSelectedLecture, RootState} from '@redux';
+import {Lecture} from '@types';
 
 interface TimetableProps {
     lectures: Lecture[],

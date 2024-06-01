@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {Lecture} from '@api';
+import {Lecture} from '@types';
 
 interface LectureState {
     selectedLectures: Record<number, Lecture>;

@@ -1,23 +1,6 @@
 import {createApi} from '@reduxjs/toolkit/query/react';
+import { Lecture } from '@types';
 import {secInstance} from '@utils';
-
-// 타입스크립트에서 export {} 안에 들어가는 요소들은 이미 모듈로 인정이 되어있고 그 안에 사용하는 타입 또한 모듈로 인정되어있어
-// export 안에 타입만 정의한것을 넣으려면 모듈을 두번 export 하는 상황이 발생하여 타입스크립트에서 막는다
-// 그래서 타입만을 다른곳에서 사용하고싶으면 타입만 따로 export 해줘야한다
-export interface Lecture {
-    lecID: number;
-    lpIndex: number;
-    lecYear: number;
-    lecSemester: number;
-    lecName: string;
-    lecProfessor: string;
-    lectureRoom: string;
-    lecDay: string;
-    lecTimeStart: string;
-    lecTimeEnd: string;
-    lecCredit: number;
-    lecGrade: number;
-}
 
 // 받아오는 LectureDto 타입과 매핑시켜주는함수
 const formatLecture = (lecture: any): Lecture => ({
@@ -47,11 +30,11 @@ export const lectureApi = createApi({
     endpoints: (builder) => ({
         fetchAvailableLectures: builder.query<Lecture[], void>({
             query: () => ({url: '/api/lecture/availableLectureList'}),
-            transformResponse: (response: Lecture[]): Lecture[] => response.map(formatLecture)
+            // transformResponse: (response: Lecture[]): Lecture[] => response.map(formatLecture)
         }),
         fetchRegisteredLectures: builder.query<Lecture[], void>({
             query: () => ({url: '/api/lecture/lectureList'}),
-            transformResponse: (response: Lecture[]): Lecture[] => response.map(formatLecture)
+            // transformResponse: (response: Lecture[]): Lecture[] => response.map(formatLecture)
         })
     })
 });

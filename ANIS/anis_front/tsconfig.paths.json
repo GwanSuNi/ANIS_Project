@@ -11,6 +11,7 @@
       "@redux": ["./redux"],
       "@routes": ["./routes"],
       "@themes": ["./themes"],
+      "@types": ["./types"],
       "@utils": ["./utils"]
     }
   }
