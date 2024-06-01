@@ -1,5 +1,5 @@
 import {createApi} from '@reduxjs/toolkit/query/react';
-import { Lecture } from '@types';
+import {Lecture} from '@types';
 import {secInstance} from '@utils';
 
 // 받아오는 LectureDto 타입과 매핑시켜주는함수
@@ -30,11 +30,11 @@ export const lectureApi = createApi({
     endpoints: (builder) => ({
         fetchAvailableLectures: builder.query<Lecture[], void>({
             query: () => ({url: '/api/lecture/availableLectureList'}),
-            // transformResponse: (response: Lecture[]): Lecture[] => response.map(formatLecture)
+            transformResponse: (response: Lecture[]): Lecture[] => response.map(formatLecture)
         }),
         fetchRegisteredLectures: builder.query<Lecture[], void>({
             query: () => ({url: '/api/lecture/lectureList'}),
-            // transformResponse: (response: Lecture[]): Lecture[] => response.map(formatLecture)
+            transformResponse: (response: Lecture[]): Lecture[] => response.map(formatLecture)
         })
     })
 });

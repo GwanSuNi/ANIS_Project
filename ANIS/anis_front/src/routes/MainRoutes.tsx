@@ -1,4 +1,4 @@
-import React from "react";
+import {Suspense} from 'react';
 import {EnrolmentTogether, FriendAdd, FriendListView, LectureApplication, LectureCopy} from '@components';
 import {SurveyListPage} from '@pages';
 import {MainLayout} from '@layout';
@@ -72,10 +72,13 @@ const MainRoutes = [
                     //     }}
                     // />
             },
-
             {
                 path: 'survey',
-                element: <SurveyListPage/>
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <SurveyListPage/>
+                    </Suspense>
+                )
             },
             {
                 path: 'mypage',

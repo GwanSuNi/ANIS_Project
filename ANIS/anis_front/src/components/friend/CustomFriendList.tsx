@@ -305,7 +305,7 @@ const FriendListView = () => {
             <Dialog
                 open={showTimetable}
                 onClose={() => setShowTimetable(false)}
-                PaperProps={{style: {width: '100%', height: '690px', maxWidth: '690px'}}}>
+                PaperProps={{style: {width: '100%', height: '690px', maxWidth: '690px'}}}
             >
                 <DialogContent>
                     {/* TODO 친구의 시간표 , 나의 시간표 색으로 표시해서 보여주기*/}
