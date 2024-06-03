@@ -2,7 +2,9 @@ import axios from 'axios';
 import {getAccessToken, removeAccessToken} from './authUtils';
 
 const logoutInstance = axios.create({
-    baseURL: 'http://localhost:8080',
+    // baseURL: 'https://192.168.0.3:8080',
+    // baseURL: 'https://localhost',
+    baseURL: 'https://kingfish-sound-goshawk.ngrok-free.app/api/',
     timeout: 1000,
     withCredentials: true, // 쿠키를 전송받기 위해 필요
 });
