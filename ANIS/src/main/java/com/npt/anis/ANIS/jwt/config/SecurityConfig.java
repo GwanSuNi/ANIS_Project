@@ -26,6 +26,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
@@ -90,7 +91,7 @@ public class SecurityConfig {
                             @Override
                             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                                 CorsConfiguration corsConfiguration = new CorsConfiguration();
-                                corsConfiguration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                                corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://localhost:3000", "https://192.168.0.3:3000", "https://kingfish-sound-goshawk.ngrok-free.app:80"));
                                 corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
                                 corsConfiguration.setAllowCredentials(true);
                                 corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
