@@ -18,16 +18,20 @@ export default function ImageCard({userInfo, handleUploadClick}: {
                 if (handleUploadClick) handleUploadClick(userInfo.studentID);
             }}>
                 {(!userInfo.studentID || status === 'pending') ? (
-                    <Skeleton variant="rectangular" width={203} height={260}/>)
+                        <Skeleton variant="rectangular" width={203} height={260}/>)
                     : status === 'error' ? (
-                        <span>Error: {error.message}</span>)
-                    : (
-                        <CardMedia
-                            component="img"
-                            image={data}
-                            alt="profile"
-                        />
-                    )}
+                            <CardMedia
+                                component="img"
+                                image={'https://via.placeholder.com/203x260.png?text=No+Image'}
+                                alt="profile"
+                            />
+                        ) : (
+                            <CardMedia
+                                component="img"
+                                image={data}
+                                alt="profile"
+                            />
+                        )}
             </CardActionArea>
         </Card>
     )

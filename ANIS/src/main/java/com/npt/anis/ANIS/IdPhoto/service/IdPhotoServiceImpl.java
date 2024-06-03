@@ -65,6 +65,10 @@ public class IdPhotoServiceImpl implements IdPhotoService {
 
     @Transactional
     public void updateImage(String studentId, MultipartFile file) throws IOException {
+        if (idPhotoRepository.findByName(studentId) == null) {
+            saveImage(studentId, file);
+            return;
+        }
         Path filePath = Paths.get(UPLOAD_DIR).resolve(studentId + ".png");
         Files.delete(filePath);
         Files.copy(file.getInputStream(), filePath);

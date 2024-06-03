@@ -13,8 +13,8 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     List<Member> findByBirthContaining(String birth);
     List<Member> findByRoleContaining(String role);
     List<Member> findByStudentNameContainingOrStudentIDContaining(String birth, String studentID);
-    @Query("SELECT m FROM Member m JOIN Department d WHERE m.departmentID = d.depIndex and m.studentName LIKE %:name% OR d.depName LIKE %:departmentName%")
-    List<Member> findByStudentNameContainingOrDepartmentNameContaining(String studentName, String departmentName);
+//    @Query("SELECT m FROM Member m JOIN Department d WHERE m.departmentID = d.depIndex and m.studentName LIKE %:name% OR d.depName LIKE %:departmentName%")
+//    List<Member> findByStudentNameContainingOrDepartmentNameContaining(String studentName, String departmentName);
 
     @Query("SELECT new com.npt.anis.ANIS.member.domain.dto.MemberSearchDTO(m.studentID, m.studentName, m.birth, d.depName) FROM Member m JOIN Department d ON m.departmentID = d.depIndex where m.studentID = :studentID")
     MemberSearchDTO findByStudentIDToSearchDTO(@Param("studentID") String studentID);
