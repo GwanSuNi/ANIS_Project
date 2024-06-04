@@ -81,7 +81,7 @@ public class FriendServiceImpl implements FriendService {
         List<Friend> friends = friendRepository.findByMyStuID(myID);
         List<MemberSearchDTO> friendList = new ArrayList<>();
         for (Friend friend : friends) {
-            friendList.add(memberService.getMember(friend.getFrStuID()));
+            friendList.add(memberService.getMemberSearch(friend.getFrStuID()));
         }
         // 친구 목록에서 나의 아이디는 제외하기
         return friendList;
