@@ -1,4 +1,5 @@
 import {secInstance} from '@utils';
+import {useEffect, useState} from "react";
 
 export interface Student {
     studentID: string;
@@ -68,6 +69,24 @@ const fetchMembers = async (studentID: string, studentName: string, departmentNa
  */
 const fetchFriends = async (studentID: string, studentName: string, departmentName: string, birth: string): Promise<Student[]> => {
     return fetchStudents('/api/members/friendSearch', {studentID, studentName, departmentName, birth});
+};
+
+export const useFetchFriendList = () => {
+    const [friendList, setFriendList] = useState<Student[]>([]);
+
+    useEffect(() => {
+        const fetchMyFriendList = async () => {
+            try {
+                const fetchedFriends = await fetchFriendList();
+                setFriendList(fetchedFriends);
+            } catch (error) {
+                console.error('Error fetching friend list:', error);
+            }
+        };
+        fetchMyFriendList();
+    }, []);
+
+    return friendList;
 };
 
 export {deleteFriend, fetchFriendList, fetchMembers, fetchFriends}
