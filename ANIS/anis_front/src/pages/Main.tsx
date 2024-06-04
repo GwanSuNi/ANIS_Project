@@ -1,18 +1,16 @@
 import Button from '@mui/material/Button';
 import {useNavigate} from 'react-router-dom';
-import './Main.css';
-import {TimeTable} from '@components';
-import {useFetchLectures} from '@hooks';
+import {useFetchRegisteredLecturesQuery} from '@api';
+import {Timetable} from '@components';
 
 export default function Main() {
-    // 겹치는 부분 리팩토링 자세한 부분은 LectureApi 참고
-    const {availableLectures, selectedLectures, setSelectedLectures} = useFetchLectures();
+    const {data: registeredLectures = [], isLoading} = useFetchRegisteredLecturesQuery();
+
     return (
         <div className="container">
             <h1>성인학습자 전용 NIS</h1>
             <div className="rectangle">
-                <TimeTable onLecturesChange={setSelectedLectures} availableLectures={availableLectures}
-                           selectedLectures={selectedLectures} isButtonDisabled={true}/>
+                {isLoading ? <div>로딩중...</div> : <Timetable lectures={registeredLectures} isEnrolling={false}/>}
             </div>
             <ButtonContainer/>
         </div>
@@ -31,7 +29,7 @@ function ButtonContainer() {
         <div className="button-container">
 
             <Button onClick={enrolmentClick} variant="contained" className="button"
-                    style={{ fontSize: '30px', backgroundColor: 'yellow', color: 'black' }}>수강신청하기</Button>
+                    style={{fontSize: '30px', backgroundColor: 'yellow', color: 'black'}}>수강신청하기</Button>
 
             <Button onClick={assessmentClick} variant="contained" className="button"
                     style={{fontSize: '30px', backgroundColor: 'yellow', color: 'black'}}>설문조사하기</Button>

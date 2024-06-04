@@ -1,0 +1,1 @@
+export {lectureApi, useFetchAvailableLecturesQuery, useFetchRegisteredLecturesQuery} from './lectureApi';
