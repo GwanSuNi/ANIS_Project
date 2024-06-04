@@ -41,6 +41,8 @@ import {TimeTable} from '@components';
  *
  * @constructor
  */
+
+//TODO 버튼 컴포넌트화, 코드 리팩토링하기 -> 맨 처음에 깔끔하게 컴포넌트화 시켰는데 점점 바뀜
 const FriendListView = () => {
     // TODO nullItem 추가 말고 다른방법을 생각해보기
     const nullItem = {
@@ -62,10 +64,10 @@ const FriendListView = () => {
     const [myLectures, setMyLectures] = useState<Lecture[]>([]);
     const [friendList, setFriendList] = useState<Student[]>([]);
 
-    const StyledPaper = styled(Paper)({
-        width: '100%',
-        height: '100%',
-    });
+    const handleClick = () => {
+        navigate("/friend/add");
+    };
+
     const handleToggle = (index: number) => {
         setOpen((prevOpen) => {
             const newOpen = [...prevOpen];
@@ -73,9 +75,7 @@ const FriendListView = () => {
             return newOpen;
         });
     };
-    const handleClick = () => {
-        navigate("/friend/add");
-    };
+
     const handleClose = (event: SyntheticEvent | Event, index: number) => {
         if (
             anchorRef.current[index] &&
@@ -130,17 +130,12 @@ const FriendListView = () => {
     // 나의 시간표를 갖고옴
     const prevOpen = useRef(open);
     useEffect(() => {
-        const fetchMyLectureData = async () => {
-            const fetchedLectures = await fetchSelectedLectures();
-            setMyLectures(fetchedLectures);
-        };
         for (let i = 0; i < open.length; i++) {
             if (prevOpen.current[i] && !open[i]) {
                 anchorRef.current[i]!.focus();
             }
         }
         prevOpen.current = open;
-        fetchMyLectureData();
     }, [open]);
     // Assuming data is an array of objects that you map to create dynamic content
     return (
@@ -306,8 +301,6 @@ const FriendListView = () => {
                 onClose={() => setShowTimeTable(false)}
                 PaperProps={{style: {width: '100%', height: '690px', maxWidth: '690px'}}}>
                 <DialogContent>
-                    {/* TODO 친구의 시간표 , 나의 시간표 색으로 표시해서 보여주기*/}
-                    {/* availableLectures -> 친구의 시간표 , selectedLectures -> 나의 시간표 겹치는 부분 색칠로 표시*/}
                     <TimeTable onLecturesChange={setMyLectures} availableLectures={friendLectures}
                                selectedLectures={myLectures} isButtonDisabled={true}/>
                 </DialogContent>
@@ -339,16 +332,12 @@ const StudentCheckList: FC<StudentCheckProps> = ({items, onCheckedItemsChange}) 
         } else {
             newChecked.splice(currentIndex, 1);
         }
-
         setChecked(newChecked.sort((a, b) => a - b)); // 체크된 항목들을 오름차순으로 정렬
-
         if (onCheckedItemsChange) {
             const checkedItems = newChecked.map(checkedIndex => items[checkedIndex]);
             onCheckedItemsChange(checkedItems);
         }
-
     };
-
     // 체크된 항목들을 별도의 배열로 분리
     const checkedSections = checked.map(index => items[index]);
     const uncheckedSections = items.filter((_, index) => !checked.includes(index));
@@ -356,92 +345,83 @@ const StudentCheckList: FC<StudentCheckProps> = ({items, onCheckedItemsChange}) 
     // 체크된 항목 배열을 체크되지 않은 항목 배열 앞에 붙임
     const sortedSections = [...checkedSections, ...uncheckedSections];
 
+    const renderListItem = (item: Student, index: number) => (
+        <ListItem
+            key={index}
+            alignItems="flex-start"
+            disablePadding
+            secondaryAction={
+                <Checkbox
+                    edge="end"
+                    onChange={handleToggle(items.indexOf(item))} // 원래 배열에서의 인덱스를 사용
+                    checked={checked.includes(items.indexOf(item))} // 원래 배열에서의 인덱스를 사용
+                />
+            }
+        >
+            <ListItemButton sx={{width:'400px' , maxWidth: '400px'}} onClick={handleToggle(items.indexOf(item))}>
+                <ListItemAvatar>
+                    <Avatar
+                        // src={`/static/images/avatar/${index + 1}.jpg`}
+                    />
+                </ListItemAvatar>
+                <ListItemText
+                    primary={
+                        <>
+                            <div>이름: {item.studentName}학과: {item.departmentName}</div>
+                            <div>학번: {item.studentID}생년월일: {item.birth}</div>
+                        </>
+                    }
+                />
+            </ListItemButton>
+        </ListItem>
+    );
     return (
-        <List sx={{width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}>
-            {sortedSections.map((item, index) => {
-                return (
-                    <ListItem
-                        key={index}
-                        alignItems="flex-start"
-                        secondaryAction={
-                            <Checkbox
-                                edge="end"
-                                onChange={handleToggle(items.indexOf(item))} // 원래 배열에서의 인덱스를 사용
-                                checked={checked.includes(items.indexOf(item))} // 원래 배열에서의 인덱스를 사용
-                            />
-                        }
-                        disablePadding
-                        button // ListItem을 클릭 가능한 버튼으로 만듦
-                    >
-                        <ListItemButton onClick={handleToggle(items.indexOf(item))}>
-                            <ListItemAvatar>
-                                <Avatar
-                                    // src={`/static/images/avatar/${index + 1}.jpg`}
-                                />
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={
-                                    <>
-                                        <div>이름: {item.studentName}학과: {item.departmentName}</div>
-                                        <div>학번: {item.studentID}생년월일: {item.birth}</div>
-                                    </>
-                                }
-                            />
-                        </ListItemButton>
-                    </ListItem>
-                );
-            })}
-        </List>
+        <Grid container direction="column" alignItems="center" justifyContent="center" overflow='auto'>
+            <Box sx={{
+                width: 650, height: 650, border: '1px solid black',
+                marginBottom: 2, marginTop: 2, overflow: 'auto',
+                borderRadius: '5px' , display:'flex',alignItems:'center', justifyContent:'center'
+            }}>
+                <List sx={{ height: '650px'}}>
+                    {sortedSections.map(renderListItem)}
+                </List>
+            </Box>
+        </Grid>
     );
 };
 
 
-interface ListRow {
-    index: number;
-    style: CSSProperties;
-}
-
 const StudentItemList: FC<StudentListProps> = ({items, onListItemClick}) => {
-    const Row: FC<ListRow> = ({index, style}) => {
-        const item = items[index];
-        return (
-            <ListItem
-                key={index}
-                style={style}
-                alignItems="flex-start"
-                disablePadding
-                onClick={() => onListItemClick(item)} // 클릭한 섹션을 인자로 전달하여 다이얼로그 열기
-            >
-                <ListItemButton>
-                    <ListItemAvatar>
-                        <Avatar
-                            // 사진넣는곳
-                            // src={`/static/images/avatar/${index + 1}.jpg`}
-                        />
-                    </ListItemAvatar>
-                    <ListItemText
-                        primary={
-                            <>
-                                <div>이름: {item.studentName} 학과: {item.departmentName}</div>
-                                <div>학번: {item.studentID} 생년월일: {item.birth}</div>
-                            </>
-                        }
-                    />
-                </ListItemButton>
-            </ListItem>
-        );
-    };
-
     return (
-        <FixedSizeList
-            height={400}
-            width={360}
-            itemSize={70}
-            itemCount={items.length}
-            overscanCount={5}
-        >
-            {Row}
-        </FixedSizeList>
+        <List sx={{overflow: 'auto', height: '650px'}}>
+            {items.map((item, index) => (
+                <ListItem
+                    key={index}
+                    sx={{display: 'flex', justifyContent: 'center'}}
+                    disablePadding
+                    onClick={() => onListItemClick(item)} // 클릭한 섹션을 인자로 전달하여 다이얼로그 열기
+                >
+                    <ListItemButton style={{maxWidth: '400px'}}>
+                        <ListItemAvatar>
+                            <Avatar
+                                // 사진넣는곳
+                                // src={`/static/images/avatar/${index + 1}.jpg`}
+                            />
+                        </ListItemAvatar>
+                        <Box display="flex" justifyContent="center" alignItems="center" flex={1}>  {/* 이 부분을 추가하세요. */}
+                            <ListItemText
+                                primary={
+                                    <>
+                                        <div>이름: {item.studentName} 학과: {item.departmentName}</div>
+                                        <div>학번: {item.studentID} 생년월일: {item.birth}</div>
+                                    </>
+                                }
+                            />
+                        </Box>
+                    </ListItemButton>
+                </ListItem>
+            ))}
+        </List>
     );
 }
 
@@ -473,31 +453,91 @@ const CustomDialog: FC<DialogProps> = ({title, onConfirm, open, onClose, section
         <Dialog
             open={open}
             onClose={onClose}
-            PaperProps={showTimeTable ? {style: {width: '100%', height: '1000px', maxWidth: '800px'}} : {}}
+            PaperProps={showTimeTable ? {
+                style: {
+                    width: '100%',
+                    height: '1000px',
+                    maxWidth: '800px'
+                }
+            } : {style: {width: '100%', height: '350px', maxWidth: '680px'}}}
         >
-            <DialogTitle>{title}</DialogTitle>
+            <DialogTitle>
+                <Typography variant='h4' fontFamily='NanumGothicBold' color='primary.contrastText' m='auto'>
+                    {title}
+                </Typography>
+            </DialogTitle>
             <DialogContent>
                 <DialogContentText>
                     {section && (
                         <>
-                            <ListItem sx={{flexDirection: 'row'}}>
+                            <ListItem>
                                 <ListItemText
                                     primary={
                                         <>
-                                            <div style={{display: 'flex', flexDirection: 'row'}}>
-                                                <div>
-                                                    <ListItemAvatar>
-                                                        <Avatar
-                                                            // 사진넣는곳
-                                                            // src={`/static/images/avatar/.jpg`}
-                                                        />
-                                                    </ListItemAvatar>
-                                                </div>
-                                                <div style={{flexDirection: 'column'}}>
-                                                    <div>이름: {section.studentName} 학과: {section.departmentName}</div>
-                                                    <div>학번: {section.studentID} 생년월일: {section.birth}</div>
-                                                </div>
-                                            </div>
+                                            {showTimeTable ? (
+                                                    <Grid container>
+                                                        <ListItemAvatar sx={{
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'center',
+                                                        }}>
+                                                            <Avatar sx={{
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'center',
+                                                                height: '50px',
+                                                                width: '50px',
+                                                                marginBottom: 0.5,
+                                                                marginRight: 0.5
+                                                            }}
+                                                                // 사진넣는곳
+                                                                // src={`/static/images/avatar/.jpg`}
+                                                            />
+                                                        </ListItemAvatar>
+                                                        <Grid>
+                                                            <Typography variant='h4' fontFamily='NanumGothicBold'
+                                                                        color='primary.contrastText' m='auto'>
+                                                                {section.studentName}님의 시간표
+                                                            </Typography>
+                                                        </Grid>
+                                                    </Grid>) :
+
+                                                (<Grid container sx={{display: 'flex', flexDirection: 'row'}}>
+                                                    <Grid sx={{
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                    }}>
+                                                        <ListItemAvatar sx={{
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'center',
+                                                            marginRight: 2,
+                                                        }}>
+                                                            <Avatar
+                                                                sx={{
+                                                                    alignItems: 'center',
+                                                                    justifyContent: 'center',
+                                                                    height: '70px',
+                                                                    width: '70px'
+                                                                }}
+                                                                // 사진넣는곳
+                                                                // src={`/static/images/avatar/.jpg`}
+                                                            />
+                                                        </ListItemAvatar>
+                                                    </Grid>
+                                                    <Grid sx={{
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
+                                                        fontSize: '30px'
+                                                    }}>
+                                                        {/*<Typography variant='h4' fontFamily='NanumGothicBold' color='primary.contrastText' m='auto'>*/}
+                                                        {/*</Typography>*/}
+                                                        <Grid>이름: {section.studentName} 학과: {section.departmentName}</Grid>
+                                                        <Grid>학번: {section.studentID} 생년월일: {section.birth}</Grid>
+                                                    </Grid>
+                                                </Grid>)}
+
                                             {showTimeTable && <TimeTable onLecturesChange={setMyLectures}
                                                                          availableLectures={friendLectures}
                                                                          selectedLectures={myLectures}
@@ -510,9 +550,49 @@ const CustomDialog: FC<DialogProps> = ({title, onConfirm, open, onClose, section
                     )}
                 </DialogContentText>
             </DialogContent>
-            <DialogActions>
-                <Button onClick={() => onConfirm(section)}>{"예"}</Button>
-                <Button onClick={onClose}>{"아니요"}</Button>
+            {/* TODO 예 아니요 버튼 컴포넌트화 하기*/}
+            <DialogActions sx={{display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}}>
+                <Grid sx={{
+                    height: '100px',
+                    width: '150px',
+                    border: '2px solid #black',
+                    borderRadius: '5px',
+                    backgroundColor: '#ffff00',
+                    marginBottom: 3.5
+                }}>
+                    <Button variant='contained' onClick={() => onConfirm(section)} sx={{
+                        display: 'flex',
+                        justifyContent: 'flex',
+                        alignItems: 'flex',
+                        height: '100px',
+                        width: '150px'
+                    }}>
+                        <Typography fontSize='30px' fontFamily='NanumGothicBold' color='primary.contrastText'
+                                    m='auto'>
+                            예
+                        </Typography>
+                    </Button>
+                </Grid>
+                <Grid sx={{
+                    height: '100px',
+                    width: '150px',
+                    border: '2px solid #black',
+                    borderRadius: '5px',
+                    marginBottom: 3.5
+                }}>
+                    <Button variant='contained' onClick={onClose} sx={{
+                        display: 'flex',
+                        justifyContent: 'flex',
+                        alignItems: 'flex',
+                        height: '100px',
+                        width: '150px'
+                    }}>
+                        <Typography fontSize='30px' fontFamily='NanumGothicBold' color='primary.contrastText'
+                                    m='auto'>
+                            아니요
+                        </Typography>
+                    </Button>
+                </Grid>
             </DialogActions>
         </Dialog>
     )
@@ -555,18 +635,28 @@ const StudentListAndDialog: FC<StudentListAndDialogProps> = ({
     };
 
     return (
-        <>
-            <ListComponent onListItemClick={handleOpenDialog}/>
-            <CustomDialog
-                open={dialog.open}
-                onClose={handleCloseDialog}
-                section={dialog.section}
-                onConfirm={() => onConfirm(dialog.section, handleCloseDialog)} // handleCloseDialog를 인자로 전달
-                title={dialogTitle} // 외부에서 받은 title을 사용합니다.
-                showTimeTable={showTimeTableCheck} // TimeTable을 보여줄지 말지를 결정하는 prop
-            />
-        </>
+        <Grid container alignItems="center" justifyContent="center" overflow='auto'>
+            <Box sx={{
+                width: 650, height: 650, border: '1px solid black',
+                marginBottom: 2, marginTop: 2, overflow: 'hidden',
+                borderRadius: '5px'
+            }}>
+                <ListComponent onListItemClick={handleOpenDialog}/>
+                <CustomDialog
+                    open={dialog.open}
+                    onClose={handleCloseDialog}
+                    section={dialog.section}
+                    onConfirm={() => onConfirm(dialog.section, handleCloseDialog)} // handleCloseDialog를 인자로 전달
+                    title={dialogTitle} // 외부에서 받은 title을 사용합니다.
+                    showTimeTable={showTimeTableCheck} // TimeTable을 보여줄지 말지를 결정하는 prop
+                />
+            </Box>
+        </Grid>
     );
 }
 
 export {StudentListAndDialog, StudentItemList, CustomDialog, StudentCheckList, FriendListView}
+
+
+// 리스트 체크박스, 클릭가능한 리스트, 조회용 리스트
+// Dialog 클릭한 섹션 보여주기, 체크한 섹션 모두 보여주기, 해당 섹션의 StudentID, TimeTable 보여주기

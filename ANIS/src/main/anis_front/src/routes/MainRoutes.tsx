@@ -2,6 +2,8 @@ import {EnrolmentTogether, FriendAdd, FriendListView, LectureApplication, Lectur
 import {SurveyListPage} from '@pages';
 import {MainLayout} from '@layout';
 import Main from "../pages/Main";
+import {TestComponent, TestTimeTableComponent} from "../components/auth/Practice";
+import React from "react";
 
 const MainRoutes = [
     {
@@ -53,6 +55,15 @@ const MainRoutes = [
             {
                 path: 'mypage',
                 element: <div>MyPage</div>
+            },
+            //TODO 리팩토링때 지워야됨
+            {
+                path: 'test',
+                element: <TestComponent/>
+            },
+            {
+                path: 'test1',
+                element: <TestTimeTableComponent/>
             }
         ]
     },
