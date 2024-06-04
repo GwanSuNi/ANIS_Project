@@ -1,8 +1,10 @@
-import {Autocomplete} from '@mui/material';
+import {Autocomplete, Grid} from '@mui/material';
 import TextField from '@mui/material/TextField';
 import {StudentItemList, StudentListAndDialog} from './CustomFriendList';
 import {Student, useFriendSearch} from '@hooks';
 import {secInstance} from '@utils';
+import Box from "@mui/material/Box";
+import {TimeTable} from "../lecture";
 
 /**
  * 친구 추가하기
@@ -19,19 +21,25 @@ export default function FriendAdd() {
     return (
         //TODO 컴포넌트끼리 CSS 정리하기
         <>
-            <Autocomplete
-                options={studentList}
-                // 이름기준으로 검색되게
-                getOptionLabel={(option) => option.studentName}
-                style={{width: 300}}
-                onInputChange={(event, newInputValue) => {
-                    setStudentID(newInputValue);
-                    setStudentName(newInputValue);
-                    setDepartmentName(newInputValue);
-                    setBirth(newInputValue);
-                }}
-                renderInput={(params) => <TextField {...params} label="학생 검색"/>}
-            />
+            <Box sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}>
+                <TextField
+                    id="outlined-basic"
+                    label="학생 검색"
+                    variant="outlined"
+                    sx={{width: 400, mt: '20px'}}
+                    onChange={(event) => {
+                        const newInputValue = event.target.value;
+                        setStudentID(newInputValue);
+                        setStudentName(newInputValue);
+                        setDepartmentName(newInputValue);
+                        setBirth(newInputValue);
+                    }}
+                />
+            </Box>
 
             <StudentListAndDialog
                 ListComponent={(listProps) =>
@@ -46,6 +54,7 @@ export default function FriendAdd() {
                         const friendID = section.studentID; // 친구의 ID를 여기에 입력하세요.
                         secInstance.post(`/api/friend/${friendID}`)
                             .then(response => {
+                                alert("친구추가되었습니다.")
                                 handleClose();
                                 fetchAndSetStudents();
                                 // 친구가 성공적으로 추가되었음을 사용자에게 알리는 코드를 여기에 작성하세요.

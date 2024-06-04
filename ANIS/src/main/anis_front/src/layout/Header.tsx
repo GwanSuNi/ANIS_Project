@@ -13,7 +13,7 @@ export default function Header() {
                 <Typography variant='h6' color='primary.contrastText' ml={1}>
                     사용자 이름
                 </Typography>
-                <Typography variant='h5' fontFamily='NanumGothicBold' color='primary.contrastText' m='auto'>
+                <Typography variant='h4' fontFamily='NanumGothicBold' color='primary.contrastText' m='auto'>
                     성인학습자 학사정보시스템
                 </Typography>
                 <LogoutComponent/>

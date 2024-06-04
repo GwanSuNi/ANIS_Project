@@ -10,7 +10,6 @@ export function useLogin() {
     const navigate = useNavigate();
 
     const handleSubmit = async (event?: FormEvent) => {
-        // event 가 없는경우에도 매개변수로 받기위해 설정
         if (event) {
             event.preventDefault();
         }

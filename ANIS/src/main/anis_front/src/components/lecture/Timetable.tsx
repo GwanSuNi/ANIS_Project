@@ -20,7 +20,8 @@ const TimeTable: FC<LectureList & { onLecturesChange: (lectures: Lecture[]) => v
 
         useEffect(() => {
             setSelectedLectures(initialSelectedLectures);
-        }, [initialSelectedLectures]);
+            }, [initialSelectedLectures]);
+        // },[]);
 
         useEffect(() => {
             onLecturesChange(selectedLectures);
@@ -139,6 +140,7 @@ const LectureCell = memo(({lecture, selected: isSelected, isButtonDisabled, togg
                 padding: '4px',
                 backgroundColor: isSelected ? 'yellow' : 'white', // selected 상태에 따라 배경색 변경
                 ":hover": {backgroundColor: isSelected ? 'yellow' : 'white'}, // 추가된 코드
+                color: isButtonDisabled ? 'red' : 'black'
             }}
         >
             <Box sx={{

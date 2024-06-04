@@ -1,10 +1,11 @@
-import './LectureApplication.css';
 import Button from '@mui/material/Button';
 import {useNavigate} from 'react-router-dom';
 import {TimeTable} from './Timetable';
 import {fetchLectureOfPreset, Lecture, registrations, useFetchLectures} from '@hooks';
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 
-function LectureButton({selectedLectures}: { selectedLectures: Lecture[] }) {
+export default function LectureApplication() {
     const navigate = useNavigate();
     const enrolmentTogether = () => {
         navigate('/enrolmentTogether');
@@ -16,50 +17,31 @@ function LectureButton({selectedLectures}: { selectedLectures: Lecture[] }) {
     const enrolment = async (selectedLectures: Lecture[]) => {
         await registrations(selectedLectures);
     };
-
-    return (
-        <div className="LectureButton">
-            <Button onClick={enrolmentTogether} variant="contained" className="lectureButton"
-                    style={{fontSize: '20px', backgroundColor: 'yellow', color: 'black'}}> 수강신청 함께하기</Button>
-            <Button onClick={lectureCopy} variant="contained" className="lectureButton"
-                    style={{fontSize: '20px', backgroundColor: 'yellow', color: 'black'}}> 수강신청 따라하기</Button>
-            <Button onClick={() => enrolment(selectedLectures)} variant="contained" className="lectureButton"
-                    style={{fontSize: '20px', backgroundColor: 'yellow', color: 'black'}}> 수강신청하기</Button>
-        </div>
-    );
-}
-
-function LecturePresetButton({setSelectedLectures}: { setSelectedLectures: (lectures: Lecture[]) => void }) {
-    // fetchLectureOfPreset
+    // availableLectures, selectedLectures 서버에서 받아옴
+    // 자세한 내용은 LectureApi 참고
     const fetchAndSetLectureOfPreset = async (presetName: string) => {
         const lectures = await fetchLectureOfPreset(presetName);
         setSelectedLectures(lectures);
     };
-    return (
-        <div className="LecturePreset">
-            <Button onClick={() => fetchAndSetLectureOfPreset("A")} variant="contained" className="presetButton"
-                    style={{fontSize: '20px', backgroundColor: 'yellow', color: 'black'}}>A</Button>
-            <Button onClick={() => fetchAndSetLectureOfPreset("B")} variant="contained" className="presetButton"
-                    style={{fontSize: '20px', backgroundColor: 'yellow', color: 'black'}}>B</Button>
-            <Button onClick={() => fetchAndSetLectureOfPreset("C")} variant="contained" className="presetButton"
-                    style={{fontSize: '20px', backgroundColor: 'yellow', color: 'black'}}>C</Button>
-        </div>
-    )
-}
-
-export default function LectureApplication() {
-    // availableLectures, selectedLectures 서버에서 받아옴
-    // 자세한 내용은 LectureApi 참고
     const {availableLectures, selectedLectures, setSelectedLectures} = useFetchLectures();
+
     return (
-        <div className="LectureApplication">
-            <LecturePresetButton setSelectedLectures={setSelectedLectures}/>
-            <div className="main">
-                <TimeTable availableLectures={availableLectures} selectedLectures={selectedLectures}
-                           isButtonDisabled={false} onLecturesChange={setSelectedLectures}/>
-            </div>
-            {/*TODO 학점이 모자르거나 넘치는경우 에러처리하기 */}
-            <LectureButton selectedLectures={selectedLectures}/>
-        </div>
+        <Grid container direction="column" alignItems="center" justifyContent="center">
+                <Grid container justifyContent="space-around" alignItems="center" sx={{ width: 500 }}>
+                        <Button onClick={() => fetchAndSetLectureOfPreset("A")} variant="contained" sx={{ width: 110, height: 100, fontSize: '20px', backgroundColor: 'yellow', color: 'black', marginTop: 2}}>A</Button>
+                        <Button onClick={() => fetchAndSetLectureOfPreset("B")} variant="contained" sx={{ width: 110, height: 100, fontSize: '20px', backgroundColor: 'yellow', color: 'black', marginTop: 2}}>B</Button>
+                        <Button onClick={() => fetchAndSetLectureOfPreset("C")} variant="contained" sx={{ width: 110, height: 100, fontSize: '20px', backgroundColor: 'yellow', color: 'black', marginTop: 2}}>C</Button>
+                </Grid>
+                <Box sx={{ width: 650, height: 650, border: '0.5px solid black',
+                    justifyContent: 'center', alignItems: 'center', marginBottom: 2, marginTop: 2}}>
+                    <TimeTable availableLectures={availableLectures} selectedLectures={selectedLectures}
+                               isButtonDisabled={false} onLecturesChange={setSelectedLectures}/>
+                </Box>
+                <Grid container justifyContent="space-around" alignItems="center" sx={{ width: 500 }}>
+                        <Button onClick={enrolmentTogether} variant="contained" sx={{ width: 110, height: 100, fontSize: '20px', backgroundColor: 'yellow', color: 'black'  ,marginBottom: 2}}>수강신청 함께하기</Button>
+                        <Button onClick={lectureCopy} variant="contained" sx={{ width: 110, height: 100, fontSize: '20px', backgroundColor: 'yellow', color: 'black'  ,marginBottom: 2}}>수강신청 따라하기</Button>
+                        <Button onClick={() => enrolment(selectedLectures)} variant="contained" sx={{ width: 110, height: 100, fontSize: '20px', backgroundColor: 'yellow', color: 'black', marginBottom: 2 }}>수강신청하기</Button>
+                </Grid>
+        </Grid>
     );
 }
