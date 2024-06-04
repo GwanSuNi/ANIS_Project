@@ -1,1 +1,1 @@
-export type {Lecture} from './LectureInterface';
+export type {Lecture} from './lectureInterface';

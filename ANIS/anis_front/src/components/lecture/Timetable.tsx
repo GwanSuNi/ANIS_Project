@@ -1,7 +1,7 @@
 import {memo, useEffect, useMemo} from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
 import Button from '@mui/material/Button';
-import {Box} from '@mui/material';
+import {Box, Typography, useTheme} from '@mui/material';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFetchRegisteredLecturesQuery} from '@api';
 import {addSelectedLecture, removeSelectedLecture, RootState} from '@redux';
@@ -22,31 +22,21 @@ interface LectureCellProps {
 // 요일과 시간으로 강의 데이터를 매핑하는 해시맵 타입 정의
 interface LectureMap {
     [day: string]: {
-        [time: string]: Lecture;
+        [time: number]: Lecture;
     };
 }
 
 const COL_CNT = 7;
 const ROW_CNT = 10;
-const DAYS = ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'];
+const DAYS = ['월', '화', '수', '목', '금', '토', '일'];
 const START_HOUR = 9; // 첫 교시 시작 시간
-const END_HOUR = 17; // 마지막 교시 시작 시간
-// 시간대 배열 생성
-const TIMES = Array.from({length: END_HOUR - START_HOUR + 1}, (_, i) => {
-    const hour = START_HOUR + i;
-
-    return {
-        class: `${i + 1}교시`,
-        startTime: `${hour}:00`,
-        endTime: `${hour}:50`
-    };
-});
 
 // 시간표 컴포넌트
 export default function Timetable({lectures, isEnrolling}: TimetableProps) {
     const dispatch = useDispatch();
     const {data: registeredLectures = []} = useFetchRegisteredLecturesQuery();
     const selectedLectures = useSelector((state: RootState) => state.lecture.selectedLectures);
+    const theme = useTheme();
 
     useEffect(() => {
         registeredLectures.forEach((lecture) => dispatch(addSelectedLecture(lecture)));
@@ -69,7 +59,7 @@ export default function Timetable({lectures, isEnrolling}: TimetableProps) {
                 map[lecture.lecDay] = {};
 
             // 요일 객체 안에 시간 객체를 만들고 강의 데이터를 저장
-            map[lecture.lecDay][lecture.lecTimeStart] = lecture;
+            map[lecture.lecDay][parseInt(lecture.lecTimeStart)] = lecture;
         });
 
         return map;
@@ -82,24 +72,23 @@ export default function Timetable({lectures, isEnrolling}: TimetableProps) {
             container
             width='100%'
             height='100%'
-            minHeight='600px'
             textAlign='center'
             borderTop='1px solid'
             borderLeft='1px solid'
         >
             {[...Array(COL_CNT)].map((_, col) => (
-                <Grid key={col} container direction='column' xs={12 / COL_CNT}>
+                <Grid key={col} container direction='column' xs>
                     {[...Array(ROW_CNT)].map((_, row) => {
                         const key = `${col}-${row}`; // 셀을 식별하기 위한 키
 
                         if (col === 0 || row === 0) { // 요일과 시간을 표시하는 셀을 렌더링
-                            if (col === 0 && row === 0) // 대각선(시간\요일) 셀을 렌더링
-                                return <DiagonalCell key={key}/>;
+                            if (col === 0 && row === 0)
+                                return <EmptyCell key={key} bgColor={theme.palette.primary.main}/>;
                             else // 헤더 셀을 렌더링
                                 return <HeaderCell col={col} row={row} key={key}/>;
                         } else {
                             // 해당 요일과 시간에 강의가 있는지 확인
-                            const lecture = lectureMap[DAYS[col - 1]] && lectureMap[DAYS[col - 1]][TIMES[row - 1].startTime];
+                            const lecture = lectureMap[DAYS[col - 1]] && lectureMap[DAYS[col - 1]][START_HOUR + row - 1];
 
                             if (lecture) { // 강의가 있으면 강의 시간을 설정하고 강의 셀 컴포넌트를 렌더링
                                 hour = lecture.lecCredit;
@@ -131,6 +120,7 @@ const LectureCell = memo(({lecture, isSelected, isEnrolling, toggleLecture}: Lec
         <Button
             onClick={toggleLecture} // 버튼 클릭 시 selected 상태를 토글
             disabled={!isEnrolling} // 버튼의 활성화 여부를 결정하는 prop
+            color='inherit'
             sx={{
                 gridColumn: '1',
                 gridRow: `1 / span ${lecture.lecCredit}`,
@@ -141,17 +131,21 @@ const LectureCell = memo(({lecture, isSelected, isEnrolling, toggleLecture}: Lec
                 borderRight: '1px solid black',
                 borderBottom: '1px solid black',
                 padding: '4px',
-                backgroundColor: isSelected ? 'yellow' : 'white', // TODO
+                backgroundColor: isSelected ? 'yellow' : 'white',
                 ":hover": {backgroundColor: isSelected ? 'yellow' : 'white'}
             }}
         >
-            <Box sx={{
-                wordWrap: 'break-word',
-                overflow: 'hidden',
-                textTransform: 'none',
-                whiteSpace: 'pre-line'
-            }}>
-                {`${lecture.lecName}\n${lecture.lecProfessor}\n${lecture.lectureRoom}`}
+            <Box whiteSpace='pre-line' textTransform='none'>
+                <Typography variant='body2' display={{xs: 'block', sm: 'none'}}>
+                    {`${lecture.lectureRoom}`}
+                </Typography>
+                <Typography variant='body1' fontFamily='NanumGothicBold'
+                            display={{xs: 'none', sm: 'block', md: 'none'}}>
+                    {lecture.lectureRoom}
+                </Typography>
+                <Typography variant='body1' fontFamily='NanumGothicBold' display={{xs: 'none', md: 'block'}}>
+                    {`${lecture.lecName}\n${lecture.lectureRoom}`}
+                </Typography>
             </Box>
         </Button>
     );
@@ -159,6 +153,8 @@ const LectureCell = memo(({lecture, isSelected, isEnrolling, toggleLecture}: Lec
 
 // 요일과 시간을 표시하는 헤더 셀 컴포넌트. memo를 사용하여 렌더링 성능 최적화
 const HeaderCell = memo(({col, row}: { col: number, row: number }) => {
+    const theme = useTheme();
+
     return (
         <Grid
             xs
@@ -167,57 +163,38 @@ const HeaderCell = memo(({col, row}: { col: number, row: number }) => {
             alignItems='center'
             borderRight='1px solid'
             borderBottom='1px solid'
-            bgcolor='#ebd480'
+            bgcolor= 'primary.main'
+            p={.5}
+            sx={{height: `calc(100% / ${ROW_CNT})`}}
         >
-            <Box sx={{wordWrap: 'break-word', overflow: 'hidden', whiteSpace: 'pre-line', padding: '4px'}}>
-                {col === 0 ? `${TIMES[row - 1].class}\n${TIMES[row - 1].startTime}~${TIMES[row - 1].endTime}` : DAYS[col - 1]}
+            <Box whiteSpace='pre-line'>
+                <Typography
+                    variant='body1'
+                    fontFamily='NanumGothicBold'
+                    display={{xs: 'block', sm: 'none'}}
+                >
+                    {col === 0 ? `${START_HOUR + row - 1}시` : DAYS[col - 1]}
+                </Typography>
+                <Typography
+                    variant='body1'
+                    fontFamily='NanumGothicBold'
+                    display={{xs: 'none', sm: 'block', md: 'none'}}
+                >
+                    {col === 0 ? `${row}교시\n${START_HOUR + row - 1}:00` : `${DAYS[col - 1]}요일`}
+                </Typography>
+                <Typography
+                    variant='body1'
+                    fontFamily='NanumGothicExtraBold'
+                    display={{xs: 'none', md: 'block'}}
+                >
+                    {col === 0 ? `${row}교시\n${START_HOUR + row - 1}:00 ~ ${START_HOUR + row - 1}:50` : `${DAYS[col - 1]}요일`}
+                </Typography>
             </Box>
         </Grid>
     );
 });
 
 // 빈 셀 컴포넌트
-function EmptyCell() {
-    return <Grid xs borderRight='1px solid' borderBottom='1px solid'/>
-}
-
-// 대각선(시간\요일) 셀 컴포넌트
-function DiagonalCell() {
-    return (
-        <Grid
-            container
-            sx={{
-                height: `calc(100% / ${ROW_CNT})`,
-                background: 'linear-gradient(to bottom left, transparent calc(50% - 1px), black calc(50% - 1px), black 50%, transparent 50%)',
-                backgroundColor: '#ebd480'
-            }}
-        >
-            <Grid container direction='column' xs>
-                <Grid xs/>
-                <Grid
-                    xs
-                    display='flex'
-                    justifyContent='center'
-                    alignItems='center'
-                    borderBottom='1px solid'
-                    fontSize={{xs: '.8rem', sm: '1rem'}}
-                >
-                    시간
-                </Grid>
-            </Grid>
-            <Grid container direction='column' xs>
-                <Grid
-                    xs
-                    display='flex'
-                    justifyContent='center'
-                    alignItems='center'
-                    borderRight='1px solid'
-                    fontSize={{xs: '.8rem', sm: '1rem'}}
-                >
-                    요일
-                </Grid>
-                <EmptyCell/>
-            </Grid>
-        </Grid>
-    );
+function EmptyCell({bgColor = 'white'}: { bgColor?: string }) {
+    return <Grid xs bgcolor={bgColor} p={.5} borderRight='1px solid' borderBottom='1px solid'/>;
 }
