@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState, setUsername} from "@redux";
 import {secInstance} from "@utils";
 import {useEffect, useState} from "react";
+import Box from "@mui/material/Box";
 
 /**
  * 직접 선택해서 로그인하는 컴포넌트
@@ -18,6 +19,7 @@ export default function DirectInputLogin() {
         , studentList,
     } = useStudentSearch();
     const {password, setPassword, handleSubmit} = useLogin();
+    const username = useSelector((state: RootState) => state.username.username);
     const dispatch = useDispatch();
     const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
 
@@ -25,24 +27,30 @@ export default function DirectInputLogin() {
         if (selectedStudent) {
             handleSubmit();
         }
-    }, [selectedStudent]);
+    }, [username]);
 
     return (
-        //TODO 컴포넌트끼리 CSS 정리하기
+        //TODO TextField 컴포넌트화 하기
         <>
-            <Autocomplete
-                options={studentList}
-                // 이름기준으로 검색되게
-                getOptionLabel={(option) => option.studentName}
-                style={{width: 300}}
-                onInputChange={(event, newInputValue) => {
-                    setStudentID(newInputValue);
-                    setStudentName(newInputValue);
-                    setDepartmentName(newInputValue);
-                    setBirth(newInputValue);
-                }}
-                renderInput={(params) => <TextField {...params} label="학생 검색"/>}
-            />
+            <Box sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}>
+                <TextField
+                    id="outlined-basic"
+                    label="학생 검색"
+                    variant="outlined"
+                    sx={{width: 400, mt: '20px'}}
+                    onChange={(event) => {
+                        const newInputValue = event.target.value;
+                        setStudentID(newInputValue);
+                        setStudentName(newInputValue);
+                        setDepartmentName(newInputValue);
+                        setBirth(newInputValue);
+                    }}
+                />
+            </Box>
 
             <StudentListAndDialog
                 ListComponent={(listProps) =>
@@ -52,7 +60,7 @@ export default function DirectInputLogin() {
                     />
                 }
                 dialogTitle="정말로 본인이 맞습니까?"
-                onConfirm={(section: Student | null, handleClose) => {
+                onConfirm={ async (section: Student | null, handleClose) => {
                     if (section != null) {
                         const friendID = section.studentID;
                         try {
