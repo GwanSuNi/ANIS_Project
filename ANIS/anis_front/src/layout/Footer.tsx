@@ -7,12 +7,10 @@ import PeopleIcon from '@mui/icons-material/People';
 import HomeIcon from '@mui/icons-material/Home';
 import {usePreventSameNavigation} from '@hooks';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import {Typography, useTheme} from '@mui/material';
 
 export default function Footer() {
     const location = useLocation();
     const {preventSameNavigation} = usePreventSameNavigation();
-    const theme = useTheme();
 
     const navigationItems = [
         {label: '친구', value: '/friend', icon: <PeopleIcon/>},
@@ -35,11 +33,12 @@ export default function Footer() {
                 {navigationItems.map(item => (
                     <BottomNavigationAction
                         key={item.label}
-                        label={<Typography color={theme.palette.primary.contrastText}>{item.label}</Typography>}
+                        label={item.label}
                         value={item.value}
                         sx={{maxWidth: 'none', py: 1}}
                         icon={cloneElement(item.icon, {
-                            fontSize: 'large'
+                            fontSize: 'large',
+                            color: location.pathname === item.value ? 'secondary' : 'inherit'
                         })}
                     />
                 ))}

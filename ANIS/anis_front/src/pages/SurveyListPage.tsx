@@ -12,7 +12,7 @@ export default function SurveyListPage() {
 
     return (
         <Container maxWidth='lg'>
-            <Box display='flex' justifyContent='space-between' mt={7} mb={5}>
+            <Box display='flex' justifyContent='space-between' mt={10} mb={8}>
                 <Typography variant='h3' fontFamily='NanumGothicExtraBold' gutterBottom>
                     설문조사 · 진단평가
                 </Typography>

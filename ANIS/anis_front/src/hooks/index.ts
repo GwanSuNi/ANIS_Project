@@ -1,3 +1,5 @@
+export * from './LectureApi';
+export {useFetchLectures} from './LectureHooks';
 export type {Student} from './MemberApi';
 export {deleteFriend, fetchFriendList, fetchMembers, fetchFriends} from './MemberApi';
 export {useStudentSearch, useFriendSearch} from './SearchHooks';

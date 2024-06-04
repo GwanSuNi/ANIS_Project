@@ -7,9 +7,9 @@ import Typography from '@mui/material/Typography';
 
 export default function SurveyCard({isComplete}: { isComplete: boolean }) {
     return (
-        <Card elevation={7}>
-            <CardActionArea>
-                <CardContent component={Grid} container spacing={2} m={0} sx={{p: 1.5}}>
+        <Card elevation={8}>
+            <CardActionArea sx={{paddingY: '8px'}}>
+                <CardContent component={Grid} container spacing={2}>
                     <Grid xs='auto'>
                         <Chip
                             label={isComplete ? '완료' : '미완료'}

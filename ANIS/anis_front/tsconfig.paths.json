@@ -2,7 +2,6 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
-      "@api": ["./api"],
       "@assets/*": ["./assets/*"],
       "@components": ["./components"],
       "@hooks": ["./hooks"],
@@ -11,7 +10,6 @@
       "@redux": ["./redux"],
       "@routes": ["./routes"],
       "@themes": ["./themes"],
-      "@types": ["./types"],
       "@utils": ["./utils"]
     }
   }
