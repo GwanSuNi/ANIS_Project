@@ -1,10 +1,10 @@
+import './LectureApplication.css';
 import Button from '@mui/material/Button';
 import {useNavigate} from 'react-router-dom';
-import {useFetchAvailableLecturesQuery} from '@api';
-import {fetchLectureOfPreset} from '../../deprecated/LectureApi';
-import Timetable from './Timetable';
+import {TimeTable} from './Timetable';
+import {fetchLectureOfPreset, Lecture, registrations, useFetchLectures} from '@hooks';
 
-function LectureButton() {
+function LectureButton({selectedLectures}: { selectedLectures: Lecture[] }) {
     const navigate = useNavigate();
     const enrolmentTogether = () => {
         navigate('/enrolmentTogether');
@@ -12,6 +12,10 @@ function LectureButton() {
     const lectureCopy = () => {
         navigate('/lectureCopy');
     }
+    // 수강신청 버튼 클릭 이벤트 핸들러
+    const enrolment = async (selectedLectures: Lecture[]) => {
+        await registrations(selectedLectures);
+    };
 
     return (
         <div className="LectureButton">
@@ -19,16 +23,17 @@ function LectureButton() {
                     style={{fontSize: '20px', backgroundColor: 'yellow', color: 'black'}}> 수강신청 함께하기</Button>
             <Button onClick={lectureCopy} variant="contained" className="lectureButton"
                     style={{fontSize: '20px', backgroundColor: 'yellow', color: 'black'}}> 수강신청 따라하기</Button>
-            <Button variant="contained" className="lectureButton"
+            <Button onClick={() => enrolment(selectedLectures)} variant="contained" className="lectureButton"
                     style={{fontSize: '20px', backgroundColor: 'yellow', color: 'black'}}> 수강신청하기</Button>
         </div>
     );
 }
 
-function LecturePresetButton() {
+function LecturePresetButton({setSelectedLectures}: { setSelectedLectures: (lectures: Lecture[]) => void }) {
     // fetchLectureOfPreset
     const fetchAndSetLectureOfPreset = async (presetName: string) => {
         const lectures = await fetchLectureOfPreset(presetName);
+        setSelectedLectures(lectures);
     };
     return (
         <div className="LecturePreset">
@@ -43,21 +48,18 @@ function LecturePresetButton() {
 }
 
 export default function LectureApplication() {
-    const {data: availableLectures = [], isLoading, error} = useFetchAvailableLecturesQuery();
-
-    if (isLoading)
-        return <div>로딩중...</div>
-    if (error)
-        return <div>에러발생</div>
-
+    // availableLectures, selectedLectures 서버에서 받아옴
+    // 자세한 내용은 LectureApi 참고
+    const {availableLectures, selectedLectures, setSelectedLectures} = useFetchLectures();
     return (
         <div className="LectureApplication">
-            <LecturePresetButton/>
+            <LecturePresetButton setSelectedLectures={setSelectedLectures}/>
             <div className="main">
-                <Timetable lectures={availableLectures} isEnrolling={true}/>
+                <TimeTable availableLectures={availableLectures} selectedLectures={selectedLectures}
+                           isButtonDisabled={false} onLecturesChange={setSelectedLectures}/>
             </div>
             {/*TODO 학점이 모자르거나 넘치는경우 에러처리하기 */}
-            <LectureButton/>
+            <LectureButton selectedLectures={selectedLectures}/>
         </div>
     );
 }
