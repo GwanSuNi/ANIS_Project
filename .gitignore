@@ -3,6 +3,7 @@
 
 **/build/
 **/resources/static/
+**/src/main/resources/static/
 
 HELP.md
 .gradle
