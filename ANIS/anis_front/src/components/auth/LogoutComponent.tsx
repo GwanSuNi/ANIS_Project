@@ -18,7 +18,7 @@ export default function LogoutComponent() {
         event.preventDefault();
 
         try {
-            const response = await logoutInstance.post('/logout');
+            const response = await logoutInstance.post('/api/logout');
             if (response.status === 200) {
                 sessionStorage.removeItem('access');
                 dispatch(setUsername(''));

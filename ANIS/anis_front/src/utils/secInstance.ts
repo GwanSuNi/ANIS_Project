@@ -5,8 +5,8 @@ import history from './history';
 // Axios 인스턴스 생성
 const secInstance = axios.create({
     // baseURL: 'https://192.168.0.3:8080',
-    // baseURL: 'https://localhost',
-    baseURL: 'https://kingfish-sound-goshawk.ngrok-free.app/api/',
+    baseURL: 'http://localhost:8080',
+    // baseURL: 'https://kingfish-sound-goshawk.ngrok-free.app',
     timeout: 1000,
     withCredentials: true, // 쿠키를 전송받기 위해 필요
 });

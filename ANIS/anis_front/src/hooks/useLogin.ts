@@ -17,7 +17,7 @@ export function useLogin() {
         formData.append('password', password);
 
         try {
-            await loginInstance.post('/login', formData, {
+            await loginInstance.post('/api/login', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

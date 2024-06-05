@@ -24,12 +24,20 @@ import java.util.Date;
 import java.util.Iterator;
 
 @Slf4j
-@RequiredArgsConstructor
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final RefreshRepository refreshRepository;
     private final CookieUtil cookieUtil;
+
+    // 생성자에 경로 설정 추가
+    public LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, RefreshRepository refreshRepository, CookieUtil cookieUtil) {
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+        this.refreshRepository = refreshRepository;
+        this.cookieUtil = cookieUtil;
+        this.setFilterProcessesUrl("/api/login");  // 로그인 엔드포인트 변경
+    }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
