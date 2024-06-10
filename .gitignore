@@ -1,5 +1,8 @@
+.env
+**/.cert/
+
 **/build/
-**/src/main/resources/static/
+**/resources/static/
 
 HELP.md
 .gradle

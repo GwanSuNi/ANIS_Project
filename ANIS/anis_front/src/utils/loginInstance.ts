@@ -3,9 +3,11 @@ import {getAccessToken, setAccessToken} from './authUtils';
 
 // Axios 인스턴스 생성
 const loginInstance = axios.create({
+    // baseURL: 'https://192.168.0.3:8080',
     baseURL: 'http://localhost:8080',
+    // baseURL: 'https://kingfish-sound-goshawk.ngrok-free.app',
     timeout: 1000,
-    withCredentials: true // 쿠키를 전송받기 위해 필요
+    withCredentials: true, // 쿠키를 전송받기 위해 필요
 });
 
 // 응답 인터셉터 설정

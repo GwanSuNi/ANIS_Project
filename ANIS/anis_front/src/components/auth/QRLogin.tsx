@@ -4,6 +4,7 @@ import {useLogin, useSerialPort} from '@hooks';
 import {useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState, setUsername} from '@redux';
+import axios from 'axios';
 
 export default function QRLogin() {
     const navigate = useNavigate();
@@ -33,6 +34,17 @@ export default function QRLogin() {
     const handleSelfLogin = (event: MouseEvent) => {
         event.preventDefault();
         navigate('/login/self');
+    }
+
+    function handleTest() {
+        console.log('test');
+        axios.get('https://kingfish-sound-goshawk.ngrok-free.app/api/departments')
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.error(error);
+            });
     }
 
     return (
@@ -72,6 +84,8 @@ export default function QRLogin() {
             <Link onClick={handleSelfLogin} variant='body2' sx={{color: 'gray', mt: '5px'}}>
                 {'학교 관계자이신가요?'}
             </Link>
+
+            <Button variant='contained' onClick={handleTest}>nginx 테스트</Button>
         </Box>
     );
 }
