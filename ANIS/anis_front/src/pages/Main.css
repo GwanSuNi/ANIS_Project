@@ -5,8 +5,8 @@
     justify-content: center;
 }
 .rectangle {
-    width: 610px;
-    height: 610px;
+    width: 650px;
+    height: 650px;
     border: 1px solid black;
     display: flex;
     flex-direction: column;

@@ -28,7 +28,7 @@ export default function QRLogin() {
 
     const handleSelectLogin = (event: MouseEvent) => {
         event.preventDefault();
-        navigate('/login/direct-input');
+        navigate('/login/select');
     }
 
     const handleSelfLogin = (event: MouseEvent) => {
