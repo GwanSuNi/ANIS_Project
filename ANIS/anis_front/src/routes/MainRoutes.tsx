@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Suspense} from 'react';
 import {EnrolmentTogether, FriendAdd, FriendListView, LectureApplication, LectureCopy} from '@components';
 import {SurveyListPage} from '@pages';
 import {MainLayout} from '@layout';
@@ -24,37 +24,36 @@ const MainRoutes = [
                 children: [
                     {
                         path: '',
-                        element:
-                        <FriendListView/>
+                        element: <FriendListView/>
                     },
                     {
                         path: 'add', // 친구 추가하기 페이지
-                        element:
-                        <FriendAdd/>
+                        element: <FriendAdd/>
                     }
                 ]
             },
             {
                 path: 'lecture',
-                element:
-                    <LectureApplication/>,
+                element: <LectureApplication/>,
             },
             {
                 //TODO 설명 넣어주기 , 예 아니오 버튼 만들기
                 path: 'enrolmentTogether', // 친구 수강신청 함께하기
-                element:
-                <EnrolmentTogether/>
+                element: <EnrolmentTogether/>
             },
             {
                 //TODO 시간표 보여주기
                 path: 'lectureCopy', // 친구 수강신청 따라하기
-                element:
-                <LectureCopy/>
+                element: <LectureCopy/>
             },
 
             {
                 path: 'survey',
-                element: <SurveyListPage/>
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <SurveyListPage/>
+                    </Suspense>
+                )
             },
             {
                 path: 'mypage',
