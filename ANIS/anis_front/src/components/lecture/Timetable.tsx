@@ -33,18 +33,23 @@ const START_HOUR = 9; // 첫 교시 시작 시간
 
 // 시간표 컴포넌트
 export default function Timetable({lectures, isEnrolling}: TimetableProps) {
+    // Redux 스토어에 어떤 일이 일어났음을 알리는 것을 의미
     const dispatch = useDispatch();
+    // 현재 등록되어있는 즉 내가 수강신청 한 강의들을 불러옴 (색칠되어있는애들)
     const {data: registeredLectures = []} = useFetchRegisteredLecturesQuery();
+    // 현재 선택되어있는 강의들을 모두 갖고옴
     const selectedLectures = useSelector((state: RootState) => state.lecture.selectedLectures);
+
     const theme = useTheme();
 
     useEffect(() => {
+        // 수강 가능한 강의들을 모두 받아온 후 , 반복문을 돌려 useEffect(변화가있을때) 강의 변화 감지하기
         registeredLectures.forEach((lecture) => dispatch(addSelectedLecture(lecture)));
     }, [registeredLectures]);
 
     // 강의 선택/해제 함수
     const toggleLecture = (lecture: Lecture) => {
-        dispatch(selectedLectures[lecture.lecID] ? removeSelectedLecture(lecture) : addSelectedLecture(lecture));
+        dispatch(selectedLectures[lecture.lecName] ? removeSelectedLecture(lecture) : addSelectedLecture(lecture));
     }
 
     // 해시맵을 useMemo를 사용하여 메모이제이션 함으로써 성능을 최적화(자바스크립트에서 객체는 해시맵과 유사하게 동작함)
@@ -61,10 +66,9 @@ export default function Timetable({lectures, isEnrolling}: TimetableProps) {
             // 요일 객체 안에 시간 객체를 만들고 강의 데이터를 저장
             map[lecture.lecDay][parseInt(lecture.lecTimeStart)] = lecture;
         });
-
         return map;
     }, [lectures]); // 의존성 배열: 수강신청 가능한 강의들이 변경될 때에만 메모이제이션을 다시 수행
-
+    console.log('selectedLectures:', selectedLectures); // selectedLectures 상태를 출력
     let hour = 0; // 강의 시간
 
     return (
@@ -96,7 +100,7 @@ export default function Timetable({lectures, isEnrolling}: TimetableProps) {
                                 return (
                                     <LectureCell
                                         lecture={lecture}
-                                        isSelected={!!selectedLectures[lecture.lecID]}
+                                        isSelected={!!selectedLectures[lecture.lecName]}
                                         isEnrolling={isEnrolling}
                                         toggleLecture={() => toggleLecture(lecture)} key={key}
                                     />

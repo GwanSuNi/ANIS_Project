@@ -5,7 +5,8 @@ import {MainLayout} from '@layout';
 import Main from "../pages/Main";
 import {ProtectedRoute} from "@utils";
 import MyInfo from "../components/myInfo/MyInfo";
-
+import {Provider} from "react-redux";
+import store from "../redux/store";
 const MainRoutes = [
     {
         path: '/',
@@ -42,7 +43,9 @@ const MainRoutes = [
             {
                 path: 'lecture',
                 element:
-                    <LectureApplication/>,
+                    <Provider store={store}>
+                        <LectureApplication />
+                    </Provider>,
             },
             {
                 //TODO 설명 넣어주기 , 예 아니오 버튼 만들기
