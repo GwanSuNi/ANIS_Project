@@ -1,30 +1,40 @@
 import Button from '@mui/material/Button';
 import {useNavigate} from 'react-router-dom';
-import {TimeTable} from '@components';
-import {useFetchLectures} from '@hooks';
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
+import {useFetchRegisteredLecturesQuery} from '@api';
+import {Timetable} from '@components';
 
 export default function Main() {
-    const {availableLectures, selectedLectures, setSelectedLectures} = useFetchLectures();
+    const {data: registeredLectures = [], isLoading} = useFetchRegisteredLecturesQuery(undefined, {
+        refetchOnMountOrArgChange: false, // 컴포넌트가 마운트되거나 쿼리 인자가 변경될 때 데이터를 다시 가져오지 않음
+        refetchOnReconnect: false, // 네트워크 연결이 다시 복구될 때 데이터를 다시 가져오지 않음
+        refetchOnFocus: false // 브라우저 탭이나 창이 다시 포커스를 받을 때 데이터를 다시 가져오지 않음
+    });
+
+    return (
+        <div className="container">
+            <h1>성인학습자 전용 NIS</h1>
+            <div className="rectangle">
+                {isLoading ? <div>로딩중...</div> : <Timetable lectures={registeredLectures} isEnrolling={false}/>}
+            </div>
+            <ButtonContainer/>
+        </div>
+    );
+}
+
+function ButtonContainer() {
     const navigate = useNavigate();
     const enrolmentClick = () => {
         navigate("/lecture");
     };
     const assessmentClick = () => {
         navigate("/");
-    }
+    };
     return (
-        <Grid container direction="column" alignItems="center" justifyContent="center">
-            <Box sx={{ width: 650, height: 650, border: '0.5px solid black',
-                justifyContent: 'center', alignItems: 'center', marginBottom: 2, marginTop: 2 }}>
-                <TimeTable onLecturesChange={setSelectedLectures} availableLectures={availableLectures}
-                           selectedLectures={selectedLectures} isButtonDisabled={true}/>
-            </Box>
-            <Grid container justifyContent="space-around" alignItems="center" sx={{ width: 500 }}>
-                    <Button onClick={enrolmentClick} variant="contained" sx={{ width: 150, height: 100, fontSize: '30px', backgroundColor: 'yellow', color: 'black' , marginBottom: 2 }}>수강신청하기</Button>
-                    <Button onClick={assessmentClick} variant="contained" sx={{ width: 150, height: 100, fontSize: '30px', backgroundColor: 'yellow', color: 'black' , marginBottom: 2 }}>설문조사하기</Button>
-            </Grid>
-        </Grid>
+        <div className="button-container">
+            <Button onClick={enrolmentClick} variant="contained" className="button"
+                    style={{fontSize: '30px', backgroundColor: 'yellow', color: 'black'}}>수강신청하기</Button>
+            <Button onClick={assessmentClick} variant="contained" className="button"
+                    style={{fontSize: '30px', backgroundColor: 'yellow', color: 'black'}}>설문조사하기</Button>
+        </div>
     );
 }

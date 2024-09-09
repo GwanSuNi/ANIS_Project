@@ -1,11 +1,12 @@
-import React from "react";
+import {Suspense} from 'react';
 import {EnrolmentTogether, FriendAdd, FriendListView, LectureApplication, LectureCopy} from '@components';
 import {SurveyListPage} from '@pages';
 import {MainLayout} from '@layout';
 import Main from "../pages/Main";
 import {ProtectedRoute} from "@utils";
 import MyInfo from "../components/myInfo/MyInfo";
-
+import {Provider} from "react-redux";
+import store from "../redux/store";
 const MainRoutes = [
     {
         path: '/',
@@ -37,7 +38,9 @@ const MainRoutes = [
             {
                 path: 'lecture',
                 element:
-                    <LectureApplication/>,
+                    <Provider store={store}>
+                        <LectureApplication />
+                    </Provider>,
             },
             {
                 //TODO 설명 넣어주기 , 예 아니오 버튼 만들기
@@ -51,10 +54,13 @@ const MainRoutes = [
                 element:
                 <LectureCopy/>
             },
-
             {
                 path: 'survey',
-                element: <SurveyListPage/>
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <SurveyListPage/>
+                    </Suspense>
+                )
             },
             {
                 path: 'mypage',
