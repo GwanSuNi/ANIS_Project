@@ -1,10 +1,12 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Lecture} from '@types';
 
+// LectureState 인터페이스 정의
 interface LectureState {
     selectedLectures: Record<string, Lecture>;
 }
 
+// 초기 상태 정의
 const initialState: LectureState = {
     selectedLectures: {}
 };
@@ -27,11 +29,9 @@ const lectureSlice = createSlice({
                 return acc;
             }, {} as Record<string, Lecture>);
         }
-
-
     }
 });
 
-export const {addSelectedLecture, removeSelectedLecture,setSelectedLectures} = lectureSlice.actions;
+export const {addSelectedLecture, removeSelectedLecture, setSelectedLectures} = lectureSlice.actions;
 
 export default lectureSlice;

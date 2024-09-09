@@ -68,7 +68,7 @@ export default function Timetable({lectures, isEnrolling}: TimetableProps) {
         });
         return map;
     }, [lectures]); // 의존성 배열: 수강신청 가능한 강의들이 변경될 때에만 메모이제이션을 다시 수행
-    console.log('selectedLectures:', selectedLectures); // selectedLectures 상태를 출력
+
     let hour = 0; // 강의 시간
 
     return (
@@ -157,8 +157,6 @@ const LectureCell = memo(({lecture, isSelected, isEnrolling, toggleLecture}: Lec
 
 // 요일과 시간을 표시하는 헤더 셀 컴포넌트. memo를 사용하여 렌더링 성능 최적화
 const HeaderCell = memo(({col, row}: { col: number, row: number }) => {
-    const theme = useTheme();
-
     return (
         <Grid
             xs

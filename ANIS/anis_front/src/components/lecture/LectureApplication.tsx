@@ -1,11 +1,12 @@
 import Button from '@mui/material/Button';
 import {useNavigate} from 'react-router-dom';
-import {useFetchAvailableLecturesQuery} from '@api';
-import {fetchLectureOfPreset, registrations} from '../../deprecated/LectureApi';
+import {useFetchAvailableLecturesQuery, useRegisterLecturesMutation} from '@api';
+import {fetchLectureOfPreset} from '../../deprecated/LectureApi';
 import Timetable from './Timetable';
-import {Lecture} from "@types";
-import {addSelectedLecture, RootState, setSelectedLectures} from "@redux";
+import {Lecture} from '@types';
+import {RootState, setSelectedLectures} from '@redux';
 import {useDispatch, useSelector} from 'react-redux';
+
 function LectureButton() {
     const navigate = useNavigate();
     const enrolmentTogether = () => {
@@ -14,17 +15,17 @@ function LectureButton() {
     const lectureCopy = () => {
         navigate('/lectureCopy');
     }
-    const dispatch = useDispatch();
     const selectedLectures = useSelector((state: RootState) => state.lecture.selectedLectures);
+    const [registerLectures, {isLoading}] = useRegisterLecturesMutation();
 
     const handleRegisterLectures = async () => {
         const lecturesArray: Lecture[] = Object.values(selectedLectures);
-        const result = await registrations(lecturesArray);
-        if (result && result.success !== false) {
-            dispatch({ type: 'REGISTER_LECTURE_SUCCESS', payload: result });
-        } else {
-            dispatch({ type: 'REGISTER_LECTURE_FAILURE', error: result.error || 'Registration failed' });
-        }
+        const result = await registerLectures(lecturesArray).unwrap();
+
+        if (result)
+            alert('강의 등록에 성공했습니다!');
+        else
+            alert('강의 등록에 실패했습니다.');
     };
 
     return (
@@ -33,8 +34,10 @@ function LectureButton() {
                     style={{fontSize: '20px', backgroundColor: 'yellow', color: 'black'}}> 수강신청 함께하기</Button>
             <Button onClick={lectureCopy} variant="contained" className="lectureButton"
                     style={{fontSize: '20px', backgroundColor: 'yellow', color: 'black'}}> 수강신청 따라하기</Button>
-            <Button onClick={handleRegisterLectures}variant="contained" className="lectureButton"
-                    style={{fontSize: '20px', backgroundColor: 'yellow', color: 'black'}}> 수강신청하기</Button>
+            <Button onClick={handleRegisterLectures} variant="contained" className="lectureButton"
+                    style={{fontSize: '20px', backgroundColor: 'yellow', color: 'black'}} disabled={isLoading}>
+                {isLoading ? '등록 중...' : '수강신청하기'}
+            </Button>
         </div>
     );
 }
