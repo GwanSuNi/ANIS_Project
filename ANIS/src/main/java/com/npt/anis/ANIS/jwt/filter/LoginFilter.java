@@ -1,5 +1,8 @@
 package com.npt.anis.ANIS.jwt.filter;
 
+import com.npt.anis.ANIS.fcm.dto.FCMTokenDto;
+import com.npt.anis.ANIS.fcm.service.FCMService;
+import com.npt.anis.ANIS.fcm.service.TokenService;
 import com.npt.anis.ANIS.jwt.entity.RefreshEntity;
 import com.npt.anis.ANIS.jwt.repository.RefreshRepository;
 import com.npt.anis.ANIS.jwt.util.CookieUtil;
@@ -8,6 +11,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,13 +34,15 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final JwtUtil jwtUtil;
     private final RefreshRepository refreshRepository;
     private final CookieUtil cookieUtil;
+    private final TokenService tokenService;
 
     // 생성자에 경로 설정 추가
-    public LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, RefreshRepository refreshRepository, CookieUtil cookieUtil) {
+    public LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, RefreshRepository refreshRepository, CookieUtil cookieUtil, TokenService tokenService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.refreshRepository = refreshRepository;
         this.cookieUtil = cookieUtil;
+        this.tokenService = tokenService;
         this.setFilterProcessesUrl("/api/login");  // 로그인 엔드포인트 변경
     }
 
@@ -76,6 +83,20 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         // 유저 정보
         String username = authentication.getName();
 
+        // 프론트엔드에서 전송된 FCM 토큰을 받음
+        String fcmToken = request.getParameter("fcmToken");
+        log.info("FCM 토큰: {}", fcmToken);
+        if (fcmToken == null || fcmToken.isEmpty()) {
+            // FCM 토큰이 없으면 저장하지 않고 종료
+            log.warn("FCM 토큰이 없습니다.");
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            return;
+        }
+        // Redis에 FCM 토큰 저장 (Web Push용)
+        tokenService.saveFCMToken(username, fcmToken);
+        log.info("FCM 토큰 저장 완료", username, fcmToken);
+
+        // 권한 정보
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iter = authorities.iterator();
         GrantedAuthority authority = iter.next();

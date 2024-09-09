@@ -1,5 +1,6 @@
 package com.npt.anis.ANIS.jwt.config;
 
+import com.npt.anis.ANIS.fcm.service.TokenService;
 import com.npt.anis.ANIS.jwt.filter.CustomLogoutFilter;
 import com.npt.anis.ANIS.jwt.filter.JwtFilter;
 import com.npt.anis.ANIS.jwt.filter.LoginFilter;
@@ -40,6 +41,7 @@ public class SecurityConfig {
     private final JwtUtil jwtUtil;
     private final RefreshRepository refreshRepository;
     private final CookieUtil cookieUtil;
+    private final TokenService tokenService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -74,7 +76,7 @@ public class SecurityConfig {
                 .addFilterAt(new JwtFilter(jwtUtil), LoginFilter.class);
         // JWT 필터를 위한 커스텀 필터 추가
         http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository, cookieUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository, cookieUtil, tokenService), UsernamePasswordAuthenticationFilter.class);
 
         // 커스텀 로그아웃 필터 추가
         http.addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);
