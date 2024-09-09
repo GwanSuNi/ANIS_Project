@@ -12,6 +12,13 @@ module.exports = {
             '@routes': path.resolve(__dirname, 'src/routes'),
             '@themes': path.resolve(__dirname, 'src/themes'),
             '@utils': path.resolve(__dirname, 'src/utils')
-        }
+        },
+        configure: (webpackConfig) => {
+            webpackConfig.resolve.fallback = {
+                ...webpackConfig.resolve.fallback,
+                "process": require.resolve("process/browser")
+            };
+            return webpackConfig;
+        },
     }
 };
