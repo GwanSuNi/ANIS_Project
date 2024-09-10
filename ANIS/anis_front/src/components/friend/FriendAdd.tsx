@@ -4,7 +4,6 @@ import {StudentItemList, StudentListAndDialog} from './CustomFriendList';
 import {Student, useFriendSearch} from '@hooks';
 import {secInstance} from '@utils';
 import Box from "@mui/material/Box";
-import {TimeTable} from "../lecture";
 
 /**
  * 친구 추가하기

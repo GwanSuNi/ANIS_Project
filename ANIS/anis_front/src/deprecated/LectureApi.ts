@@ -1,4 +1,5 @@
 import {secInstance} from '@utils';
+import {addSelectedLecture} from "@redux";
 // 타입스크립트에서 export {} 안에 들어가는 요소들은 이미 모듈로 인정이 되어있고 그 안에 사용하는 타입 또한 모듈로 인정되어있어
 // export 안에 타입만 정의한것을 넣으려면 모듈을 두번 export 하는 상황이 발생하여 타입스크립트에서 막는다
 // 그래서 타입만을 다른곳에서 사용하고싶으면 타입만 따로 export 해줘야한다
@@ -71,17 +72,26 @@ const fetchLectureOfPreset = async (lecturePresetName: string) => {
  * 매개변수로 받아온 강의리스트로 수강신청하는 axios 요청
  * @param selectedLectures 수강신청 할 강의 리스트
  */
+
 const registrations = async (selectedLectures: Lecture[]) => {
     try {
         // selectedLectures를 서버로 보내는 HTTP POST 요청
         const response = await secInstance.post("/api/registrations", selectedLectures);
         if (response.data) {
+            // 리덕스 availableLectures 최신화 코드
+            // 최신 강의 목록 가져오기
+            const registeredLecturesResponse = await fetchSelectedLectures();
+            // 현재 수강신청 후 , 리덕스 최신화 하는 코드 짜기
+            // registeredLecturesResponse.forEach((lecture) => dispatch(addSelectedLecture(lecture)));
             alert("수강신청이 완료되었습니다.");
+            return response.data;
         } else {
             alert("수강신청에 실패하였습니다.");
+            return { success: false };
         }
     } catch (error) {
         console.error("수강신청 중 오류가 발생했습니다:", error);
+        return { success: false , error };
     }
 };
 export {
