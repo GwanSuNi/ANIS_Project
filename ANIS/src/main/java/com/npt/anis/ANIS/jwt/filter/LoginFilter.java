@@ -1,7 +1,5 @@
 package com.npt.anis.ANIS.jwt.filter;
 
-import com.npt.anis.ANIS.fcm.dto.FCMTokenDto;
-import com.npt.anis.ANIS.fcm.service.FCMService;
 import com.npt.anis.ANIS.fcm.service.TokenService;
 import com.npt.anis.ANIS.jwt.entity.RefreshEntity;
 import com.npt.anis.ANIS.jwt.repository.RefreshRepository;
@@ -11,9 +9,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,14 +30,17 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final RefreshRepository refreshRepository;
     private final CookieUtil cookieUtil;
     private final TokenService tokenService;
+    private final String userPassword;
+
 
     // 생성자에 경로 설정 추가
-    public LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, RefreshRepository refreshRepository, CookieUtil cookieUtil, TokenService tokenService) {
+    public LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, RefreshRepository refreshRepository, CookieUtil cookieUtil, TokenService tokenService, String userPassword) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.refreshRepository = refreshRepository;
         this.cookieUtil = cookieUtil;
         this.tokenService = tokenService;
+        this.userPassword = userPassword;
         this.setFilterProcessesUrl("/api/login");  // 로그인 엔드포인트 변경
     }
 
@@ -50,8 +48,15 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         // 클라이언트 요청에서 username, password 추출
         String username = obtainUsername(request);
-        String password = "1234";
-//        String password = obtainPassword(request);
+        String role = request.getParameter("role");
+        String password;
+
+        if (!"ADMIN".equals(role)) {
+            password = userPassword;
+        } else {
+            // 어드민 계정일 경우 request에서 입력된 비밀번호 사용
+            password = obtainPassword(request);
+        }
 
         System.out.println(username);
 

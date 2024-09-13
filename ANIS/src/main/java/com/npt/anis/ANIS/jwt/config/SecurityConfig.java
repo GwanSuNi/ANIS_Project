@@ -9,6 +9,7 @@ import com.npt.anis.ANIS.jwt.util.JwtUtil;
 import com.npt.anis.ANIS.jwt.repository.RefreshRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +17,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -30,8 +30,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
-
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
@@ -42,6 +40,8 @@ public class SecurityConfig {
     private final RefreshRepository refreshRepository;
     private final CookieUtil cookieUtil;
     private final TokenService tokenService;
+    @Value("${spring.password}")
+    private String userPassword;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -63,7 +63,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/login", "/join", "/h2-console/**", "favicon.ico","/joinList").permitAll()
+                        .requestMatchers("/", "/login", "/join/**", "/h2-console/**", "favicon.ico","/joinList").permitAll()
                         .requestMatchers(PathRequest.toH2Console() + "/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/api/**").permitAll()
@@ -76,7 +76,7 @@ public class SecurityConfig {
                 .addFilterAt(new JwtFilter(jwtUtil), LoginFilter.class);
         // JWT 필터를 위한 커스텀 필터 추가
         http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository, cookieUtil, tokenService), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository, cookieUtil, tokenService, userPassword), UsernamePasswordAuthenticationFilter.class);
 
         // 커스텀 로그아웃 필터 추가
         http.addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);

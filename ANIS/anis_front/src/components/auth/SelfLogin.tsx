@@ -14,7 +14,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {RootState, setUsername} from '@redux';
 
 export default function SelfLogin() {
-    const {password, setPassword, handleSubmit} = useLogin();
+    const {password, setPassword, handleSubmit, setAdmin} = useLogin();
     const username = useSelector((state: RootState) => state.username.username);
     const dispatch = useDispatch();
 
@@ -69,6 +69,7 @@ export default function SelfLogin() {
                         fullWidth
                         variant="contained"
                         sx={{mt: 3, mb: 2}}
+                        onClick={() => setAdmin(true)} // 관리자 로그인
                     >
                         로그인
                     </Button>
