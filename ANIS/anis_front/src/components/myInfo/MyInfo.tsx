@@ -2,7 +2,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import * as React from "react";
 import Container from "@mui/material/Container";
 import {Box, Skeleton, Table, TableBody, TableCell, TableContainer, TableRow} from "@mui/material";
-import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
+import Grid from '@mui/material/Grid'; // Grid version 2
 import Typography from '@mui/material/Typography';
 import Paper from "@mui/material/Paper";
 import Card from "@mui/material/Card";

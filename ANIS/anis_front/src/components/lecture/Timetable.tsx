@@ -1,5 +1,5 @@
 import {FC, memo, useEffect, useMemo, useState} from 'react';
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import {Box} from '@mui/material';
 import {Lecture} from '@hooks';
