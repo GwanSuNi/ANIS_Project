@@ -5,7 +5,6 @@ import {useNavigate} from 'react-router-dom';
 import {Alert, Button, Snackbar} from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Typography from '@mui/material/Typography';
-import {setQrInput, setUsername} from '@redux';
 import CheckIcon from '@mui/icons-material/Check';
 
 export default function LogoutComponent() {
@@ -21,10 +20,9 @@ export default function LogoutComponent() {
             const response = await logoutInstance.post('/api/logout');
             if (response.status === 200) {
                 sessionStorage.removeItem('access');
-                dispatch(setUsername(''));
-                dispatch(setQrInput(''));
                 setLogoutSuccess(true);
                 setTimeout(() => {
+                    dispatch({type: 'RESET_STATE'}); // 모든 리덕스 상태 초기화(RTK Query 캐시도 포함)
                     navigate('/login');
                 }, 3000);
             }
