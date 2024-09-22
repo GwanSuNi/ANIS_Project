@@ -38,8 +38,7 @@ public class Member {
         this.role = role;
     }
 
-    public void quitUser() {
-
-        isQuit = true;
+    public void toggleQuitUser() {
+        isQuit = !isQuit;
     }
 }

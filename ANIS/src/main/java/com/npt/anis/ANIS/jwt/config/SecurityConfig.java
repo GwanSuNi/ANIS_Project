@@ -65,7 +65,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/", "/login", "/join/**", "/h2-console/**", "favicon.ico","/joinList").permitAll()
                         .requestMatchers(PathRequest.toH2Console() + "/**").permitAll()
-                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/api/token/reissue", "/api/test").permitAll()
                         .anyRequest().authenticated()

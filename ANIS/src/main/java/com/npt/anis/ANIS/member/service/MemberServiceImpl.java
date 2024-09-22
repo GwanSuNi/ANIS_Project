@@ -59,6 +59,20 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public int toggleMemberQuit(String[] memberIDs) {
+        int count = 0;
+        for (String memberID : memberIDs) {
+            Member member = memberRepository.findByStudentID(memberID);
+            if (member == null) {
+                continue;
+            }
+            member.toggleQuitUser();
+            count++;
+        }
+        return count;
+    }
+
+    @Override
     public List<MemberSearchDTO> getMembersByDepName(String depName) {
         return memberRepository.findMembersByDepartmentName(depName);
     }
