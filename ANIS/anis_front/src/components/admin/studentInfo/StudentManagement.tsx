@@ -1,10 +1,13 @@
-import {alpha, Box, IconButton, TableCell, TableHead, TableRow, TableSortLabel, Toolbar, Tooltip} from "@mui/material";
-import React, {useEffect, useState} from "react";
+import {
+    Alert, alpha, Box, IconButton, Snackbar,
+    SnackbarCloseReason, TableCell, TableHead, TableRow, TableSortLabel, Toolbar, Tooltip
+} from "@mui/material";
+import React, {SetStateAction, SyntheticEvent, useEffect, useState} from "react";
 import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import {visuallyHidden} from '@mui/utils';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import DeleteIcon from '@mui/icons-material/Delete';
+import BlockIcon from '@mui/icons-material/Block';
 import Paper from "@mui/material/Paper";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
@@ -111,10 +114,37 @@ interface EnhancedTableProps {
 
 interface EnhancedTableToolbarProps {
     numSelected: number;
+    selectedIDs: readonly number[];
+    setSnackbarOpen: React.Dispatch<SetStateAction<boolean>>;
+    setSnackbarMessage: React.Dispatch<SetStateAction<string>>;
+    setSnackbarSeverity: React.Dispatch<SetStateAction<'success' | 'error'>>;
+    fetchMembersData: () => Promise<void>;
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-    const {numSelected} = props;
+    const {
+        numSelected,
+        selectedIDs,
+        setSnackbarOpen,
+        setSnackbarMessage,
+        setSnackbarSeverity,
+        fetchMembersData
+    } = props;
+
+    const handleToggleQuitUser = async () => {
+        try {
+            const response = await secInstance.put("/api/admin/member/quit", selectedIDs); // Controller에선 String[]로 받으나 자동 형변환?
+            fetchMembersData();
+            setSnackbarSeverity('success');
+            setSnackbarMessage(response.data + "명의 탈퇴 정보가 변경되었습니다.");
+            setSnackbarOpen(true);
+        } catch (error) {
+            setSnackbarSeverity('error');
+            setSnackbarMessage('요청을 처리하는 중에 오류가 발생했습니다.');
+            setSnackbarOpen(true);
+            console.log(error);
+        }
+    }
     return (
         <Toolbar
             sx={[
@@ -148,9 +178,9 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
                 </Typography>
             )}
             {numSelected > 0 ? (
-                <Tooltip title="Delete">
+                <Tooltip title="탈퇴여부 변경">
                     <IconButton>
-                        <DeleteIcon/>
+                        <BlockIcon onClick={handleToggleQuitUser}/>
                     </IconButton>
                 </Tooltip>
             ) : (
@@ -221,19 +251,26 @@ function StudentTable() {
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await secInstance.get("api/members");
-                setStudents(response.data);
-            } catch (error) {
-                console.log("데이터를 가져오는 중 오류가 발생했습니다.", error)
-            }
-        };
-
-        fetchData();
+        fetchMembersData();
     }, []);
+
+    const fetchMembersData = async () => {
+        try {
+            const response = await secInstance.get("api/members");
+            setStudents(response.data);
+        } catch (error) {
+            console.log("데이터를 가져오는 중 오류가 발생했습니다.", error)
+        }
+    };
+
+    const handleCloseSnackbar = () => {
+        setSnackbarOpen(false);
+    };
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
@@ -300,7 +337,9 @@ function StudentTable() {
     return (
         <Box sx={{width: '100%'}}>
             <Paper sx={{width: '100%', mb: 2}}>
-                <EnhancedTableToolbar numSelected={selected.length}/>
+                <EnhancedTableToolbar numSelected={selected.length} selectedIDs={selected}
+                                      setSnackbarOpen={setSnackbarOpen} setSnackbarMessage={setSnackbarMessage}
+                                      setSnackbarSeverity={setSnackbarSeverity} fetchMembersData={fetchMembersData}/>
                 <TableContainer>
                     <Table
                         sx={{minWidth: 620}}
@@ -383,6 +422,16 @@ function StudentTable() {
                 control={<Switch checked={dense} onChange={handleChangeDense}/>}
                 label="촘촘히 보기"
             />
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+            >
+                <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{width: '100%'}}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 }
