@@ -1,6 +1,7 @@
 package com.npt.anis.ANIS.member.service;
 
 import com.npt.anis.ANIS.member.domain.dto.MemberDTO;
+import com.npt.anis.ANIS.member.domain.dto.MemberSearchByAdminDto;
 import com.npt.anis.ANIS.member.domain.dto.MemberSearchDTO;
 import com.npt.anis.ANIS.member.domain.entity.Member;
 import com.npt.anis.ANIS.member.mapper.MemberMapper;
@@ -32,9 +33,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<MemberDTO> getMembersByAdmin() {
-        List<Member> members = memberRepository.findAll();
-        return memberMapper.toDTOs(members);
+    public List<MemberSearchByAdminDto> getMembersByAdmin() {
+        return memberRepository.findAllByAdmin();
     }
 
     @Override

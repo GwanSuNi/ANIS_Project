@@ -6,6 +6,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.npt.anis.ANIS.member.domain.dto.MemberDTO;
+import com.npt.anis.ANIS.member.domain.dto.MemberSearchByAdminDto;
 import com.npt.anis.ANIS.member.domain.dto.MemberSearchDTO;
 import com.npt.anis.ANIS.member.repository.MemberRepository;
 import com.npt.anis.ANIS.member.service.FriendService;
@@ -55,9 +56,9 @@ public class MemberController {
     }
 
 
-    // TODO: MemberService 사용 컨트롤러 작성
+    // TODO: API Secure
     @GetMapping("/members")
-    public ResponseEntity<List<MemberDTO>> getMembers() {
+    public ResponseEntity<List<MemberSearchByAdminDto>> getMembers() {
         return ResponseEntity.ok(memberService.getMembersByAdmin());
     }
 
