@@ -18,11 +18,12 @@ import {useEffect, useState} from "react";
 import { Fab} from "@mui/material";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import LectureManagement from "../components/admin/Lecture/LecureManagement";
+import LectureManagement from "../components/admin/lecture/LecureManagement";
 import {useNavigate} from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
 import {logoutInstance} from "@utils";
 import BreadcrumbsComponent from "../components/admin/BreadcrumbsComponent";
+import StudentManagement from "../components/admin/studentInfo/StudentManagement";
 
 const NAVIGATION: Navigation = [
     {
@@ -104,7 +105,7 @@ function DemoPageContent({pathname}: { pathname: string }) {
     }
 
     if (pathname === '/개인신상조회') {
-        return <Typography>개인신상조회 페이지 내용</Typography>;
+        return <StudentManagement/>;
     }
 
     if (pathname === '/수강 관리/강의 등록') {
