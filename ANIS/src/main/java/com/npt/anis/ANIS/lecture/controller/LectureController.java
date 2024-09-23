@@ -31,6 +31,7 @@ public class LectureController {
     }
 
     // lecturePreset 의 등록되어있는 강의 리스트 갖고오기
+    // TODO 강의 이름을 입력받았을떄 현재 날짜에 해당하는 프리셋 강의를 받아오기
     @GetMapping("/lecturePreset/{lecturePresetName}")
     public ResponseEntity<List<LectureDto>> lecturePresetOfLectureList(@PathVariable("lecturePresetName") String lecturePresetName){
         long lpIndex = lecturePresetService.getLecturePresetIndex(lecturePresetName);

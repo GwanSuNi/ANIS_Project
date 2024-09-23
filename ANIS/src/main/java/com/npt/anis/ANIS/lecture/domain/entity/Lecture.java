@@ -24,7 +24,7 @@ public class Lecture {
     */
     private Long lpIndex;
     private String lecName;
-    // hour
+    // hour (강의시간)
     private int lecCredit;
     private int lecYear;
     private int lecSemester;
