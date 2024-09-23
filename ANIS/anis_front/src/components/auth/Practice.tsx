@@ -1,10 +1,9 @@
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import React, {FC, ReactNode, useEffect, useState} from "react";
-import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
-import {fetchFriendLectureList, fetchSelectedLectures, Lecture, Student, useLogin, useStudentSearch} from "@hooks";
+import {Student, useLogin, useStudentSearch} from "@hooks";
 import Checkbox from "@mui/material/Checkbox";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
@@ -14,15 +13,17 @@ import List from "@mui/material/List";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import {styled} from "@mui/material/styles";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@redux";
 import {Table, TableBody, TableCell, TableContainer, TableRow} from "@mui/material";
 import Paper from "@mui/material/Paper";
-import {TimeTable} from "@components";
+import {Timetable} from "@components";
 import {useFetchFriendList} from "../../hooks/MemberApi";
+import {Lecture} from "@types";
+import {fetchFriendLectureList} from "../../deprecated/LectureApi";
+
 // TODO 리팩토링을 위한 코드정리
 interface StudentItemProps {
     item: Student;
@@ -141,11 +142,11 @@ const TestComponent: FC = () => {
     const [open, setOpen] = useState(false);
     const [dialogContent, setDialogContent] = useState<ReactNode>(null);
     const handleItemClick = (item: Student) => {
-            setDialogContent(
-                <StudentInfo item={item}/>
-            );
-            setOpen(true);
-        }
+        setDialogContent(
+            <StudentInfo item={item}/>
+        );
+        setOpen(true);
+    }
     const handleClose = () => {
         setOpen(false);
     };
@@ -212,7 +213,7 @@ const TestTimeTableComponent: FC = () => {
         console.log(lectures);
         setDialogContent(
             <>
-                <TimeTable availableLectures={friendLectures} selectedLectures={friendLectures} isButtonDisabled={true} onLecturesChange={setFriendLectures}/>
+                <Timetable lectures={lectures} isEnrolling={false}/>
             </>
         );
         setOpen(true);
@@ -233,14 +234,12 @@ const TestTimeTableComponent: FC = () => {
     return (
         <>
             <StudentItemList items={friendList} onListItemClick={handleItemClick}/>
-            <CustomDialog height={1000} maxWidth={1000} open={open} onClose={handleClose} onConfirm={handleConfirm} title="정말로 본인이 맞습니까?"
+            <CustomDialog height={1000} maxWidth={1000} open={open} onClose={handleClose} onConfirm={handleConfirm}
+                          title="정말로 본인이 맞습니까?"
                           content={dialogContent}/>
         </>
     );
 };
-
-
-
 
 
 // const handleItemClickTimeTable = (item: Student) => {
@@ -260,7 +259,7 @@ const StudentInfo: React.FC<StudentInfoProps> = ({item}) => {
             <ListItemAvatar>
                 <Avatar sx={{height: '100px', width: '100px'}}/>
             </ListItemAvatar>
-            <Box display="flex" justifyContent="center"  flex={1}>
+            <Box display="flex" justifyContent="center" flex={1}>
                 <TableContainer
                     sx={{
                         maxWidth: '500px',
@@ -308,7 +307,7 @@ type ConfirmDialogProps = {
     onClose: () => void;
 };
 
-const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ onConfirm, onClose }) => {
+const ConfirmDialog: React.FC<ConfirmDialogProps> = ({onConfirm, onClose}) => {
     return (
         <DialogActions sx={{display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}}>
             <Grid sx={{
@@ -357,5 +356,5 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ onConfirm, onClose }) => 
 };
 
 export {
-    TestComponent,TestTimeTableComponent
+    TestComponent, TestTimeTableComponent
 }

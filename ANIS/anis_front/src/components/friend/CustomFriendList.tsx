@@ -34,8 +34,9 @@ import Typography from '@mui/material/Typography';
 import {FixedSizeList} from 'react-window';
 
 // 로컬 컴포넌트
-import {deleteFriend, fetchFriendLectureList, fetchFriendList, fetchSelectedLectures, Lecture, Student} from '@hooks';
-import {TimeTable} from '@components';
+import {fetchFriendLectureList, fetchSelectedLectures, Lecture} from '../../deprecated/LectureApi';
+import {deleteFriend, fetchFriendList, Student} from '@hooks';
+import {Timetable} from '@components';
 
 /**
  *
@@ -56,10 +57,9 @@ const FriendListView = () => {
     const lightTheme = createTheme({palette: {mode: 'light'}});
     const [open, setOpen] = useState<boolean[]>([]);
     const anchorRef = useRef<(HTMLButtonElement | null)[]>([]);
-
     const [dialogOpen, setDialogOpen] = useState(false);
     const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
-    const [showTimeTable, setShowTimeTable] = useState(false);
+    const [showTimetable, setShowTimetable] = useState(false);
     const [friendLectures, setFriendLectures] = useState<Lecture[]>([]);
     const [myLectures, setMyLectures] = useState<Lecture[]>([]);
     const [friendList, setFriendList] = useState<Student[]>([]);
@@ -252,7 +252,7 @@ const FriendListView = () => {
                                                                             // TODO 시간표가 없다면 현재 시간표가 없습니다!! 띄우기
                                                                             if (item) {
                                                                                 setFriendLectures(await fetchFriendLectureList(item.studentID));
-                                                                                setShowTimeTable(true);
+                                                                                setShowTimetable(true);
                                                                             }
                                                                             // else{
                                                                             // }
@@ -297,12 +297,12 @@ const FriendListView = () => {
                 section={selectedStudent}
             />
             <Dialog
-                open={showTimeTable}
-                onClose={() => setShowTimeTable(false)}
-                PaperProps={{style: {width: '100%', height: '690px', maxWidth: '690px'}}}>
+                open={showTimetable}
+                onClose={() => setShowTimetable(false)}
+                PaperProps={{style: {width: '100%', height: '690px', maxWidth: '690px'}}}
+            >
                 <DialogContent>
-                    <TimeTable onLecturesChange={setMyLectures} availableLectures={friendLectures}
-                               selectedLectures={myLectures} isButtonDisabled={true}/>
+                    <Timetable lectures={friendLectures} isEnrolling={false}/>
                 </DialogContent>
             </Dialog>
         </Grid>
@@ -436,30 +436,13 @@ interface DialogProps {
     onConfirm: (section: Student | null) => void; // 타입 변경
     open: boolean;
     section: Student | null;
-    showTimeTable?: boolean;  // 테이블을 보여줄지 말지를 결정하는 prop
 }
 
-const CustomDialog: FC<DialogProps> = ({title, onConfirm, open, onClose, section, showTimeTable = false}) => {
-    const [myLectures, setMyLectures] = useState<Lecture[]>([]);  // 강의 목록을 상태로 관리합니다.
-    const [friendLectures, setFriendLectures] = useState<Lecture[]>([]);
-
-    useEffect(() => {
-        if (showTimeTable) {  // showTimeTable이 true일 때만 강의 목록을 가져옵니다.
-            fetchSelectedLectures().then(setMyLectures);  // 강의 목록을 가져와서 상태를 업데이트합니다.
-            fetchFriendLectureList(section?.studentID).then(setFriendLectures);
-        }
-    }, [showTimeTable, section]);
+const CustomDialog: FC<DialogProps> = ({title, onConfirm, open, onClose, section}) => {
     return (
         <Dialog
             open={open}
             onClose={onClose}
-            PaperProps={showTimeTable ? {
-                style: {
-                    width: '100%',
-                    height: '1000px',
-                    maxWidth: '800px'
-                }
-            } : {style: {width: '100%', height: '350px', maxWidth: '680px'}}}
         >
             <DialogTitle>
                 <Typography variant='h4' fontFamily='NanumGothicBold' color='primary.contrastText' m='auto'>
@@ -470,78 +453,18 @@ const CustomDialog: FC<DialogProps> = ({title, onConfirm, open, onClose, section
                 <DialogContentText>
                     {section && (
                         <>
-                            <ListItem>
+                            <ListItem sx={{flexDirection: 'row'}}>
+                                <ListItemAvatar>
+                                    <Avatar
+                                        // 사진넣는곳
+                                        // src={`/static/images/avatar/.jpg`}
+                                    />
+                                </ListItemAvatar>
                                 <ListItemText
                                     primary={
                                         <>
-                                            {showTimeTable ? (
-                                                    <Grid container>
-                                                        <ListItemAvatar sx={{
-                                                            display: 'flex',
-                                                            alignItems: 'center',
-                                                            justifyContent: 'center',
-                                                        }}>
-                                                            <Avatar sx={{
-                                                                display: 'flex',
-                                                                alignItems: 'center',
-                                                                justifyContent: 'center',
-                                                                height: '50px',
-                                                                width: '50px',
-                                                                marginBottom: 0.5,
-                                                                marginRight: 0.5
-                                                            }}
-                                                                // 사진넣는곳
-                                                                // src={`/static/images/avatar/.jpg`}
-                                                            />
-                                                        </ListItemAvatar>
-                                                        <Grid>
-                                                            <Typography variant='h4' fontFamily='NanumGothicBold'
-                                                                        color='primary.contrastText' m='auto'>
-                                                                {section.studentName}님의 시간표
-                                                            </Typography>
-                                                        </Grid>
-                                                    </Grid>) :
-
-                                                (<Grid container sx={{display: 'flex', flexDirection: 'row'}}>
-                                                    <Grid sx={{
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        justifyContent: 'center',
-                                                    }}>
-                                                        <ListItemAvatar sx={{
-                                                            display: 'flex',
-                                                            alignItems: 'center',
-                                                            justifyContent: 'center',
-                                                            marginRight: 2,
-                                                        }}>
-                                                            <Avatar
-                                                                sx={{
-                                                                    alignItems: 'center',
-                                                                    justifyContent: 'center',
-                                                                    height: '70px',
-                                                                    width: '70px'
-                                                                }}
-                                                                // 사진넣는곳
-                                                                // src={`/static/images/avatar/.jpg`}
-                                                            />
-                                                        </ListItemAvatar>
-                                                    </Grid>
-                                                    <Grid sx={{
-                                                        display: 'flex',
-                                                        flexDirection: 'column',
-                                                        fontSize: '30px'
-                                                    }}>
-                                                        {/*<Typography variant='h4' fontFamily='NanumGothicBold' color='primary.contrastText' m='auto'>*/}
-                                                        {/*</Typography>*/}
-                                                        <Grid>이름: {section.studentName} 학과: {section.departmentName}</Grid>
-                                                        <Grid>학번: {section.studentID} 생년월일: {section.birth}</Grid>
-                                                    </Grid>
-                                                </Grid>)}
-
-                                            {showTimeTable && <TimeTable onLecturesChange={setMyLectures}
-                                                                         availableLectures={friendLectures}
-                                                                         selectedLectures={myLectures}
-                                                                         isButtonDisabled={true}/>}
+                                            <div>이름: {section.studentName} 학과: {section.departmentName}</div>
+                                            <div>학번: {section.studentID} 생년월일: {section.birth}</div>
                                         </>
                                     }
                                 />
@@ -602,7 +525,6 @@ interface StudentListAndDialogProps {
     ListComponent: ComponentType<{ onListItemClick: (section: Student) => void }>;
     dialogTitle: string;
     onConfirm: (section: Student | null, handleClose: () => void) => void; // 타입 변경
-    showTimeTableCheck?: boolean;  // 테이블을 보여줄지 말지를 결정하는 prop
 }
 
 /***
@@ -612,13 +534,7 @@ interface StudentListAndDialogProps {
  * @param onConfirm 확인 버튼 클릭시 실행될 메서드 입력
  * @constructor
  */
-const StudentListAndDialog: FC<StudentListAndDialogProps> = ({
-                                                                 ListComponent,
-                                                                 dialogTitle,
-                                                                 onConfirm,
-                                                                 showTimeTableCheck = false
-                                                             }) => {
-
+const StudentListAndDialog: FC<StudentListAndDialogProps> = ({ListComponent, dialogTitle, onConfirm}) => {
     const [dialog, setDialog] = useState<{ open: boolean; section: Student | null }>({
         open: false,
         section: null,
@@ -648,7 +564,6 @@ const StudentListAndDialog: FC<StudentListAndDialogProps> = ({
                     section={dialog.section}
                     onConfirm={() => onConfirm(dialog.section, handleCloseDialog)} // handleCloseDialog를 인자로 전달
                     title={dialogTitle} // 외부에서 받은 title을 사용합니다.
-                    showTimeTable={showTimeTableCheck} // TimeTable을 보여줄지 말지를 결정하는 prop
                 />
             </Box>
         </Grid>

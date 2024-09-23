@@ -1,0 +1,37 @@
+diff a/ANIS/anis_front/src/components/friend/CustomFriendList.tsx b/ANIS/anis_front/src/components/friend/CustomFriendList.tsx	(rejected hunks)
+@@ -471,27 +471,17 @@
+                     {section && (
+                         <>
+                             <ListItem sx={{flexDirection: 'row'}}>
++                                <ListItemAvatar>
++                                    <Avatar
++                                        // 사진넣는곳
++                                        // src={`/static/images/avatar/.jpg`}
++                                    />
++                                </ListItemAvatar>
+                                 <ListItemText
+                                     primary={
+                                         <>
+-                                            <div style={{display: 'flex', flexDirection: 'row'}}>
+-                                                <div>
+-                                                    <ListItemAvatar>
+-                                                        <Avatar
+-                                                            // 사진넣는곳
+-                                                            // src={`/static/images/avatar/.jpg`}
+-                                                        />
+-                                                    </ListItemAvatar>
+-                                                </div>
+-                                                <div style={{flexDirection: 'column'}}>
+-                                                    <div>이름: {section.studentName} 학과: {section.departmentName}</div>
+-                                                    <div>학번: {section.studentID} 생년월일: {section.birth}</div>
+-                                                </div>
+-                                            </div>
+-                                            {showTimeTable && <TimeTable onLecturesChange={setMyLectures}
+-                                                                         availableLectures={friendLectures}
+-                                                                         selectedLectures={myLectures}
+-                                                                         isButtonDisabled={true}/>}
++                                            <div>이름: {section.studentName} 학과: {section.departmentName}</div>
++                                            <div>학번: {section.studentID} 생년월일: {section.birth}</div>
+                                         </>
+                                     }
+                                 />
