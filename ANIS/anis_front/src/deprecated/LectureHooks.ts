@@ -22,6 +22,16 @@ const useFetchLectures = () => {
         fetchData();
     }, []);
 
+    // 강의 데이터 변동 시 즉각 변동되도록 함
+    useEffect(() => {
+        const updateLectures = async () => {
+            const updatedAvailableLectures = await fetchAvailableLectures();
+            setAvailableLectures(updatedAvailableLectures);
+        };
+
+        updateLectures();
+    }, [availableLectures]);
+
     return {availableLectures, selectedLectures, setSelectedLectures};
 };
 

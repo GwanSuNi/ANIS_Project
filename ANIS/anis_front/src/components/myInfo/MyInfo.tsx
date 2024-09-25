@@ -2,7 +2,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import * as React from "react";
 import Container from "@mui/material/Container";
 import {Box, Skeleton, Table, TableBody, TableCell, TableContainer, TableRow} from "@mui/material";
-import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
+import Grid from '@mui/material/Grid2'; // Grid version 2
 import Typography from '@mui/material/Typography';
 import Paper from "@mui/material/Paper";
 import Card from "@mui/material/Card";
@@ -92,20 +92,20 @@ export default function MyInfo() {
             >
                 <Grid container spacing={2} maxWidth={"xl"} direction={"column"} justifyContent="center"
                       alignItems="center">
-                    <Grid container spacing={4} xs={12} justifyContent="center" alignItems="center"
+                    <Grid container spacing={4} size={{xs: 12}} justifyContent="center" alignItems="center"
                           direction={{xs: 'column', sm: 'row'}}
                           width={'900px'}
                           columnSpacing={{xs: 2, sm: 4, md: 4}}
                           rowSpacing={{xs: 2, sm: 4, md: 4}}
                           sx={{p: 0, mt: 3}}>
-                        <Grid xs={'auto'} display={'flex'} justifyContent="center" alignItems="center">
+                        <Grid size={{xs: 'auto'}} display={'flex'} justifyContent="center" alignItems="center">
                             <ImageCard userInfo={userInfo} handleUploadClick={handleUploadClick}/>
                         </Grid>
-                        <Grid container xs={6} justifyContent="center" alignItems="center">
+                        <Grid container size={{xs:6}} justifyContent="center" alignItems="center">
                             <MyInfoTable {...userInfo}/>
                         </Grid>
                     </Grid>
-                    <Grid display={'flex'} xs={12} justifyContent="center" alignItems="center">
+                    <Grid display={'flex'} size={{xs:12}} justifyContent="center" alignItems="center">
                       <QrCard studentID={userInfo.studentID}/>
                     </Grid>
                 </Grid>

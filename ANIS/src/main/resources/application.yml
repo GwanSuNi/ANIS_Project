@@ -25,6 +25,9 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/ANIS
+    redis:
+      host: localhost
+      port: 6379
 
   servlet:
     multipart:
@@ -42,3 +45,6 @@ logging:
     org:
       springframework:
         security=DEBUG:
+# firebase
+fcm:
+  firebase_config_path: firebase/fcmCertification.json

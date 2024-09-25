@@ -1,4 +1,5 @@
 package com.npt.anis.ANIS.member.repository;
+import com.npt.anis.ANIS.member.domain.dto.MemberSearchByAdminDto;
 import com.npt.anis.ANIS.member.domain.dto.MemberSearchDTO;
 import com.npt.anis.ANIS.member.domain.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,6 +16,9 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     List<Member> findByStudentNameContainingOrStudentIDContaining(String birth, String studentID);
 //    @Query("SELECT m FROM Member m JOIN Department d WHERE m.departmentID = d.depIndex and m.studentName LIKE %:name% OR d.depName LIKE %:departmentName%")
 //    List<Member> findByStudentNameContainingOrDepartmentNameContaining(String studentName, String departmentName);
+
+    @Query("SELECT new com.npt.anis.ANIS.member.domain.dto.MemberSearchByAdminDto(m.studentID, d.depName, m.studentName, m.birth, m.lastLogin, m.isQuit, m.role) FROM Member m JOIN Department d ON  m.departmentID = d.depIndex")
+    List<MemberSearchByAdminDto> findAllByAdmin();
 
     @Query("SELECT new com.npt.anis.ANIS.member.domain.dto.MemberSearchDTO(m.studentID, m.studentName, m.birth, d.depName) FROM Member m JOIN Department d ON m.departmentID = d.depIndex where m.studentID = :studentID")
     MemberSearchDTO findByStudentIDToSearchDTO(@Param("studentID") String studentID);
