@@ -18,12 +18,12 @@ import {useEffect, useState} from "react";
 import { Fab} from "@mui/material";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import LectureManagement from "../components/admin/lecture/LecureManagement";
 import {useNavigate} from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
 import {logoutInstance} from "@utils";
 import BreadcrumbsComponent from "../components/admin/BreadcrumbsComponent";
 import StudentManagement from "../components/admin/studentInfo/StudentManagement";
+import LectureManagement from "../components/admin/lecture/LecureManagement";
 
 const NAVIGATION: Navigation = [
     {

@@ -1,25 +1,14 @@
-import {
-    Alert,
-    Box,
-    Button,
-    Card,
-    CardActions,
-    FormControl,
-    InputLabel,
-    Snackbar,
-    Select,
-    Breadcrumbs
-} from "@mui/material";
+import {Alert, Box, Button, Card, CardActions, FormControl, InputLabel, Select, Snackbar} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import MenuItem from "@mui/material/MenuItem";
 import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid2";
 import secInstance from "../../../utils/secInstance";
-import {TimeTable} from "@components";
-import {useFetchLectures} from "@hooks"
+import {Timetable} from "@components";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import {useFetchAvailableLecturesQuery, useFetchRegisteredLecturesQuery} from "@api";
 
 function LectureRegisterCard() {
     const [lecName, setLecName] = useState('');
@@ -227,15 +216,14 @@ function LectureRegisterCard() {
 
 
 export default function LectureManagement() {
-    const {availableLectures, selectedLectures, setSelectedLectures} = useFetchLectures();
+    const {data: lectures = []} = useFetchRegisteredLecturesQuery();
     return (
         <>
             <Box pl={2} pr={2} pb={2}>
                 <Grid container spacing={2}>
                     <Grid size={7}>
                         {/*TODO: 시간표에서 수업 누르면 강의 정보 카드에 정보 불러와지고 값 변경할 수 있게 해야함*/}
-                        <TimeTable availableLectures={availableLectures} selectedLectures={selectedLectures}
-                                   isButtonDisabled={true} onLecturesChange={setSelectedLectures}/>
+                        <Timetable lectures={lectures} isEnrolling={false}/>
                     </Grid>
                     <Grid size={5}>
                         <Box display={'flex'} flexDirection={"column"} alignItems={"center"} justifyContent={"space-between"}>
