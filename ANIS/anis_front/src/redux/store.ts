@@ -4,6 +4,7 @@ import lectureSlice from './lectureSlice';
 import usernameSlice from './usernameSlice';
 import qrInputSlice from './qrInputSlice';
 import {lectureApi} from '@api';
+import snackbarSlice from "./snackbarSlice";
 
 // rootReducer 정의
 const rootReducer = (state: any, action: any) => {
@@ -17,7 +18,8 @@ const rootReducer = (state: any, action: any) => {
         lecture: lectureSlice.reducer(state?.lecture, action),
         username: usernameSlice.reducer(state?.username, action),
         qrInput: qrInputSlice.reducer(state?.qrInput, action),
-        [lectureApi.reducerPath]: lectureApi.reducer(state?.[lectureApi.reducerPath], action)
+        [lectureApi.reducerPath]: lectureApi.reducer(state?.[lectureApi.reducerPath], action),
+        snackbar: snackbarSlice.reducer(state?.snackbar, action),
     };
 };
 
