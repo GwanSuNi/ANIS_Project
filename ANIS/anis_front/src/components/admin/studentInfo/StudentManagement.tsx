@@ -1,8 +1,19 @@
 import {
-    Alert, alpha, Box, IconButton, Snackbar,
-    SnackbarCloseReason, TableCell, TableHead, TableRow, TableSortLabel, Toolbar, Tooltip
+    Alert,
+    alpha,
+    Box,
+    Button,
+    IconButton,
+    Snackbar,
+    TableCell,
+    TableHead,
+    TableRow,
+    TableSortLabel,
+    Toolbar,
+    Tooltip
 } from "@mui/material";
-import React, {SetStateAction, SyntheticEvent, useEffect, useState} from "react";
+import EditIcon from '@mui/icons-material/Edit';
+import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import {visuallyHidden} from '@mui/utils';
@@ -16,15 +27,20 @@ import TablePagination from "@mui/material/TablePagination";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import {secInstance} from "@utils";
+import Grid from "@mui/material/Grid2";
+import EditStudentInfo from "./EditStudentInfo";
+import {useDispatch} from "react-redux";
+import {openSnackbar} from "../../../redux/snackbarSlice";
 
-interface StudentDataForAdmin {
+export interface StudentDataForAdmin {
     studentID: number;
     depName: string;
     studentName: string;
-    birth: number;
+    birth: string;
     lastLogin: string;
     isQuit: string;
     role: string;
+    edit: string;
 }
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -101,6 +117,12 @@ const headCells: readonly HeadCell[] = [
         disablePadding: false,
         label: '권한',
     },
+    {
+        id: 'edit',
+        numeric: false,
+        disablePadding: true,
+        label: '정보 수정',
+    }
 ];
 
 interface EnhancedTableProps {
@@ -115,19 +137,15 @@ interface EnhancedTableProps {
 interface EnhancedTableToolbarProps {
     numSelected: number;
     selectedIDs: readonly number[];
-    setSnackbarOpen: React.Dispatch<SetStateAction<boolean>>;
-    setSnackbarMessage: React.Dispatch<SetStateAction<string>>;
-    setSnackbarSeverity: React.Dispatch<SetStateAction<'success' | 'error'>>;
     fetchMembersData: () => Promise<void>;
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
+    const dispatch = useDispatch();
+
     const {
         numSelected,
         selectedIDs,
-        setSnackbarOpen,
-        setSnackbarMessage,
-        setSnackbarSeverity,
         fetchMembersData
     } = props;
 
@@ -135,13 +153,9 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         try {
             const response = await secInstance.put("/api/admin/member/quit", selectedIDs); // Controller에선 String[]로 받으나 자동 형변환?
             fetchMembersData();
-            setSnackbarSeverity('success');
-            setSnackbarMessage(response.data + "명의 탈퇴 정보가 변경되었습니다.");
-            setSnackbarOpen(true);
+            dispatch(openSnackbar({message: response.data + " 명의 탈퇴 정보가 변경되었습니다.", severity: 'success'}));
         } catch (error) {
-            setSnackbarSeverity('error');
-            setSnackbarMessage('요청을 처리하는 중에 오류가 발생했습니다.');
-            setSnackbarOpen(true);
+            dispatch(openSnackbar({message: "요청을 처리하는 중에 오류가 발생했습니다.", severity: 'error'}));
             console.log(error);
         }
     }
@@ -243,34 +257,19 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     );
 }
 
-function StudentTable() {
-    const [students, setStudents] = useState<StudentDataForAdmin[]>([]); // 학생 데이터를 저장할 상태 변수
+interface StudentTableParams {
+    setEditStudentInfo: Dispatch<React.SetStateAction<StudentDataForAdmin | undefined>>;
+    fetchMembersData: () => Promise<void>;
+    students: StudentDataForAdmin[];
+}
+
+function StudentTable({setEditStudentInfo, fetchMembersData, students}: StudentTableParams) {
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof StudentDataForAdmin>('studentID');
     const [selected, setSelected] = React.useState<readonly number[]>([]); // 선택된 학생의 ID를 저장
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState('');
-    const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
-
-    useEffect(() => {
-        fetchMembersData();
-    }, []);
-
-    const fetchMembersData = async () => {
-        try {
-            const response = await secInstance.get("api/members");
-            setStudents(response.data);
-        } catch (error) {
-            console.log("데이터를 가져오는 중 오류가 발생했습니다.", error)
-        }
-    };
-
-    const handleCloseSnackbar = () => {
-        setSnackbarOpen(false);
-    };
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
@@ -337,9 +336,7 @@ function StudentTable() {
     return (
         <Box sx={{width: '100%'}}>
             <Paper sx={{width: '100%', mb: 2}}>
-                <EnhancedTableToolbar numSelected={selected.length} selectedIDs={selected}
-                                      setSnackbarOpen={setSnackbarOpen} setSnackbarMessage={setSnackbarMessage}
-                                      setSnackbarSeverity={setSnackbarSeverity} fetchMembersData={fetchMembersData}/>
+                <EnhancedTableToolbar numSelected={selected.length} selectedIDs={selected} fetchMembersData={fetchMembersData}/>
                 <TableContainer>
                     <Table
                         sx={{minWidth: 620}}
@@ -393,6 +390,12 @@ function StudentTable() {
                                         <TableCell align="left">{row.lastLogin}</TableCell>
                                         <TableCell align="left">{row.isQuit}</TableCell>
                                         <TableCell align="left">{row.role}</TableCell>
+                                        <TableCell align="left">
+                                            <IconButton onClick={(event) => {
+                                                event.stopPropagation(); // 행 클릭 방지
+                                                setEditStudentInfo(row);
+                                            }}><EditIcon/></IconButton>
+                                        </TableCell>
                                     </TableRow>
                                 );
                             })}
@@ -422,26 +425,40 @@ function StudentTable() {
                 control={<Switch checked={dense} onChange={handleChangeDense}/>}
                 label="촘촘히 보기"
             />
-            <Snackbar
-                open={snackbarOpen}
-                autoHideDuration={6000}
-                onClose={handleCloseSnackbar}
-                anchorOrigin={{vertical: 'top', horizontal: 'center'}}
-            >
-                <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{width: '100%'}}>
-                    {snackbarMessage}
-                </Alert>
-            </Snackbar>
         </Box>
     );
 }
 
+// 학생 정보 Redux로 관리하는게 더 깔끔할 듯
 export default function StudentManagement() {
+    const [students, setStudents] = useState<StudentDataForAdmin[]>([]); // 학생 데이터를 저장할 상태 변수
+    const [editStudentInfo, setEditStudentInfo] = useState<StudentDataForAdmin>();
+
+    useEffect(() => {
+        fetchMembersData();
+    }, []);
+
+    const fetchMembersData = async () => {
+        try {
+            const response = await secInstance.get("api/members");
+            setStudents(response.data);
+        } catch (error) {
+            console.log("데이터를 가져오는 중 오류가 발생했습니다.", error)
+        }
+    };
 
     return (
         <Box pl={2} pr={2} pb={2}>
-            {/*<EnhancedTable/>*/}
-            <StudentTable/>
+            <Grid container spacing={2}>
+                <Grid size={editStudentInfo? 9 : 12}>
+                    <StudentTable students={students} fetchMembersData={fetchMembersData} setEditStudentInfo={setEditStudentInfo}/>
+                </Grid>
+                {editStudentInfo &&
+                    (<Grid size={3}>
+                            <EditStudentInfo fetchMembersData={fetchMembersData} editStudentInfo={editStudentInfo} setEditStudentInfo={setEditStudentInfo}/>
+                        </Grid>
+                    )}
+            </Grid>
         </Box>
     );
 }
