@@ -1,6 +1,8 @@
 package com.npt.anis.ANIS.member.domain.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -8,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
+@RequiredArgsConstructor
 public class MemberSearchByAdminDto {
     private int studentID;
     private String depName;

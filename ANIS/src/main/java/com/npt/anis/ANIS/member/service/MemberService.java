@@ -28,7 +28,7 @@ public interface MemberService {
      * @return List<MemberSearchDTO>
      */
     List<MemberSearchDTO> getAnyMembers(MemberSearchDTO memberSearchDTO);
-    MemberDTO updateMember(MemberDTO memberDTO);
+    MemberSearchByAdminDto updateMember(MemberSearchByAdminDto memberDTO);
     int toggleMemberQuit(String[] memberIDs);
     List<MemberSearchDTO> getMembersByDepName(String departmentName);
 }

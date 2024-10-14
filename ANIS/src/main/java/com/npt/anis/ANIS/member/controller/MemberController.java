@@ -76,8 +76,8 @@ public class MemberController {
     }
 
     @PutMapping("/member")
-    public ResponseEntity<MemberDTO> updateMember(@RequestBody MemberDTO memberDTO) {
-        MemberDTO result = memberService.updateMember(memberDTO);
+    public ResponseEntity<MemberSearchByAdminDto> updateMember(@RequestBody MemberSearchByAdminDto memberDTO) {
+        MemberSearchByAdminDto result = memberService.updateMember(memberDTO);
         if (result == null) {
             return ResponseEntity.status(404).body(null);
         }
