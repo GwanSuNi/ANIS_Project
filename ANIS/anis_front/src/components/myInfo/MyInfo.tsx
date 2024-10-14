@@ -53,7 +53,7 @@ export default function MyInfo() {
     const userInfo = useUserInfo();
     const {mutate: updateProfileImage} = useUpdateProfileImage();
 
-    const handleUploadClick = async (studentID:string) => {
+    const handleUploadImageClick = async (studentID:string) => {
         // 파일 선택 요소를 동적으로 생성합니다.
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
@@ -99,7 +99,7 @@ export default function MyInfo() {
                           rowSpacing={{xs: 2, sm: 4, md: 4}}
                           sx={{p: 0, mt: 3}}>
                         <Grid size={{xs: 'auto'}} display={'flex'} justifyContent="center" alignItems="center">
-                            <ImageCard userInfo={userInfo} handleUploadClick={handleUploadClick}/>
+                            <ImageCard userInfo={userInfo} handleUploadImageClick={handleUploadImageClick}/>
                         </Grid>
                         <Grid container size={{xs:6}} justifyContent="center" alignItems="center">
                             <MyInfoTable {...userInfo}/>

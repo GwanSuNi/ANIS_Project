@@ -237,8 +237,8 @@ export default function AdminLayout() {
                 <Fab color="primary" aria-label="add" onClick={toggleDarkMode} size={"small"}
                      style={{
                          position: 'fixed',
-                         bottom: 16,
-                         left: 16,
+                         bottom: 12,
+                         left: 12,
                          zIndex: 100000 // 가장 위에 보이게 함
                      }}>
                     {mode === 'dark' ? <Brightness7Icon/> : <Brightness4Icon/>}
