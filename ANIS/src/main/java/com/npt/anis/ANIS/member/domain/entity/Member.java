@@ -20,6 +20,7 @@ public class Member {
     @Id
     private String studentID;
     private Long departmentID;
+    private int grade;
     private String studentName;
     private String password;
     private String birth;
@@ -30,7 +31,8 @@ public class Member {
     private boolean isQuit = false;
 
     @Builder
-    public Member(String studentID, String password, String studentName, String birth, String role) { // TODO: DTO로 변경
+    public Member(int grade, String studentID, String password, String studentName, String birth, String role) { // TODO: DTO로 변경
+        this.grade = grade;
         this.studentID = studentID;
         this.password = password;
         this.studentName = studentName;

@@ -2,6 +2,7 @@ package com.npt.anis.ANIS.member.service;
 
 import com.npt.anis.ANIS.department.service.DepService;
 import com.npt.anis.ANIS.member.domain.dto.MemberDTO;
+import com.npt.anis.ANIS.member.domain.dto.MemberExcelDto;
 import com.npt.anis.ANIS.member.domain.dto.MemberSearchByAdminDto;
 import com.npt.anis.ANIS.member.domain.dto.MemberSearchDTO;
 import com.npt.anis.ANIS.member.domain.entity.Member;
@@ -83,5 +84,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<MemberSearchDTO> getMembersByDepName(String depName) {
         return memberRepository.findMembersByDepartmentName(depName);
+    }
+
+    @Override
+    public int insertMemberByExcel(MemberExcelDto memberExcelDto) {
+        return 0;
     }
 }
