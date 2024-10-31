@@ -30,7 +30,7 @@ export default function EditStudentInfo({editStudentInfo, setEditStudentInfo, fe
     useEffect(() => {
         const fetchDepartments = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/departments');
+                const response = await secInstance.get('/api/departments');
                 setDepartments(response.data);
 
                 // depName에 해당하는 depIndex 찾기

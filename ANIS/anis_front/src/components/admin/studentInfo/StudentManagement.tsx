@@ -31,10 +31,13 @@ import Grid from "@mui/material/Grid2";
 import EditStudentInfo from "./EditStudentInfo";
 import {useDispatch} from "react-redux";
 import {openSnackbar} from "../../../redux/snackbarSlice";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import ExcelUpload from "./ExcelUpload";
 
 export interface StudentDataForAdmin {
     studentID: number;
     depName: string;
+    grade: string;
     studentName: string;
     birth: string;
     lastLogin: string;
@@ -86,6 +89,12 @@ const headCells: readonly HeadCell[] = [
         numeric: false,
         disablePadding: false,
         label: '학과',
+    },
+    {
+        id: 'grade',
+        numeric: false,
+        disablePadding: false,
+        label: '학년',
     },
     {
         id: 'studentName',
@@ -268,7 +277,7 @@ function StudentTable({setEditStudentInfo, fetchMembersData, students}: StudentT
     const [orderBy, setOrderBy] = React.useState<keyof StudentDataForAdmin>('studentID');
     const [selected, setSelected] = React.useState<readonly number[]>([]); // 선택된 학생의 ID를 저장
     const [page, setPage] = React.useState(0);
-    const [dense, setDense] = React.useState(false);
+    const [dense, setDense] = React.useState(true);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
     const handleRequestSort = (
@@ -333,10 +342,15 @@ function StudentTable({setEditStudentInfo, fetchMembersData, students}: StudentT
         [order, orderBy, page, rowsPerPage, students],
     );
 
+    const handleJoinStudentByExcel = () => {
+
+    }
+
     return (
         <Box sx={{width: '100%'}}>
             <Paper sx={{width: '100%', mb: 2}}>
-                <EnhancedTableToolbar numSelected={selected.length} selectedIDs={selected} fetchMembersData={fetchMembersData}/>
+                <EnhancedTableToolbar numSelected={selected.length} selectedIDs={selected}
+                                      fetchMembersData={fetchMembersData}/>
                 <TableContainer>
                     <Table
                         sx={{minWidth: 620}}
@@ -378,6 +392,7 @@ function StudentTable({setEditStudentInfo, fetchMembersData, students}: StudentT
                                         </TableCell>
                                         <TableCell align="right">{row.studentID}</TableCell>
                                         <TableCell align="left">{row.depName}</TableCell>
+                                        <TableCell align="left">{row.grade}</TableCell>
                                         <TableCell
                                             component="th"
                                             id={labelId}
@@ -421,10 +436,13 @@ function StudentTable({setEditStudentInfo, fetchMembersData, students}: StudentT
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-            <FormControlLabel
-                control={<Switch checked={dense} onChange={handleChangeDense}/>}
-                label="촘촘히 보기"
-            />
+            <Box sx={{display: "flex", justifyContent: "space-between"}}>
+                <FormControlLabel
+                    control={<Switch checked={dense} onChange={handleChangeDense}/>}
+                    label="촘촘히 보기"
+                />
+                <FormControlLabel sx={{m: 0}} control={<ExcelUpload fetchMembersData={fetchMembersData}/>} label={""}/>
+            </Box>
         </Box>
     );
 }
@@ -450,12 +468,14 @@ export default function StudentManagement() {
     return (
         <Box pl={2} pr={2} pb={2}>
             <Grid container spacing={2}>
-                <Grid size={editStudentInfo? 9 : 12}>
-                    <StudentTable students={students} fetchMembersData={fetchMembersData} setEditStudentInfo={setEditStudentInfo}/>
+                <Grid size={editStudentInfo ? 9 : 12}>
+                    <StudentTable students={students} fetchMembersData={fetchMembersData}
+                                  setEditStudentInfo={setEditStudentInfo}/>
                 </Grid>
                 {editStudentInfo &&
                     (<Grid size={3}>
-                            <EditStudentInfo fetchMembersData={fetchMembersData} editStudentInfo={editStudentInfo} setEditStudentInfo={setEditStudentInfo}/>
+                            <EditStudentInfo fetchMembersData={fetchMembersData} editStudentInfo={editStudentInfo}
+                                             setEditStudentInfo={setEditStudentInfo}/>
                         </Grid>
                     )}
             </Grid>
