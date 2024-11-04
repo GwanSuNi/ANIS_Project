@@ -51,6 +51,9 @@ public class JoinController {
     @Secured("ROLE_ADMIN")
     @PostMapping("/join/excel")
     public ResponseEntity<String> joinExcel(@Value("${spring.password}") String password, @RequestParam("file") MultipartFile file) {
+        if (file == null || file.isEmpty())
+            return new ResponseEntity<>("올바른 엑셀 파일이 포함되지 않았습니다", HttpStatus.BAD_REQUEST);
+
         int count;
         long start = System.currentTimeMillis();
         try {
@@ -82,18 +85,19 @@ public class JoinController {
                 memberExcelDtoList.add(excel);
             }
             long end = System.currentTimeMillis();
-            log.info("엑셀 시간: {}", (end - start) /1000.0);
+            log.info("엑셀 시간: {}", (end - start) / 1000.0);
 
             long start2 = System.currentTimeMillis();
             count = joinService.joinByExcel(password, memberExcelDtoList);
             long end2 = System.currentTimeMillis();
-            log.info("DB 시간: {}", (end2 - start2) /1000.0);
+            log.info("DB 시간: {}", (end2 - start2) / 1000.0);
         } catch (IOException ioException) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("올바른 파일 형식이 아닙니다", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
+            e.printStackTrace();
             log.warn("엑셀로 학생 정보 등록 중 오류 발생");
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("엑셀로 학생 정보 등록 중 오류 발생", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(count + "명 가입", HttpStatus.OK);
+        return new ResponseEntity<>(count + "명 가입 또는 정보 갱신 성공", HttpStatus.OK);
     }
 }

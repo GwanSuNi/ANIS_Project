@@ -54,6 +54,7 @@ public class MemberServiceImpl implements MemberService {
             return null;
         }
         member.setStudentName(memberDTO.getStudentName());
+        member.setGrade(Integer.parseInt(memberDTO.getGrade().replace("학년", "")));
         member.setQuit(memberDTO.getIsQuit().equals("탈퇴"));
         member.setBirth(memberDTO.getBirth().replace("-", ""));
         member.setDepartmentID(depService.getDepartmentByName(memberDTO.getDepName()).getDepIndex());
@@ -61,7 +62,8 @@ public class MemberServiceImpl implements MemberService {
             case "관리자":
                 member.setRole("ROLE_ADMIN");
                 break;
-            case "학생": member.setRole("ROLE_MEMBER");
+            case "학생":
+                member.setRole("ROLE_MEMBER");
         }
         Member updatedMember = memberRepository.save(member);
         return memberMapper.toMemberSearchByAdminDto(updatedMember);

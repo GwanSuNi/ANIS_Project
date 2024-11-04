@@ -12,11 +12,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -79,9 +82,21 @@ public class JoinService {
             String username = memberExcelDto.getStudentID();
 
             if (existingStudentIDSet.contains(username)) {
-                log.warn("JoinService joinProcess: StudentID already exists");
-                // TODO: 함수 반환 타입을 DTO로 바꾼 후, 가입이 되지 않은 사람을 리스트에 추가해서 프론트에서 확인할 수 있게 하기
-                return;
+                // studentID가 이미 존재할 경우 정보 업데이트
+                Member existingMember = userRepository.findByStudentID(username);
+                if (existingMember != null) {
+                    // 변경할 정보만 업데이트
+                    existingMember.setGrade(memberExcelDto.getGradeNumber());
+                    existingMember.setStudentName(memberExcelDto.getStudentName());
+                    Long departmentId = departmentMap.getOrDefault(memberExcelDto.getDepName(), -1L);
+                    existingMember.setDepartmentID(departmentId);
+                    existingMember.setLastLogin(LocalDateTime.now());
+                    memberList.add(existingMember);
+                    synchronized (this) {
+                        count.getAndIncrement();
+                    }
+                    return;
+                }
             }
 
             Member data = new Member();
@@ -92,7 +107,7 @@ public class JoinService {
             Long departmentId = departmentMap.getOrDefault(memberExcelDto.getDepName(), -1L);
             data.setDepartmentID(departmentId);
             data.setRole("ROLE_MEMBER");
-            data.setBirth("20000101"); // 엑셀에서 생일 정보가 없어서 랜덤으로 해야하지만 일단 이렇게 처리
+            data.setBirth(generateRandomDate()); // 엑셀에서 생일 정보가 없어서 랜덤으로 처리
             data.setLastLogin(LocalDateTime.now());
 
             memberList.add(data);
@@ -104,5 +119,21 @@ public class JoinService {
 
         batchMemberRepository.saveAll(memberList);
         return count.get();
+    }
+    public String generateRandomDate() {
+        // 시작 날짜 (2000-01-01)
+        LocalDate startDate = LocalDate.of(1950, 1, 1);
+        // 현재 날짜
+        LocalDate endDate = LocalDate.now();
+
+        // 시작 날짜와 종료 날짜 사이의 랜덤 일수를 계산
+        long randomDays = ThreadLocalRandom.current().nextLong(startDate.toEpochDay(), endDate.toEpochDay() + 1);
+
+        // 랜덤 날짜 생성
+        LocalDate randomDate = LocalDate.ofEpochDay(randomDays);
+
+        // yyyyMMdd 형식으로 포맷
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        return randomDate.format(formatter);
     }
 }

@@ -23,9 +23,17 @@ public class BatchMemberRepository {
     private int BATCH_SIZE;
     @Transactional
     public void saveAll(List<Member> memberList) {
-        String sql = "INSERT INTO MEMBER" +
-                "(STUDENTID, STUDENT_NAME, PASSWORD, DEPARTMENTID, GRADE, BIRTH, ROLE, LAST_LOGIN, IS_QUIT)" +
-                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO MEMBER (STUDENTID, STUDENT_NAME, PASSWORD, DEPARTMENTID, GRADE, BIRTH, ROLE, LAST_LOGIN, IS_QUIT) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+                "ON DUPLICATE KEY UPDATE " + // MySQL에서 사용
+                "STUDENT_NAME = VALUES(STUDENT_NAME), " +
+                "PASSWORD = VALUES(PASSWORD), " +
+                "DEPARTMENTID = VALUES(DEPARTMENTID), " +
+                "GRADE = VALUES(GRADE), " +
+                "BIRTH = VALUES(BIRTH), " +
+                "ROLE = VALUES(ROLE), " +
+                "LAST_LOGIN = VALUES(LAST_LOGIN), " +
+                "IS_QUIT = VALUES(IS_QUIT)";
 
         List<List<Member>> partitions = new ArrayList<>();
         for (int i = 0; i < memberList.size(); i += BATCH_SIZE) {
