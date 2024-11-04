@@ -28,7 +28,7 @@ export function useJoin() {
 
         console.log(joinData);
         try {
-            const response = await axiosInstance.post('/join', joinData);
+            const response = await axiosInstance.post('/api/join', joinData);
             if (response.status === 200) {
                 alert('회원가입 성공');
                 setUsername('');
