@@ -20,7 +20,7 @@ interface EditStudentInfoProps {
 export default function EditStudentInfo({editStudentInfo, setEditStudentInfo, fetchMembersData}: EditStudentInfoProps) {
     const dispatch = useDispatch();
     const {mutate: updateProfileImage} = useUpdateProfileImage();
-    const {studentID, depName, isQuit, studentName, birth, role} = editStudentInfo;
+    const {studentID, depName, grade, isQuit, studentName, birth, role} = editStudentInfo;
     const inputRef = useRef<HTMLInputElement>(null);
 
     const [departments, setDepartments] = useState<{ depIndex: number, depName: string }[]>([]);
@@ -141,8 +141,9 @@ export default function EditStudentInfo({editStudentInfo, setEditStudentInfo, fe
         try {
             const response = await secInstance.put("/api/member", {
                 studentID: studentID,
-                studentName: studentName,
                 depName: depName,
+                grade: grade,
+                studentName: studentName,
                 birth: birth,
                 role: role,
                 isQuit: isQuit,
@@ -234,6 +235,37 @@ export default function EditStudentInfo({editStudentInfo, setEditStudentInfo, fe
                     </Grid>
                     <Grid size={6}>
                         <TextField
+                            label="학년"
+                            value={grade}
+                            variant="outlined"
+                            select
+                            fullWidth
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                setEditStudentInfo({ ...editStudentInfo, grade: event.target.value });
+                            }}
+                            sx={{
+                                minWidth: '100px',
+                            }}
+                        >
+                            {selectedDepartment === 4 ? (
+                                // 라이프테크과일 때 "0학년"부터 "3학년"까지의 옵션을 렌더링
+                                ["0학년", "1학년", "2학년", "3학년"].map((grade ) => (
+                                    <MenuItem key={grade} value={grade}>
+                                        {grade}
+                                    </MenuItem>
+                                ))
+                            ) : (
+                                // 그 외의 경우 "0학년"부터 "2학년"까지의 옵션을 렌더링
+                                ["0학년", "1학년", "2학년"].map((grade) => (
+                                    <MenuItem key={grade} value={grade}>
+                                        {grade}
+                                    </MenuItem>
+                                ))
+                            )}
+                        </TextField>
+                    </Grid>
+                    <Grid size={6}>
+                        <TextField
                             label="생년월일"
                             inputRef={inputRef}
                             value={birth}
@@ -241,7 +273,7 @@ export default function EditStudentInfo({editStudentInfo, setEditStudentInfo, fe
                             onChange={handleBirthChange}
                             onKeyDown={handleKeyDown}
                             sx={{
-                                minWidth: '130px',
+                                minWidth: '100px',
                                 textAlign: 'center'
                             }}
                             slotProps={{
@@ -272,7 +304,7 @@ export default function EditStudentInfo({editStudentInfo, setEditStudentInfo, fe
                             ))}
                         </TextField>
                     </Grid>
-                    <Grid size={6}>
+                    <Grid size={12}>
                         <TextField
                             label="탈퇴"
                             value={isQuit}
@@ -285,8 +317,10 @@ export default function EditStudentInfo({editStudentInfo, setEditStudentInfo, fe
                             slotProps={{
                                 input: {
                                     readOnly: true,
+                                    style: { textAlign: 'center'},
                                 },
                             }}
+                            fullWidth
                             focused
                         />
                     </Grid>
