@@ -1,17 +1,26 @@
 package com.npt.anis.ANIS.assessment.service;
 
-import com.npt.anis.ANIS.assessment.domain.dto.AssessmentDto;
+import com.npt.anis.ANIS.assessment.domain.dto.request.CreateAssessmentRequestDto;
+import com.npt.anis.ANIS.assessment.domain.dto.request.UpdateAssessmentItemRequestDto;
+import com.npt.anis.ANIS.assessment.domain.dto.request.UpdateAssessmentRequestDto;
+import com.npt.anis.ANIS.assessment.domain.dto.response.CreateAssessmentResponseDto;
+import com.npt.anis.ANIS.assessment.domain.dto.response.GetAssessmentResponseDto;
+import com.npt.anis.ANIS.assessment.domain.dto.response.UpdateAssessmentResponseDto;
 import com.npt.anis.ANIS.assessment.domain.entity.Assessment;
+import com.npt.anis.ANIS.assessment.domain.entity.AssessmentItem;
+import com.npt.anis.ANIS.assessment.domain.mapper.AssessmentItemMapper;
 import com.npt.anis.ANIS.assessment.domain.mapper.AssessmentMapper;
+import com.npt.anis.ANIS.assessment.repository.AssessmentItemRepository;
 import com.npt.anis.ANIS.assessment.repository.AssessmentRepository;
 import com.npt.anis.ANIS.global.exception.ResourceNotFoundException;
-import com.npt.anis.ANIS.global.exception.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -19,127 +28,123 @@ import java.util.List;
 @Transactional
 public class AssessmentServiceImpl implements AssessmentService {
     private final AssessmentRepository assessmentRepository;
+    private final AssessmentItemRepository assessmentItemRepository;
     private final AssessmentMapper assessmentMapper;
+    private final AssessmentItemMapper assessmentItemMapper;
 
     /**
-     * Assessment를 DB에 저장하고 저장된 Assessment를 AssessmentDto로 변환해서 반환하는 서비스 메서드
+     * Assessment를 생성하는 서비스 메서드
      *
-     * @param dto DB 저장할 AssessmentDto. dto의 asIndex(pk)가 null 이어야 함
-     * @return DB에 저장된 AssessmentDto. 저장된 AssessmentDto는 새로운 ID를 포함
+     * @param requestDto 생성할 Assessment의 정보를 담은 DTO
+     * @return 생성된 Assessment의 정보를 담은 DTO
      */
     @Override
-    public AssessmentDto save(AssessmentDto dto) {
-        validateDto(dto);
+    public CreateAssessmentResponseDto createAssessment(CreateAssessmentRequestDto requestDto) {
+        Assessment assmt = assessmentMapper.toCreateAssessmentEntity(requestDto);
+        List<AssessmentItem> assmtItems = assessmentItemMapper.toAssessmentItemEntities(assmt.getAssmtId(), requestDto.getAssmtItems());
 
-        Assessment assessment = assessmentMapper.toEntity(dto);
-        assessment = assessmentRepository.save(assessment);
+        assmt = assessmentRepository.save(assmt);
+        assmtItems = assessmentItemRepository.saveAll(assmtItems);
 
-        AssessmentDto savedDto = assessmentMapper.toDto(assessment);
+        CreateAssessmentResponseDto responseDto = assessmentMapper.toCreateAssessmentResponseDto(assmt, assmtItems);
 
-        log.info("Service: Saved Assessment: {}", savedDto);
+        log.info("Service: Created assessment: {}", responseDto);
 
-        return savedDto;
+        return responseDto;
     }
 
     /**
-     * 파라미터로 받은 ID에 해당하는 Assessment를 찾아서 반환하는 서비스 메서드
+     * ID에 해당하는 Assessment를 조회하는 서비스 메서드
      *
-     * @param id 찾고자 하는 Assessment의 id
-     * @return 찾아진 Assessment의 dto
-     * @throws ResourceNotFoundException id에 해당하는 Assessment를 찾을 수 없는 경우 발생
+     * @param id 조회할 Assessment의 ID
+     * @return 조회된 Assessment의 정보를 담은 DTO
+     * @throws ResourceNotFoundException ID에 해당하는 Assessment를 찾을 수 없는 경우 발생
      */
     @Override
     @Transactional(readOnly = true)
-    public AssessmentDto findById(Long id) {
-        validateId(id);
+    public GetAssessmentResponseDto findById(Long id) {
+        Assessment assmt = assessmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Assessment not found with ID: " + id));
+        List<AssessmentItem> assmtItems = assessmentItemRepository.findByAssmtId(assmt.getAssmtId());
+        GetAssessmentResponseDto responseDto = assessmentMapper.toGetAssessmentResponseDto(assmt, assmtItems);
 
-        Assessment assessment = assessmentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Assessment not found with id: " + id));
+        log.info("Service: Found assessment with ID {}: {}", id, responseDto);
 
-        AssessmentDto assessmentDto = assessmentMapper.toDto(assessment);
-
-        log.info("Service: Found assessment with id {}: {}", id, assessmentDto);
-
-        return assessmentDto;
+        return responseDto;
     }
 
     /**
      * 모든 Assessment를 조회하는 서비스 메서드
      *
-     * @return 조회된 Assessment의 리스트를 AssessmentDto 리스트로 반환
+     * @return 모든 Assessment의 정보를 담은 DTO 리스트
      */
     @Override
     @Transactional(readOnly = true)
-    public List<AssessmentDto> findAll() {
-        List<Assessment> assessments = assessmentRepository.findAll();
-        List<AssessmentDto> assessmentDtos = assessmentMapper.toDtos(assessments);
+    public List<GetAssessmentResponseDto> findAll() {
+        List<Assessment> assmts = assessmentRepository.findAll();
+        List<Long> assmtIds = assmts.stream().map(Assessment::getAssmtId).toList();
+        List<AssessmentItem> assmtItems = assessmentItemRepository.findAllByAssmtIdIn(assmtIds);
+        Map<Long, List<AssessmentItem>> assessmentItemMap = assmtItems.stream()
+                .collect(Collectors.groupingBy(AssessmentItem::getAssmtId));
+        List<GetAssessmentResponseDto> responseDtos = assmts.stream()
+                .map(assmt -> assessmentMapper.toGetAssessmentResponseDto(assmt, assessmentItemMap.get(assmt.getAssmtId()))).toList();
 
-        log.info("Service: Found all assessments: {}", assessmentDtos);
+        log.info("Service: Found {} assessments: {}", responseDtos.size(), responseDtos);
 
-        return assessmentDtos;
+        return responseDtos;
     }
 
     /**
      * Assessment를 수정하는 서비스 메서드
      *
-     * @param id 수정할 Assessment의 id
-     * @param dto 수정할 내용을 포함하는 AssessmentDto. 반드시 dto에 모든 값이 있어야 함
+     * @param id         수정할 Assessment의 id
+     * @param requestDto 수정할 내용을 포함하는 AssessmentDto. 반드시 dto에 모든 값이 있어야 함
      * @return 수정된 AssessmentDto를 반환
      * @throws ResourceNotFoundException 수정할 Assessment를 찾을 수 없는 경우 발생
      */
     @Override
-    public AssessmentDto update(Long id, AssessmentDto dto) {
-        validateId(id);
+    public UpdateAssessmentResponseDto update(Long id, UpdateAssessmentRequestDto requestDto) {
+        Assessment assmt = assessmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Assessment not found with ID: " + id));
 
-        Assessment assessment = assessmentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Assessment not found with id: " + id));
+        assessmentMapper.updateFromDto(assmt, requestDto);
+        assmt = assessmentRepository.save(assmt);
 
-        assessmentMapper.updateFromDto(assessment, dto);
-        assessment = assessmentRepository.save(assessment);
-        AssessmentDto updatedDto = assessmentMapper.toDto(assessment);
+        for (UpdateAssessmentItemRequestDto dto : requestDto.getAssmtItems()) {
+            if (dto.isDeleted()) {
+                assessmentItemRepository.deleteById(dto.getItemId());
+            } else {
+                AssessmentItem assmtItem = assessmentItemRepository.findById(dto.getItemId())
+                        .orElseThrow(() -> new ResourceNotFoundException("AssessmentItem not found with ID: " + dto.getItemId()));
 
-        log.info("Service: Updated assessment: {}", updatedDto);
+                assessmentItemMapper.updateFromDto(assmtItem, dto);
+                assessmentItemRepository.save(assmtItem);
+            }
+        }
 
-        return updatedDto;
+        List<AssessmentItem> assmtItems = assessmentItemRepository.findByAssmtId(assmt.getAssmtId());
+        UpdateAssessmentResponseDto responseDto = assessmentMapper.toUpdateAssessmentResponseDto(assmt, assmtItems);
+
+        log.info("Service: Updated assessment: {}", requestDto);
+
+        return responseDto;
     }
-
 
     /**
-     * 파라미터로 받은 ID에 해당하는 Assessment를 삭제하는 서비스 메서드
+     * ID에 해당하는 Assessment를 삭제하는 서비스 메서드
      *
-     * @param id 삭제할 Assessment의 id
-     * @throws ResourceNotFoundException 삭제할 Assessment를 찾을 수 없는 경우 발생
+     * @param id 삭제할 Assessment의 ID
+     * @throws ResourceNotFoundException ID에 해당하는 Assessment를 찾을 수 없는 경우 발생
      */
     @Override
-    public void delete(Long id) {
-        validateId(id);
+    public void deleteById(Long id) {
+        Assessment assmt = assessmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Assessment not found with ID: " + id));
+        List<AssessmentItem> assmtItems = assessmentItemRepository.findByAssmtId(assmt.getAssmtId());
 
-        Assessment assessment = assessmentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Assessment not found with id: " + id));
+        assessmentRepository.delete(assmt);
+        assessmentItemRepository.deleteAll(assmtItems);
 
-        assessmentRepository.delete(assessment);
-
-        log.info("Service: Deleted assessment with id: {}", id);
-    }
-
-    // id 유효성 검사하는 메서드
-    private void validateId(Long id) {
-        if (id == null)
-            throw new ValidationException("ID cannot be null");
-    }
-
-    // AssessmentDto 유효성 검사하는 메서드
-    private void validateDto(AssessmentDto dto) {
-        if (dto == null)
-            throw new ValidationException("AssessmentDto cannot be null");
-
-        if (dto.getLecId() == null)
-            throw new ValidationException("lecId cannot be null");
-
-        if (dto.getDiagnosisArea() == null || dto.getDiagnosisArea().isEmpty())
-            throw new ValidationException("diagnosisArea cannot be null or empty");
-
-        if (dto.getDiagnosisQuestion() == null || dto.getDiagnosisQuestion().isEmpty())
-            throw new ValidationException("diagnosisQuestion cannot be null or empty");
+        log.info("Service: Deleted assessment with ID: {}", id);
     }
 }

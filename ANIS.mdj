@@ -1010,20 +1010,35 @@
 													"top": 585,
 													"width": 219.10693359375,
 													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
+													"_id": "AAAAAAGR+6GSFlUrptc=",
+													"_parent": {
+														"$ref": "AAAAAAGOPAWSXqsJuGA="
+													},
+													"model": {
+														"$ref": "AAAAAAGR+6GSD1Uop4U="
+													},
+													"font": "Arial;13;0",
+													"left": 37,
+													"top": 600,
+													"width": 219.10693359375,
+													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 32,
 											"top": 535,
 											"width": 229.10693359375,
-											"height": 68
+											"height": 83
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 32,
 									"top": 512,
 									"width": 229.10693359375,
-									"height": 91,
+									"height": 106,
 									"nameLabel": {
 										"$ref": "AAAAAAGOPAWSXasIBKw="
 									},
@@ -1692,89 +1707,6 @@
 									},
 									"headNameLabel": {
 										"$ref": "AAAAAAGOPBj/oqyO1ho="
-									}
-								},
-								{
-									"_type": "ERDEntityView",
-									"_id": "AAAAAAGOPBmmuayjXzA=",
-									"_parent": {
-										"$ref": "AAAAAAGOO7eJagTQF+c="
-									},
-									"model": {
-										"$ref": "AAAAAAGOPBmmuayhi4w="
-									},
-									"subViews": [
-										{
-											"_type": "LabelView",
-											"_id": "AAAAAAGOPBmmuqykdVo=",
-											"_parent": {
-												"$ref": "AAAAAAGOPBmmuayjXzA="
-											},
-											"font": "Arial;13;1",
-											"left": 248,
-											"top": 397,
-											"width": 177.09423828125,
-											"height": 13,
-											"text": "Period"
-										},
-										{
-											"_type": "ERDColumnCompartmentView",
-											"_id": "AAAAAAGOPBmmuqylr0Q=",
-											"_parent": {
-												"$ref": "AAAAAAGOPBmmuayjXzA="
-											},
-											"model": {
-												"$ref": "AAAAAAGOPBmmuayhi4w="
-											},
-											"subViews": [
-												{
-													"_type": "ERDColumnView",
-													"_id": "AAAAAAGOUCkohxkXh74=",
-													"_parent": {
-														"$ref": "AAAAAAGOPBmmuqylr0Q="
-													},
-													"model": {
-														"$ref": "AAAAAAGOUCkodxkUA+U="
-													},
-													"font": "Arial;13;0",
-													"left": 253,
-													"top": 420,
-													"width": 167.09423828125,
-													"height": 13
-												},
-												{
-													"_type": "ERDColumnView",
-													"_id": "AAAAAAGOUClB4hke4Ec=",
-													"_parent": {
-														"$ref": "AAAAAAGOPBmmuqylr0Q="
-													},
-													"model": {
-														"$ref": "AAAAAAGOUClB2xkb+aQ="
-													},
-													"font": "Arial;13;0",
-													"left": 253,
-													"top": 435,
-													"width": 167.09423828125,
-													"height": 13
-												}
-											],
-											"font": "Arial;13;0",
-											"left": 248,
-											"top": 415,
-											"width": 177.09423828125,
-											"height": 38
-										}
-									],
-									"font": "Arial;13;0",
-									"left": 248,
-									"top": 392,
-									"width": 177.09423828125,
-									"height": 61,
-									"nameLabel": {
-										"$ref": "AAAAAAGOPBmmuqykdVo="
-									},
-									"columnCompartment": {
-										"$ref": "AAAAAAGOPBmmuqylr0Q="
 									}
 								},
 								{
@@ -3424,9 +3356,9 @@
 									"_parent": {
 										"$ref": "AAAAAAGOPAWSXasFUzs="
 									},
-									"name": "assessmentID",
-									"documentation": "진단평가의 고유 ID",
-									"type": "LONG",
+									"name": "assmtId",
+									"documentation": "진단평가 ID",
+									"type": "BIGINT",
 									"length": 0,
 									"primaryKey": true
 								},
@@ -3438,7 +3370,7 @@
 									},
 									"name": "lecID",
 									"documentation": "진단평가가 속한 강의의 ID",
-									"type": "LONG",
+									"type": "BIGINT",
 									"length": 0,
 									"foreignKey": true,
 									"referenceTo": {
@@ -3451,7 +3383,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGOPAWSXasFUzs="
 									},
-									"name": "assessmentName",
+									"name": "assmtName",
 									"documentation": "진단평가 이름",
 									"type": "VARCHAR",
 									"length": 0
@@ -3462,9 +3394,20 @@
 									"_parent": {
 										"$ref": "AAAAAAGOPAWSXasFUzs="
 									},
-									"name": "period",
-									"documentation": "진단평가의 기간",
-									"type": "PERIOD",
+									"name": "startDate",
+									"documentation": "진단평가 시작일",
+									"type": "TIMESTAMP",
+									"length": 0
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAGR+6GSD1Uop4U=",
+									"_parent": {
+										"$ref": "AAAAAAGOPAWSXasFUzs="
+									},
+									"name": "endDate",
+									"documentation": "진단평가 마감일",
+									"type": "TIMESTAMP",
 									"length": 0
 								}
 							]
@@ -3483,9 +3426,9 @@
 									"_parent": {
 										"$ref": "AAAAAAGOPAXx+6sWmJM="
 									},
-									"name": "arID",
-									"documentation": "진단평가 결과의 고유 ID",
-									"type": "LONG",
+									"name": "arId",
+									"documentation": "진단평가 결과 ID",
+									"type": "BIGINT",
 									"length": 0,
 									"primaryKey": true
 								},
@@ -3495,9 +3438,9 @@
 									"_parent": {
 										"$ref": "AAAAAAGOPAXx+6sWmJM="
 									},
-									"name": "itemID",
-									"documentation": "진단 문제의 고유 ID",
-									"type": "LONG",
+									"name": "itemId",
+									"documentation": "진단 항목의 ID",
+									"type": "BIGINT",
 									"length": 0,
 									"foreignKey": true,
 									"referenceTo": {
@@ -3511,7 +3454,7 @@
 										"$ref": "AAAAAAGOPAXx+6sWmJM="
 									},
 									"name": "studentID",
-									"documentation": "학생의 고유 ID",
+									"documentation": "학생 ID",
 									"type": "LONG",
 									"length": 0,
 									"foreignKey": true,
@@ -3526,7 +3469,7 @@
 										"$ref": "AAAAAAGOPAXx+6sWmJM="
 									},
 									"name": "score",
-									"documentation": "진단 문제의 점수",
+									"documentation": "진단 항목의 점수",
 									"type": "INTEGER",
 									"length": 0
 								}
@@ -3937,9 +3880,9 @@
 									"_parent": {
 										"$ref": "AAAAAAGPbBsiHMYhcc8="
 									},
-									"name": "itemID",
-									"documentation": "진단평가 항목의 고유 ID",
-									"type": "LONG",
+									"name": "itemId",
+									"documentation": "진단평가 항목 ID",
+									"type": "BIGINT",
 									"length": 0,
 									"primaryKey": true
 								},
@@ -3949,9 +3892,9 @@
 									"_parent": {
 										"$ref": "AAAAAAGPbBsiHMYhcc8="
 									},
-									"name": "assessmentID",
+									"name": "assmtId",
 									"documentation": "항목이 속한 진단평가의 ID",
-									"type": "LONG",
+									"type": "BIGINT",
 									"length": 0,
 									"foreignKey": true
 								},
@@ -3961,7 +3904,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGPbBsiHMYhcc8="
 									},
-									"name": "assessmentArea",
+									"name": "assmtArea",
 									"documentation": "진단평가의 진단 영역",
 									"type": "VARCHAR",
 									"length": 0
@@ -3972,8 +3915,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGPbBsiHMYhcc8="
 									},
-									"name": "assessmentQuestion",
-									"documentation": "진단평가의 진단 문제",
+									"name": "assmtQuestion",
+									"documentation": "진단평가의 진단 문항",
 									"type": "VARCHAR",
 									"length": 0
 								}

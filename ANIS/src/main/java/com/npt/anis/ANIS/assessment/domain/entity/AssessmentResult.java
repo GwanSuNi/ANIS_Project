@@ -1,23 +1,29 @@
 package com.npt.anis.ANIS.assessment.domain.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AssessmentResult {
     @Id
-    private Long arIndex;
-    // private Long asIndex; assessment 외래키
-    // private Long studentId; student 외래키
-    // erd에 대한 얘기가 끝나지 않아서 비워둠
-    private int arScore;
-}
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long arId; // 진단평가 결과 ID
+    private Long itemId; // 진단평가 항목 ID
+    private String studentID; // 학생 ID
+    private int arScore; // 진단평가 항목의 점수
 
+    @Builder
+    public AssessmentResult(Long itemId, String studentID, int arScore) {
+        this.itemId = itemId;
+        this.studentID = studentID;
+        this.arScore = arScore;
+    }
+}

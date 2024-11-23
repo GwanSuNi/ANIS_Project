@@ -1,8 +1,8 @@
 package com.npt.anis.ANIS.assessment.controller;
 
-import com.npt.anis.ANIS.assessment.domain.dto.AssessmentDto;
-import com.npt.anis.ANIS.assessment.domain.dto.CreateAssessmentRequestDto;
-import com.npt.anis.ANIS.assessment.domain.dto.UpdateAssessmentRequestDto;
+import com.npt.anis.ANIS.assessment.domain.dto.request.CreateAssessmentRequestDto;
+import com.npt.anis.ANIS.assessment.domain.dto.response.CreateAssessmentResponseDto;
+import com.npt.anis.ANIS.assessment.domain.dto.response.GetAssessmentResponseDto;
 import com.npt.anis.ANIS.assessment.domain.mapper.AssessmentMapper;
 import com.npt.anis.ANIS.assessment.service.AssessmentService;
 import jakarta.validation.Valid;
@@ -23,34 +23,33 @@ public class AssessmentController {
     private final AssessmentMapper assessmentMapper;
 
     /**
-     * Assessment 생성 API
+     * Assessment를 생성하는 API
      *
-     * @param request Assessment 생성 요청 정보를 담은 dto
+     * @param request 생성할 Assessment의 정보를 담은 dto
      * @return HTTP 상태 코드가 CREATED(201)이고, 생성된 Assessment의 정보를 담은 dto를 반환
      */
     @PostMapping
-    public ResponseEntity<AssessmentDto> createAssessment(@Valid @RequestBody CreateAssessmentRequestDto request) {
-        AssessmentDto dto = assessmentMapper.toDto(request);
-        dto = assessmentService.save(dto);
+    public ResponseEntity<CreateAssessmentResponseDto> createAssessment(@Valid @RequestBody CreateAssessmentRequestDto request) {
+        CreateAssessmentResponseDto response = assessmentService.createAssessment(request);
 
-        log.info("Controller: Created Assessment: {}", dto);
+        log.info("Controller: Created assessment: {}", response);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     /**
-     * Assessment를 가져오는 API
+     * ID에 해당하는 Assessment를 가져오는 API
      *
      * @param id 가져오려는 Assessment의 id
-     * @return HTTP 상태 코드가 OK(200)이고, 가져온 Assessment의 정보를 담은 dto를 반환
+     * @return HTTP 상태 코드가 OK(200)이고, ID에 해당하는 Assessment의 정보를 담은 dto를 반환
      */
     @GetMapping("/{id}")
-    public ResponseEntity<AssessmentDto> getAssessmentById(@PathVariable Long id) {
-        AssessmentDto dto = assessmentService.findById(id);
+    public ResponseEntity<GetAssessmentResponseDto> getAssessment(@PathVariable Long id) {
+        GetAssessmentResponseDto response = assessmentService.findById(id);
 
-        log.info("Controller: Fetched Assessment: {}", dto);
+        log.info("Controller: Fetched assessment with ID {}: {}", id, response);
 
-        return ResponseEntity.status(HttpStatus.OK).body(dto);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     /**
@@ -59,33 +58,32 @@ public class AssessmentController {
      * @return HTTP 상태 코드가 OK(200)이고, 모든 Assessment의 정보를 담은 dto 리스트를 반환
      */
     @GetMapping
-    public ResponseEntity<List<AssessmentDto>> getAllAssessments() {
-        List<AssessmentDto> dtos = assessmentService.findAll();
+    public ResponseEntity<List<GetAssessmentResponseDto>> getAllAssessments() {
+        List<GetAssessmentResponseDto> response = assessmentService.findAll();
 
-        log.info("Controller: Fetched {} Assessments", dtos.size());
+        log.info("Controller: Fetched {} assessments: {}", response.size(), response);
 
-        return ResponseEntity.status(HttpStatus.OK).body(dtos);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<AssessmentDto> updateAssessment(@PathVariable Long id, @RequestBody UpdateAssessmentRequestDto request) {
-        AssessmentDto dto = assessmentMapper.toDto(request);
-        dto = assessmentService.update(id, dto);
-
-        return ResponseEntity.status(HttpStatus.OK).body(dto);
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<AssessmentDto> updateAssessment(@PathVariable Long id, @RequestBody UpdateAssessmentRequestDto request) {
+//        AssessmentDto dto = assessmentMapper.toDto(request);
+//        dto = assessmentService.update(id, dto);
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(dto);
+//    }
 
     /**
-     * Assessment를 삭제하는 API
+     * ID에 해당하는 Assessment를 삭제하는 API
      *
      * @param id 삭제하려는 Assessment의 id
-     * @return HTTP 상태 코드 Content(204) 반환. 이는 성공적으로 리소스가 삭제되었음을 나타냄
+     * @return HTTP 상태 코드 NO_CONTENT(204)를 반환
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAssessment(@PathVariable Long id) {
-        assessmentService.delete(id);
-
-        log.info("Controller: Deleted Assessment with ID: {}", id);
+        assessmentService.deleteById(id);
+        log.info("Controller: Deleted assessment with ID: {}", id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

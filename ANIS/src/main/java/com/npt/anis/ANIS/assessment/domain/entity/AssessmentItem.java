@@ -9,25 +9,21 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Assessment {
+public class AssessmentItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long itemId; // 진단평가 항목 ID
     private Long assmtId; // 진단평가 ID
-    private Long lecID; // 강의 ID
-    private String assmtName; // 진단평가 이름
-    private LocalDateTime startDate; // 진단평가 시작일
-    private LocalDateTime endDate; // 진단평가 마감일
+    private String assmtArea; // 진단 영역
+    private String assmtQuestion; // 진단 문항
 
     @Builder
-    public Assessment(Long lecID, String assmtName, LocalDateTime startDate, LocalDateTime endDate) {
-        this.lecID = lecID;
-        this.assmtName = assmtName;
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public AssessmentItem(Long assmtId, String assmtArea, String assmtQuestion) {
+        this.assmtId = assmtId;
+        this.assmtArea = assmtArea;
+        this.assmtQuestion = assmtQuestion;
     }
 }
