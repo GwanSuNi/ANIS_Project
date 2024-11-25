@@ -36,6 +36,7 @@ dependencies {
 	// DB
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'com.h2database:h2'
+	implementation 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -70,6 +71,10 @@ dependencies {
 	implementation 'com.google.firebase:firebase-admin:9.2.0'
 	// LocalDateTime 직렬화
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
+	// 마이크로소프트 포멧 파일 API
+	implementation 'org.apache.poi:poi:5.2.3'
+	implementation 'org.apache.poi:poi-ooxml:5.2.3'
 }
 
 tasks.named('test') {

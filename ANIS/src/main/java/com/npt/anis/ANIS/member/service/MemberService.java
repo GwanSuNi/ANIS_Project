@@ -1,6 +1,7 @@
 package com.npt.anis.ANIS.member.service;
 
 import com.npt.anis.ANIS.member.domain.dto.MemberDTO;
+import com.npt.anis.ANIS.member.domain.dto.MemberExcelDto;
 import com.npt.anis.ANIS.member.domain.dto.MemberSearchByAdminDto;
 import com.npt.anis.ANIS.member.domain.dto.MemberSearchDTO;
 
@@ -28,7 +29,8 @@ public interface MemberService {
      * @return List<MemberSearchDTO>
      */
     List<MemberSearchDTO> getAnyMembers(MemberSearchDTO memberSearchDTO);
-    MemberDTO updateMember(MemberDTO memberDTO);
+    MemberSearchByAdminDto updateMember(MemberSearchByAdminDto memberDTO);
     int toggleMemberQuit(String[] memberIDs);
     List<MemberSearchDTO> getMembersByDepName(String departmentName);
+    int insertMemberByExcel(MemberExcelDto memberExcelDto);
 }

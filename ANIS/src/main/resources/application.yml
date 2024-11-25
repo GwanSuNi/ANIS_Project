@@ -1,27 +1,33 @@
 spring:
   datasource:
     hikari:
-      jdbc-url: jdbc:h2:tcp://localhost/~/db/H2/anisdb/data;
-      username: sa
+      jdbc-url: jdbc:mysql://localhost:3306/AnisDB
+      username: root
       password:
-      driver-class-name: org.h2.Driver
+      driver-class-name: com.mysql.cj.jdbc.Driver
   h2:
     console:
-      enabled: true
+      enabled: false
       path: /h2-console
   jpa:
     # Hibernate 스키마 생성이 수행된 후에,데이터베이스를 채우기 위해
     # 추가 data.sql 실행되도록 보장해주는 코드
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
         format_sql: true
+        # Batch insert 설정
+        jdbc:
+          batch_size: 100         # 한 번에 처리할 배치 크기
+          order_inserts: true      # INSERT 문 정렬
+          order_updates: true      # UPDATE 문 정렬
+        generate_statistics: false  # Hibernate 통계 출력
   jwt:
     secret: QW5pc1Byb2plY3RKd3RTZWNyZXRLZXk=
-  password : 1234
+  password: 1234
   data:
     mongodb:
       uri: mongodb://localhost:27017/ANIS
@@ -34,9 +40,9 @@ spring:
       max-file-size: 5MB
       max-request-size: 5MB
   # mode: always data.sql 에 sql 문을 자동으로 읽어줘서 데이터 삽입
-# mode: never data.sql 에 sql 문을 읽지않음
-# 더미데이터를 맨 처음에 넣을때 always로 바꿔서 데이터를 넣어준 후,
-# 넣고 나서 sql: init: mode: never 로 바꿔주기
+  # mode: never data.sql 에 sql 문을 읽지않음
+  # 더미데이터를 맨 처음에 넣을때 always로 바꿔서 데이터를 넣어준 후,
+  # 넣고 나서 sql: init: mode: never 로 바꿔주기
   sql:
     init:
       mode: never

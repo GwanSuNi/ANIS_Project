@@ -12,7 +12,6 @@ export function useLogin() {
     const navigate = useNavigate();
     const firebaseToken = useFirebase();
     const [token, setToken] = useState<string | null>(null);
-    const [admin, setAdmin] = useState<boolean>(false); // 역할 상태 추가
 
     interface DecodedToken {
         username: string;
@@ -33,9 +32,6 @@ export function useLogin() {
         const formData = new FormData();
         formData.append('username', username);
         formData.append('password', password);
-        if (admin) {
-            formData.append('role', 'ADMIN');
-        }
 
         if (token) {
             formData.append('fcmToken', token);
@@ -63,5 +59,5 @@ export function useLogin() {
         }
     };
 
-    return {password, setPassword, handleSubmit, setAdmin};
+    return {password, setPassword, handleSubmit};
 }
