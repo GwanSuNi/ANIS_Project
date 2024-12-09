@@ -6,6 +6,8 @@ import Timetable from './Timetable';
 import {Lecture} from '@types';
 import {RootState, setSelectedLectures} from '@redux';
 import {useDispatch, useSelector} from 'react-redux';
+import Grid from "@mui/material/Grid2";
+import {Box} from "@mui/material";
 
 function LectureButton() {
     const navigate = useNavigate();
@@ -29,7 +31,7 @@ function LectureButton() {
     };
 
     return (
-        <div className="LectureButton">
+        <Box sx={{display: "flex", gap: "5px", flexDirection: "row", alignItems: "center", mb: 2}}>
             <Button onClick={enrolmentTogether} variant="contained" className="lectureButton"
                     style={{fontSize: '20px', backgroundColor: 'yellow', color: 'black'}}> 수강신청 함께하기</Button>
             <Button onClick={lectureCopy} variant="contained" className="lectureButton"
@@ -38,7 +40,7 @@ function LectureButton() {
                     style={{fontSize: '20px', backgroundColor: 'yellow', color: 'black'}} disabled={isLoading}>
                 {isLoading ? '등록 중...' : '수강신청하기'}
             </Button>
-        </div>
+        </Box>
     );
 }
 
@@ -50,14 +52,14 @@ function LecturePresetButton() {
         dispatch(setSelectedLectures(lectures));
     };
     return (
-        <div className="LecturePreset">
+        <Box sx={{display: "flex", gap: "5px", flexDirection: "row", alignItems: "center", mt: 2}}>
             <Button onClick={() => fetchAndSetLectureOfPreset("A")} variant="contained" className="presetButton"
                     style={{fontSize: '20px', backgroundColor: 'yellow', color: 'black'}}>A</Button>
             <Button onClick={() => fetchAndSetLectureOfPreset("B")} variant="contained" className="presetButton"
                     style={{fontSize: '20px', backgroundColor: 'yellow', color: 'black'}}>B</Button>
             <Button onClick={() => fetchAndSetLectureOfPreset("C")} variant="contained" className="presetButton"
                     style={{fontSize: '20px', backgroundColor: 'yellow', color: 'black'}}>C</Button>
-        </div>
+        </Box>
     )
 }
 
@@ -70,13 +72,16 @@ export default function LectureApplication() {
         return <div>에러발생</div>
 
     return (
-        <div className="LectureApplication">
+        <Grid container spacing={2}
+              sx={{display: "flex", flexDirection: "column", alignItems: "center", width: "100%"}}>
             <LecturePresetButton/>
-            <div className="main">
+
+            <Grid size={12} px={2}>
                 <Timetable lectures={availableLectures} isEnrolling={true}/>
-            </div>
+            </Grid>
+
             {/*TODO 학점이 모자르거나 넘치는경우 에러처리하기 */}
             <LectureButton/>
-        </div>
+        </Grid>
     );
 }

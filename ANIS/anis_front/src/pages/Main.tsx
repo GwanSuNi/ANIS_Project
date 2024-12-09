@@ -2,6 +2,8 @@ import Button from '@mui/material/Button';
 import {useNavigate} from 'react-router-dom';
 import {useFetchRegisteredLecturesQuery} from '@api';
 import {Timetable} from '@components';
+import {Box} from '@mui/material';
+import Grid from "@mui/material/Grid2";
 
 export default function Main() {
     const {data: registeredLectures = [], isLoading} = useFetchRegisteredLecturesQuery(undefined, {
@@ -11,13 +13,14 @@ export default function Main() {
     });
 
     return (
-        <div className="container">
-            <h1>성인학습자 전용 NIS</h1>
-            <div className="rectangle">
-                {isLoading ? <div>로딩중...</div> : <Timetable lectures={registeredLectures} isEnrolling={false}/>}
-            </div>
+        <Grid container spacing={2} sx={{display: "flex", flexDirection: "column", alignItems: "center", width:"100%"}}>
+            <Grid size={12} px={2} pt={2}>
+                <Box className="rectangle">
+                    {isLoading ? <div>로딩중...</div> : <Timetable lectures={registeredLectures} isEnrolling={false}/>}
+                </Box>
+            </Grid>
             <ButtonContainer/>
-        </div>
+        </Grid>
     );
 }
 
@@ -30,11 +33,11 @@ function ButtonContainer() {
         navigate("/");
     };
     return (
-        <div className="button-container">
+        <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
             <Button onClick={enrolmentClick} variant="contained" className="button"
                     style={{fontSize: '30px', backgroundColor: 'yellow', color: 'black'}}>수강신청하기</Button>
             <Button onClick={assessmentClick} variant="contained" className="button"
-                    style={{fontSize: '30px', backgroundColor: 'yellow', color: 'black'}}>설문조사하기</Button>
-        </div>
+                    style={{fontSize: '30px', backgroundColor: 'yellow', color: 'black', marginLeft:5}}>설문조사하기</Button>
+        </Box>
     );
 }
