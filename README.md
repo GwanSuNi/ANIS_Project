@@ -8,6 +8,15 @@
 ## 개발 기간
  - `2024. 4 . 1.` ~ `2024. 10. 31.`
 
+## 기술 스택
+- Java
+- TypeScript
+- React
+- Spring Boot
+- Spring Security
+- MySQL
+- JPA
+
 ## 개발자
 - 유관형: 백엔드 개발자
 - 박윤우: 백엔드 개발자
