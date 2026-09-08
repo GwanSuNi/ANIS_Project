@@ -12,6 +12,11 @@
 - 박윤우: 백엔드 개발자
 - 서상현: 백엔드 개발자
 
+## 이미지
+<img width="2662" height="1458" alt="스크린샷1" src="https://github.com/user-attachments/assets/c80ecc97-0c9b-4308-aea9-6e7b50e6e719" />
+
+
+---
 # Commit Message Convention
 ## 커밋 메세지 구조
 `Type / Body / Footer `
